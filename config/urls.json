@@ -1,0 +1,29 @@
+{
+  "urls": [
+      {
+        "id": "cerrado",
+        "url": "/cerrado",
+        "module": "public",
+        "action": "cerrado",
+        "comment": "Página temporal, sitio cerrado",
+        "login": "dont",
+        "layout": "blank"
+      },
+      {
+        "id": "home",
+        "url": "/",
+        "module": "home",
+        "action": "index",
+        "comment": "Home pública",
+        "login": "dont"
+      },
+      {
+        "id": "check_login",
+        "url": "/api/checkLogin",
+        "module": "api",
+        "action": "checkLogin",
+        "comment": "Función para comprobar un login de un usuario",
+        "login": "dont"
+      }
+  ]
+}

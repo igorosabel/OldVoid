@@ -1,0 +1,53 @@
+{
+  "system_types": [
+    {
+      "id": 1,
+      "type": "O",
+      "color": "Azul",
+      "min_planets": 0,
+      "max_planets": 1
+    },
+    {
+      "id": 2,
+      "type": "B",
+      "color": "Azul-Blanco",
+      "min_planets": 0,
+      "max_planets": 2
+    },
+    {
+      "id": 3,
+      "type": "A",
+      "color": "Blanco",
+      "min_planets": 1,
+      "max_planets": 3
+    },
+    {
+      "id": 4,
+      "type": "F",
+      "color": "Amarillo-Blanco",
+      "min_planets": 1,
+      "max_planets": 5
+    },
+    {
+      "id": 5,
+      "type": "G",
+      "color": "Amarillo",
+      "min_planets": 1,
+      "max_planets": 8
+    },
+    {
+      "id": 6,
+      "type": "K",
+      "color": "Naranja",
+      "min_planets": 1,
+      "max_planets": 5
+    },
+    {
+      "id": 7,
+      "type": "M",
+      "color": "Rojo",
+      "min_planets": 1,
+      "max_planets": 3
+    }
+  ]
+}
