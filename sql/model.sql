@@ -15,12 +15,8 @@ CREATE TABLE `system` (
   `id_discoverer` int(11) NOT NULL COMMENT 'Id del usuario que ha descubierto el sistema' ,
   `original_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Nombre original del sistema' ,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Nombre del sistema dado por el usuario' ,
-  `coord_x` int(11) NOT NULL COMMENT 'Coordenada X del sistema' ,
-  `coord_y` int(11) NOT NULL COMMENT 'Coordenada Y del sistema' ,
   `num_planets` int(11) NOT NULL COMMENT 'Número de planetas en el sistema' ,
   `sun_id_type` int(11) NOT NULL COMMENT 'Tipo de Sol' ,
-  `width` int(11) NOT NULL COMMENT 'Anchura del sistema' ,
-  `height` int(11) NOT NULL COMMENT 'Altura del sistema' ,
   `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
   `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
   PRIMARY KEY (`id`)
@@ -122,3 +118,5 @@ CREATE TABLE `facility` (
   `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+
