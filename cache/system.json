@@ -1,53 +1,123 @@
 {
-  "system_types": [
+  "info": "https://es.wikipedia.org/wiki/Clasificaci%C3%B3n_estelar",
+  "mkk_types": [
+    {
+      "id": 1,
+      "type": "0",
+      "name": "Hipergigantes",
+      "min_planets": 0,
+      "max_planets": 1,
+      "spectral_types": [1,2,3,4,5,6,7],
+      "planet_types": [1,2,8,9,10,11,12,13,14,16]
+    },
+    {
+      "id": 2,
+      "type": "Ia",
+      "name": "Supergigantes muy luminosas",
+      "min_planets": 0,
+      "max_planets": 1,
+      "spectral_types": [1,2,3,4,5,6,7],
+      "planet_types": [1,2,8,9,10,11,12,13,14,16]
+    },
+    {
+      "id": 3,
+      "type": "Ib",
+      "name": "Supergigantes de menor brillo",
+      "min_planets": 0,
+      "max_planets": 1,
+      "spectral_types": [1,2,3,4,5,6,7],
+      "planet_types": [1,2,5,8,9,10,11,12,13,14,16]
+    },
+    {
+      "id": 4,
+      "type": "II",
+      "name": "Gigantes luminosas",
+      "min_planets": 0,
+      "max_planets": 2,
+      "spectral_types": [2,3,4,5,6,7],
+      "planet_types": [1,2,5,8,9,10,11,12,13,14,16]
+    },
+    {
+      "id": 5,
+      "type": "III",
+      "name": "Gigantes",
+      "min_planets": 1,
+      "max_planets": 3,
+      "spectral_types": [2,3,4,5,6,7],
+      "planet_types": [1,2,5,8,9,10,11,12,13,14,16]
+    },
+    {
+      "id": 6,
+      "type": "IV",
+      "name": "Subgigantes",
+      "min_planets": 1,
+      "max_planets": 5,
+      "spectral_types": [3,4,5,6],
+      "planet_types": [1,2,3,4,5,6,7,8,11,12,13,17,19]
+    },
+    {
+      "id": 7,
+      "type": "V",
+      "name": "Estrellas enanas de la secuencia principal",
+      "min_planets": 1,
+      "max_planets": 8,
+      "spectral_types": [2,3,4,5,6,7],
+      "planet_types": [1,2,3,4,5,6,7,8,11,16,17,19]
+    },
+    {
+      "id": 8,
+      "type": "VI",
+      "name": "Subenanas",
+      "min_planets": 1,
+      "max_planets": 5,
+      "spectral_types": [5,6,7],
+      "planet_types": [1,2,3,4,7,11,18,19]
+    },
+    {
+      "id": 9,
+      "type": "VII",
+      "name": "Enanas blancas",
+      "min_planets": 1,
+      "max_planets": 3,
+      "spectral_types": [2,3,4,5,6],
+      "planet_types": [1,2,3,4,7,11,18,19]
+    }
+  ],
+  "spectral_types": [
     {
       "id": 1,
       "type": "O",
-      "color": "Azul",
-      "min_planets": 0,
-      "max_planets": 1
+      "color": "#2c4ee5"
     },
     {
       "id": 2,
       "type": "B",
-      "color": "Azul-Blanco",
-      "min_planets": 0,
-      "max_planets": 2
+      "color": "#707ebb"
     },
     {
       "id": 3,
       "type": "A",
-      "color": "Blanco",
-      "min_planets": 1,
-      "max_planets": 3
+      "color": "#cef4db"
     },
     {
       "id": 4,
       "type": "F",
-      "color": "Amarillo-Blanco",
-      "min_planets": 1,
-      "max_planets": 5
+      "color": "#fafccd"
     },
     {
       "id": 5,
       "type": "G",
-      "color": "Amarillo",
-      "min_planets": 1,
-      "max_planets": 8
+      "color": "#f7f936"
     },
     {
       "id": 6,
       "type": "K",
-      "color": "Naranja",
-      "min_planets": 1,
-      "max_planets": 5
+      "color": "#f38a2f"
     },
     {
       "id": 7,
       "type": "M",
-      "color": "Rojo",
-      "min_planets": 1,
-      "max_planets": 3
+      "color": "#f50603"
     }
   ]
 }

@@ -1,4 +1,5 @@
 {
+  "info": "https://es.wikipedia.org/wiki/Anexo:Tipos_de_planeta",
   "planet_types": [
     {
       "id": 1,
@@ -28,19 +29,6 @@
     },
     {
       "id": 3,
-      "type": "Planeta sin núcleo",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Planeta_sin_n%C3%BAcleo"
-    },
-    {
-      "id": 4,
       "type": "Planeta desierto",
       "min_radius": 1,
       "max_radius": 1000,
@@ -53,7 +41,7 @@
       "url": "https://es.wikipedia.org/wiki/Planeta_desierto"
     },
     {
-      "id": 5,
+      "id": 4,
       "type": "Planeta helado",
       "min_radius": 1,
       "max_radius": 1000,
@@ -66,20 +54,7 @@
       "url": "https://es.wikipedia.org/wiki/Planeta_helado"
     },
     {
-      "id": 6,
-      "type": "Planeta de hierro",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Planeta_de_hierro"
-    },
-    {
-      "id": 7,
+      "id": 5,
       "type": "Planeta de lava",
       "min_radius": 1,
       "max_radius": 1000,
@@ -92,7 +67,7 @@
       "url": "https://es.wikipedia.org/wiki/Planeta_de_lava"
     },
     {
-      "id": 8,
+      "id": 6,
       "type": "Planeta océano",
       "min_radius": 1,
       "max_radius": 1000,
@@ -105,33 +80,7 @@
       "url": "https://es.wikipedia.org/wiki/Planeta_oc%C3%A9ano"
     },
     {
-      "id": 9,
-      "type": "Subtierra",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Subtierra"
-    },
-    {
-      "id": 10,
-      "type": "Supertierra",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Supertierra"
-    },
-    {
-      "id": 11,
+      "id": 7,
       "type": "Análogo a la Tierra",
       "min_radius": 1,
       "max_radius": 1000,
@@ -144,59 +93,7 @@
       "url": "https://es.wikipedia.org/wiki/An%C3%A1logo_a_la_Tierra"
     },
     {
-      "id": 12,
-      "type": "Planeta superhabitable",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Planeta_superhabitable"
-    },
-    {
-      "id": 13,
-      "type": "Gigante de carbono",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Estrella_de_carbono"
-    },
-    {
-      "id": 14,
-      "type": "Planeta ctónico",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Planeta_ct%C3%B3nico"
-    },
-    {
-      "id": 15,
-      "type": "Júpiter excéntrico",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/J%C3%BApiter_exc%C3%A9ntrico"
-    },
-    {
-      "id": 16,
+      "id": 8,
       "type": "Planeta de helio",
       "min_radius": 1,
       "max_radius": 1000,
@@ -209,7 +106,7 @@
       "url": "https://es.wikipedia.org/wiki/Planeta_de_helio"
     },
     {
-      "id": 17,
+      "id": 9,
       "type": "Júpiter caliente",
       "min_radius": 1,
       "max_radius": 1000,
@@ -222,7 +119,7 @@
       "url": "https://es.wikipedia.org/wiki/J%C3%BApiter_caliente"
     },
     {
-      "id": 18,
+      "id": 10,
       "type": "Neptuno caliente",
       "min_radius": 1,
       "max_radius": 1000,
@@ -235,20 +132,7 @@
       "url": "https://es.wikipedia.org/wiki/Neptuno_caliente"
     },
     {
-      "id": 19,
-      "type": "Neptuno frío",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Neptuno_fr%C3%ADo"
-    },
-    {
-      "id": 20,
+      "id": 11,
       "type": "Minineptuno",
       "min_radius": 1,
       "max_radius": 1000,
@@ -261,7 +145,7 @@
       "url": "https://es.wikipedia.org/wiki/Minineptuno"
     },
     {
-      "id": 21,
+      "id": 12,
       "type": "Planeta hinchado",
       "min_radius": 1,
       "max_radius": 1000,
@@ -274,7 +158,7 @@
       "url": "https://es.wikipedia.org/wiki/Planeta_hinchado"
     },
     {
-      "id": 22,
+      "id": 13,
       "type": "Superjúpiter",
       "min_radius": 1,
       "max_radius": 1000,
@@ -287,7 +171,7 @@
       "url": "https://es.wikipedia.org/wiki/Superj%C3%BApiter"
     },
     {
-      "id": 22,
+      "id": 14,
       "type": "Enana marrón",
       "min_radius": 1,
       "max_radius": 1000,
@@ -300,7 +184,7 @@
       "url": "https://es.wikipedia.org/wiki/Enana_marr%C3%B3n"
     },
     {
-      "id": 23,
+      "id": 15,
       "type": "Planeta circumbinario",
       "min_radius": 1,
       "max_radius": 1000,
@@ -313,20 +197,7 @@
       "url": "https://es.wikipedia.org/wiki/Planeta_circumbinario"
     },
     {
-      "id": 24,
-      "type": "Planeta doble",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Planeta_doble"
-    },
-    {
-      "id": 25,
+      "id": 16,
       "type": "Gigante helado",
       "min_radius": 1,
       "max_radius": 1000,
@@ -339,46 +210,7 @@
       "url": "https://es.wikipedia.org/wiki/Gigante_helado"
     },
     {
-      "id": 26,
-      "type": "Mesoplaneta",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Mesoplaneta"
-    },
-    {
-      "id": 27,
-      "type": "Planetar",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Planetar"
-    },
-    {
-      "id": 28,
-      "type": "Planemo",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Planemo"
-    },
-    {
-      "id": 29,
+      "id": 17,
       "type": "Protoplaneta",
       "min_radius": 1,
       "max_radius": 1000,
@@ -391,7 +223,7 @@
       "url": "https://es.wikipedia.org/wiki/Protoplaneta"
     },
     {
-      "id": 30,
+      "id": 18,
       "type": "Planeta de púlsar",
       "min_radius": 1,
       "max_radius": 1000,
@@ -404,20 +236,7 @@
       "url": "https://es.wikipedia.org/wiki/Planeta_de_p%C3%BAlsar"
     },
     {
-      "id": 31,
-      "type": "Subenana marrón",
-      "min_radius": 1,
-      "max_radius": 1000,
-      "survival": 0.5,
-      "has_life": false,
-      "min_moons": 0,
-      "max_moons": 1,
-      "min_distance": 0.2,
-      "max_distance": 3,
-      "url": "https://es.wikipedia.org/wiki/Subenana_marr%C3%B3n"
-    },
-    {
-      "id": 32,
+      "id": 19,
       "type": "Plutoide",
       "min_radius": 1,
       "max_radius": 1000,

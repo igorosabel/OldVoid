@@ -41,7 +41,7 @@
   $sql .= $m->generate();
   $sql .= "\n\n";
 
-  $m = new G_Facility();
+  $m = new G_Module();
   $sql .= $m->generate();
   $sql .= "\n\n";
 

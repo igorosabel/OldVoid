@@ -24,8 +24,8 @@ CREATE TABLE `system` (
 
 
 CREATE TABLE `system_distance` (
-  `id_system_1` int(11) NOT NULL COMMENT 'Id del primer sistema',
-  `id_system_2` int(11) NOT NULL COMMENT 'Id del segundo sistema',
+  `id_system_1` int(11) NOT NULL COMMENT 'Id del primer sistema' ,
+  `id_system_2` int(11) NOT NULL COMMENT 'Id del segundo sistema' ,
   `distance` int(11) NOT NULL COMMENT 'Grados de separación entre los dos sistemas' ,
   `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
   `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
@@ -34,10 +34,11 @@ CREATE TABLE `system_distance` (
 
 
 CREATE TABLE `explorer_system_connection` (
-  `id_explorer` int(11) NOT NULL COMMENT 'Id del explorador',
-  `id_system_1` int(11) NOT NULL COMMENT 'Id del primer sistema',
-  `id_system_2` int(11) NOT NULL COMMENT 'Id del segundo sistema',
+  `id_explorer` int(11) NOT NULL COMMENT 'Id del explorador' ,
+  `id_system_1` int(11) NOT NULL COMMENT 'Id del primer sistema' ,
+  `id_system_2` int(11) NOT NULL COMMENT 'Id del segundo sistema' ,
   `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
+  `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
   PRIMARY KEY (`id_explorer`,`id_system_1`,`id_system_2`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
@@ -86,8 +87,8 @@ CREATE TABLE `ship` (
   `hull_strength` int(11) NOT NULL COMMENT 'Integridad estructural del hull, aguante ante ataques' ,
   `hull_mass` int(11) NOT NULL COMMENT 'Peso del hull, para el movimiento' ,
   `gun_ports` tinyint(1) NOT NULL COMMENT 'Número de huecos para introducir armas' ,
-  `big_facility_ports` int(11) NOT NULL COMMENT 'Número de los posibles facilities grandes' ,
-  `small_facility_ports` int(11) NOT NULL COMMENT 'Número de los posibles facilities pequeños' ,
+  `big_module_ports` int(11) NOT NULL COMMENT 'Número de los posibles módulos grandes' ,
+  `small_module_ports` int(11) NOT NULL COMMENT 'Número de los posibles módulos pequeños' ,
   `shield_id_type` int(11) NOT NULL COMMENT 'Id del tipo de shield, para información inicial, nombre...' ,
   `shield_strength` int(11) NOT NULL COMMENT 'Daño que aguanta el shield' ,
   `shield_energy` int(11) NOT NULL COMMENT 'Energía necesaria para que el shield funcione' ,
@@ -121,18 +122,18 @@ CREATE TABLE `gun` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 
-CREATE TABLE `facility` (
-  `id` int(11) NOT NULL COMMENT 'Id única de la facility' AUTO_INCREMENT,
-  `id_type` int(11) NOT NULL COMMENT 'Id del tipo de facility' ,
-  `id_owner` int(11) NOT NULL COMMENT 'Id del usuario dueño del facility' ,
+CREATE TABLE `module` (
+  `id` int(11) NOT NULL COMMENT 'Id único del módulo' AUTO_INCREMENT,
+  `id_type` int(11) NOT NULL COMMENT 'Id del tipo de módulo' ,
+  `id_owner` int(11) NOT NULL COMMENT 'Id del usuario dueño del módulo' ,
   `id_ship` int(11) NOT NULL COMMENT 'Id de la nave en la que está equipada o NULL si no está equipada' ,
-  `size` int(11) NOT NULL COMMENT 'Tamaño de la facility 0 small 1 big' ,
-  `enables` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Lista de habilidades que tener la facility permite' ,
+  `size` int(11) NOT NULL COMMENT 'Tamaño del módulo 0 small 1 big' ,
+  `enables` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Lista de habilidades que tener el módulo permite' ,
   `crew` int(11) NOT NULL COMMENT 'Número de tripulantes que puede alojar o pueden trabajar' ,
-  `mass` int(11) NOT NULL COMMENT 'Peso del facility, para el movimiento' ,
-  `storage` int(11) NOT NULL COMMENT 'Capacidad de almacenamiento del facility' ,
-  `energy` int(11) NOT NULL COMMENT 'Energía necesaria para que el facility funcione' ,
-  `credits` int(11) NOT NULL COMMENT 'Precio de la facility' ,
+  `mass` int(11) NOT NULL COMMENT 'Peso del módulo, para el movimiento' ,
+  `storage` int(11) NOT NULL COMMENT 'Capacidad de almacenamiento del módulo' ,
+  `energy` int(11) NOT NULL COMMENT 'Energía necesaria para que el módulo funcione' ,
+  `credits` int(11) NOT NULL COMMENT 'Precio del módulo' ,
   `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
   `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
   PRIMARY KEY (`id`)
