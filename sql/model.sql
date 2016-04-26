@@ -140,3 +140,52 @@ CREATE TABLE `module` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 
+CREATE TABLE `npc` (
+  `id` int(11) NOT NULL COMMENT 'Id único del NPC' AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Nombre del NPC' ,
+  `price_index` int(11) NOT NULL COMMENT 'Índice de precios del NPC, sobre 10' ,
+  `guns_start` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Armas que tiene a la venta por defecto' ,
+  `guns_actual` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Armas que tiene actualmente a la venta' ,
+  `modules_start` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Módulos que tiene a la venta por defecto' ,
+  `modules_actual` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Módulos que tiene actualmente a la venta' ,
+  `crew_start` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Tripulación que tiene a la venta por defecto' ,
+  `crew_actual` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Tripulación que tiene actualmente a la venta' ,
+  `resources_start` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Recursos que tiene a la venta por defecto' ,
+  `resources_actual` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Recursos que tiene actualmente a la venta' ,
+  `last_reset` datetime NOT NULL COMMENT 'Fecha y hora de la última vez que se ha reseteado' ,
+  `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
+  `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+
+CREATE TABLE `resources` (
+  `id_planet` int(11) NOT NULL COMMENT 'Id del planeta donde está el recurso o NULL si es una luna' ,
+  `id_moon` int(11) NOT NULL COMMENT 'Id de la luna donde está el recurso o NULL si es un planeta' ,
+  `id_resource_type` int(11) NOT NULL COMMENT 'Id del tipo de recurso' ,
+  `value` int(11) NOT NULL COMMENT 'Armas que tiene a la venta por defecto' ,
+  `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
+  `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
+  PRIMARY KEY (`id_planet`,`id_moon`,`id_resource_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+
+CREATE TABLE `ship_crew` (
+  `id_ship` int(11) NOT NULL COMMENT 'Id de la nave donde va el tripulante' ,
+  `id_crew` int(11) NOT NULL COMMENT 'Id del tripulante' ,
+  `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
+  `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
+  PRIMARY KEY (`id_ship`,`id_crew`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+
+CREATE TABLE `crew` (
+  `id` int(11) NOT NULL COMMENT 'Id único del tripulante' AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Nombre del tripulante' ,
+  `race` int(11) NOT NULL COMMENT 'Id de la raza del tripulante' ,
+  `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
+  `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+

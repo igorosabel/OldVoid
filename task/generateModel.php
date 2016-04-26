@@ -45,6 +45,22 @@
   $sql .= $m->generate();
   $sql .= "\n\n";
 
+  $m = new G_NPC();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+
+  $m = new G_Resources();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+
+  $m = new G_ShipCrew();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+
+  $m = new G_Crew();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+
   echo $sql;
 
   $ruta = $c->getRutaSQL()."model.sql";
