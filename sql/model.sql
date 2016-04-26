@@ -23,6 +23,25 @@ CREATE TABLE `system` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 
+CREATE TABLE `system_distance` (
+  `id_system_1` int(11) NOT NULL COMMENT 'Id del primer sistema',
+  `id_system_2` int(11) NOT NULL COMMENT 'Id del segundo sistema',
+  `distance` int(11) NOT NULL COMMENT 'Grados de separación entre los dos sistemas' ,
+  `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
+  `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
+  PRIMARY KEY (`id_system_1`,`id_system_2`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+
+CREATE TABLE `explorer_system_connection` (
+  `id_explorer` int(11) NOT NULL COMMENT 'Id del explorador',
+  `id_system_1` int(11) NOT NULL COMMENT 'Id del primer sistema',
+  `id_system_2` int(11) NOT NULL COMMENT 'Id del segundo sistema',
+  `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
+  PRIMARY KEY (`id_explorer`,`id_system_1`,`id_system_2`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+
 CREATE TABLE `planet` (
   `id` int(11) NOT NULL COMMENT 'Id único del sistema solar' AUTO_INCREMENT,
   `id_system` int(11) NOT NULL COMMENT 'Id del sistema al que pertenece el planeta' ,

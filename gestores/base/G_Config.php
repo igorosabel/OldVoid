@@ -61,8 +61,8 @@ class G_Config{
     $this->setRutaGestores($rb."gestores/");
     $this->setRutaGestoresApp($rb."gestores/app/");
     $this->setRutaGestoresBase($rb."gestores/base/");
-    $this->setRutaLogs($rb."../logs/");
-    $this->setRutaDebugLog($rb."../logs/debug.log");
+    $this->setRutaLogs($rb."logs/");
+    $this->setRutaDebugLog($rb."logs/debug.log");
     $this->setRutaTasks($rb."task/");
     $this->setRutaSQL($rb."sql/");
     $this->setRutaWeb($rb."web/");
