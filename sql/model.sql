@@ -16,7 +16,7 @@ CREATE TABLE `system` (
   `original_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Nombre original del sistema' ,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Nombre del sistema dado por el usuario' ,
   `num_planets` int(11) NOT NULL COMMENT 'Número de planetas en el sistema' ,
-  `sun_id_type` int(11) NOT NULL COMMENT 'Tipo de Sol' ,
+  `sun_type` varchar(5) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Tipo de Sol' ,
   `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
   `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
   PRIMARY KEY (`id`)

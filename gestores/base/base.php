@@ -17,7 +17,6 @@ class Base{
     if (file_exists($ruta)){
       $data = file_get_contents($ruta);
       $json = json_decode($data,true);
-
       return $json;
     }
     else{
