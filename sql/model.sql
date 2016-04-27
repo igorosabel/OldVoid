@@ -4,6 +4,7 @@ CREATE TABLE `explorer` (
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Direccion email del usuario' ,
   `pass` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Contraseña cifrada del usuario' ,
   `credits` int(11) NOT NULL COMMENT 'Cantidad de créditos del usuario' ,
+  `last_save_point` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Último punto de salvado, spm-X' ,
   `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
   `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
   PRIMARY KEY (`id`)
@@ -96,6 +97,8 @@ CREATE TABLE `ship` (
   `engine_power` int(11) NOT NULL COMMENT 'Potencia de empuje del engine' ,
   `engine_energy` int(11) NOT NULL COMMENT 'Energía necesaria para que el engine funcione' ,
   `engine_impulse` int(11) NOT NULL COMMENT 'Cantidad de UA por hora que se mueve' ,
+  `engine_fuel_cost` int(11) NOT NULL COMMENT 'Cantidad de fuel que consume por movimiento' ,
+  `engine_fuel_actual` int(11) NOT NULL COMMENT 'Cantidad de fuel que tiene en un momento dado' ,
   `generator_id_type` int(11) NOT NULL COMMENT 'Id del tipo de generator, para información inicial, nombre...' ,
   `generator_power` int(11) NOT NULL COMMENT 'Cantidad de energia que genera' ,
   `credits` int(11) NOT NULL COMMENT 'Precio de la nave' ,
