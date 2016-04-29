@@ -29,7 +29,7 @@
   $c->setCssList( $css );
   
   /* Lista de JavaScript por defecto */
-  $js = array('jquery-1.11.0.min','common');
+  $js = array('lib/common');
   $c->setJsList( $js );
   
   /* Título de la página */
