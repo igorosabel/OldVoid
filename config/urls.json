@@ -18,11 +18,19 @@
         "login": "dont"
       },
       {
-        "id": "check_login",
-        "url": "/api/checkLogin",
+        "id": "login",
+        "url": "/api/login",
         "module": "api",
-        "action": "checkLogin",
+        "action": "login",
         "comment": "Función para comprobar un login de un usuario",
+        "login": "dont"
+      },
+      {
+        "id": "register",
+        "url": "/api/register",
+        "module": "api",
+        "action": "register",
+        "comment": "Función para registrar un nuevo usuario",
         "login": "dont"
       }
   ]

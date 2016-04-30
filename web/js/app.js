@@ -7,7 +7,7 @@ function configApp() {
   angular
     .module('VoidApp')
     .config(function ($routeProvider, $locationProvider) {
-      angular.void = {
+      angular.voidgame = {
       };
 
       $routeProvider
@@ -16,13 +16,18 @@ function configApp() {
           controller: 'LoginController',
           controllerAs: 'vm'
         })
-        .when('/registro', {
+        .when('/register', {
           templateUrl: 'partials/register.html',
           controller: 'RegisterController',
           controllerAs: 'vm'
         })
+        .when('/main', {
+          templateUrl: 'partials/main.html',
+          controller: 'MainController',
+          controllerAs: 'vm'
+        })
         .otherwise({redirectTo: '/'});
-      $locationProvider.html5Mode(true);
+      //$locationProvider.html5Mode(true);
     });
 }
 

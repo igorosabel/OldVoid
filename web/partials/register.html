@@ -1,0 +1,22 @@
+<div class="register_box">
+  <div class="register_title">Regístrate</div>
+  <div class="register_subtitle">
+    Para registrarte solo tienes que introducir tu nuevo nombre de usuario, una dirección de email, la contraseña que quieras tener y luego confirmarla. Se te enviará un email con instrucciones para confirmar tu cuenta.
+  </div>
+  <div class="register_row">
+    <input type="text" name="register_name" id="register_name" ng-model="vm.name" placeholder="Nombre de usuario" class="register_field" />
+  </div>
+  <div class="register_row">
+    <input type="email" name="register_email" id="register_email" ng-model="vm.email" placeholder="Email" class="register_field" />
+  </div>
+  <div class="login_row">
+    <input type="password" name="register_pass" id="register_pass" ng-model="vm.pass" placeholder="Contraseña" class="register_field" />
+  </div>
+  <div class="login_row">
+    <input type="password" name="register_conf" id="register_conf" ng-model="vm.conf" placeholder="Confirmar contraseña" class="register_field" />
+  </div>
+  <div class="login_row">
+    <a href="#/" class="register_back">Iniciar sesión</a>
+    <a href ng-click="vm.register()" class="register_continue">Continuar</a>
+  </div>
+</div>

@@ -1,5 +1,9 @@
 <?php
 class General{
+  public static function generateAuth(){
+    return substr(sha1('v_'.time().'_v'), 0, 32);
+  }
+
   public static function goToSystem($explorer,$from,$id_system=null){
     if (is_null($id_system)){
       $system_connections = self::getSystemConnections($explorer,$from);
@@ -116,8 +120,8 @@ class General{
     //echo "ORIGINAL NAME: ".$sun_name."\n";
     //echo "NAME: ".$sun_name."\n";
     //echo "NUM PLANETS: ".$num_planets."\n";
-   //echo "SUN TYPE: ".$sun_type_code."\n";
-   //echo "-------------------------------------------------------------------------------------\n\n";
+    //echo "SUN TYPE: ".$sun_type_code."\n";
+    //echo "-------------------------------------------------------------------------------------\n\n";
     
     $s->salvar();
 
@@ -194,6 +198,7 @@ class General{
         // Indice de supervivencia es aleatorio entre 1 y el del planeta (+2 si tiene vida)
         $moon_survival = rand(1, $planet_survival + ($planet_has_life?2:0));
         $m->set('survival',$moon_survival);
+        
         // 50% de posibilidad de que haya vida si el indice de survival es mayor que 5
         $moon_has_life = ($moon_survival>5)?(rand(1,2)==1):false;
         $m->set('has_life',$moon_has_life);
@@ -201,9 +206,9 @@ class General{
         //echo "    SURVIVAL: ".$moon_survival."\n";
         //echo "    HAS LIFE: ".($moon_has_life?"Y":"N")."\n";
 
-        $moon_distance = rand($planet_type['min_distance'],$planet_type['max_distance']);
+        $moon_distance = rand(1,5);
         while (in_array($moon_distance,$moon_distances)){
-          $moon_distance = rand($planet_type['min_distance'],$planet_type['max_distance']);
+          $moon_distance = rand(1,5);
         }
         array_push($moon_distances,$moon_distance);
         $m->set('distance',$moon_distance);

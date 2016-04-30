@@ -11,4 +11,5 @@
 <script src="js/app.js"></script>
 <script src="js/controllers/login-controller.js"></script>
 <script src="js/controllers/register-controller.js"></script>
+<script src="js/controllers/main-controller.js"></script>
 <script src="js/services/authentication-service.js"></script>

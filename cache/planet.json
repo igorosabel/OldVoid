@@ -140,7 +140,7 @@
       "has_life": false,
       "min_moons": 1,
       "max_moons": 3,
-      "min_distance": 0.2,
+      "min_distance": 1,
       "max_distance": 3,
       "url": "https://es.wikipedia.org/wiki/Minineptuno"
     },

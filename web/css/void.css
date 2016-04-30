@@ -1,0 +1,151 @@
+html, body{
+  margin: 0;
+  font-family: Verdana;
+}
+
+.login_box{
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  height: 260px;
+  left: 50%;
+  margin-left: -300px;
+  margin-top: -130px;
+  position: absolute;
+  top: 50%;
+  width: 600px;
+}
+
+.login_title{
+  font-size: 2em;
+  padding: 10px;
+}
+
+.login_row{
+  clear: both;
+  overflow: hidden;
+  position: relative;
+}
+
+.login_field{
+  border: 1px solid #888;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1.2em;
+  margin: 10px;
+  padding: 5px;
+  width: 95%;
+}
+
+.login_recover{
+  color: #888;
+  display: block;
+  font-size: 0.8em;
+  padding: 0 10px;
+  text-decoration: none;
+}
+
+.login_recover:hover{
+  color: #333333;
+}
+
+.login_register{
+  border: 1px solid #888;
+  border-radius: 4px;
+  color: #000;
+  display: block;
+  float: left;
+  margin-left: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.login_register:hover{
+  background-color: #ccc;
+}
+
+.login_continue{
+  border: 1px solid #888;
+  border-radius: 4px;
+  color: #000;
+  display: block;
+  float: right;
+  margin-right: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.login_continue:hover{
+  background-color: #ccc;
+}
+
+.register_box{
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  height: 414px;
+  left: 50%;
+  margin-left: -300px;
+  margin-top: -207px;
+  position: absolute;
+  top: 50%;
+  width: 600px;
+}
+
+.register_title{
+  font-size: 2em;
+  padding: 10px;
+}
+
+.register_subtitle{
+  font-size: 0.8em;
+  padding: 10px;
+}
+
+.register_row{
+  clear: both;
+  overflow: hidden;
+  position: relative;
+}
+
+.register_field{
+  border: 1px solid #888;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1.2em;
+  margin: 10px;
+  padding: 5px;
+  width: 95%;
+}
+
+.register_back{
+  border: 1px solid #888;
+  border-radius: 4px;
+  color: #000;
+  display: block;
+  float: left;
+  margin-left: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.register_back:hover{
+  background-color: #ccc;
+}
+
+.register_continue{
+  border: 1px solid #888;
+  border-radius: 4px;
+  color: #000;
+  display: block;
+  float: right;
+  margin-right: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.register_continue:hover{
+  background-color: #ccc;
+}

@@ -10,19 +10,32 @@
     var service = {};
  
     service.Login             = Login;
+    service.Logout            = Logout;
+    service.RegisterExplorer  = RegisterExplorer;
     service.SetCredentials    = SetCredentials;
     service.ClearCredentials  = ClearCredentials;
-    service.RegisterUser      = RegisterUser;
     service.SaveLocalstorage  = SaveLocalstorage;
     service.loadLocalStorage  = LoadLocalStorage;
-    service.Logout            = Logout;
  
     return service;
  
     function Login(email, pass, callback){
-      $http.post(api_url+'checkLogin', { email: email, pass: pass })
+      $http.post(api_url+'login', { email: email, pass: pass })
         .success(function (response) {
-          callback(response);
+          callback && callback(response);
+        });
+    }
+    
+    function Logout(){
+      ClearCredentials();
+  
+      $location.path('/');
+    }
+    
+    function RegisterExplorer(name, email, pass, callback){
+      $http.post(api_url+'register', { name: name, email: email, pass: pass })
+        .success(function (response) {
+          callback && callback(response);
         });
     }
  
@@ -36,6 +49,12 @@
       };
     }
     
+    function ClearCredentials(){
+      angular.voidgame = {};
+      angular.voidgame.user = {};
+      localStorage.removeItem('void_data');
+    }
+    
     function SaveLocalstorage(){
       localStorage.setItem('void_data',JSON.stringify(angular.voidgame.user));
     }
@@ -47,25 +66,6 @@
         return true;
       }
       return false;
-    }
- 
-    function ClearCredentials(){
-      angular.voidgame = {};
-      angular.voidgame.user = {};
-      localStorage.removeItem('void_data');
-    }
-    
-    function RegisterUser(user, email, pass, callback){
-      $http.post(api_url+'register', { user: user, email: email, pass: pass })
-        .success(function (response) {
-          Login(email, pass, callback);
-        });
-    }
-    
-    function Logout(){
-      ClearCredentials();
-  
-      $location.path('/');
     }
   }
 })();

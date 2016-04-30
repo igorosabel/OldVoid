@@ -25,7 +25,7 @@
   $c->setAdminEmail('inigo.gorosabel@gmail.com');
   
   /* Lista de CSS por defecto */
-  $css = array('common');
+  $css = array('void');
   $c->setCssList( $css );
   
   /* Lista de JavaScript por defecto */
