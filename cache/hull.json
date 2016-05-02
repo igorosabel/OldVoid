@@ -7,7 +7,8 @@
       "mass": 2000,
       "gun_ports": 2,
       "big_module_ports": 0,
-      "small_module_ports": 2
+      "small_module_ports": 2,
+      "credits": 10000
     },
     "hull_2": {
       "id": 2,
@@ -16,7 +17,8 @@
       "mass": 20000,
       "gun_ports": 5,
       "big_module_ports": 2,
-      "small_module_ports": 2
+      "small_module_ports": 2,
+      "credits": 50000
     }
   }
 }

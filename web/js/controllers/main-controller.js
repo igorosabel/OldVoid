@@ -4,11 +4,11 @@ angular
   .module('VoidApp')
   .controller('MainController', MainController);
 
-MainController.$inject = ['$location', 'AuthenticationService'];
-function MainController($location, AuthenticationService){
+MainController.$inject = ['$location', 'AuthenticationService', 'DataShareService'];
+function MainController($location, AuthenticationService, DataShareService){
   console.log('MainController');
   
-  if (AuthenticationService.loadLocalStorage() && (!angular.voidgame || !angular.voidgame.user)){
+  if (AuthenticationService.loadLocalStorage() && !DataShareService.getUser()){
     AuthenticationService.ClearCredentials();
     $location.path('/');
     return false;

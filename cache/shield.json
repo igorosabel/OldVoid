@@ -4,13 +4,15 @@
       "id": 1,
       "name": "Simple",
       "strength": 2000,
-      "energy": 500
+      "energy": 500,
+      "credits": 1000
     },
     "shield_2": {
       "id": 2,
       "name": "Superior",
       "strength": 5000,
-      "energy": 1500
+      "energy": 1500,
+      "credits": 2000
     }
   }
 }

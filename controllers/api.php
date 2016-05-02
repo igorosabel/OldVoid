@@ -17,6 +17,7 @@
     $auth            = '';
     $credits         = 0;
     $last_save_point = 0;
+    $current_ship    = 0;
 
     if ($email===false || $pass===false){
       $status = 'error';
@@ -37,6 +38,7 @@
         $name            = $ex->get('name');
         $credits         = $ex->get('credits');
         $last_save_point = $ex->get('last_save_point');
+        $current_ship    = $ex->get('current_ship');
       }
       else{
         $status = 'error';
@@ -52,6 +54,7 @@
     $t->add('auth',$auth);
     $t->add('credits',$credits);
     $t->add('last_save_point',$last_save_point);
+    $t->add('current_ship',$current_ship);
     $t->add('email',$email);
 
     $t->process();
@@ -75,6 +78,7 @@
     $auth            = '';
     $credits         = 0;
     $last_save_point = 0;
+    $current_ship    = 0;
 
     if ($name===false || $email===false || $pass===false){
       $status = 'error';
@@ -89,8 +93,6 @@
       $start = Base::getCache('start');
       $credits = $start['credits'];
 
-      // Creo una nueva nave Scout
-
       // Creo el usuario
       $ex = new G_Explorer();
       $ex->set('name',$name);
@@ -102,6 +104,12 @@
       $ex->salvar();
       
       $id_user = $ex->get('id');
+
+      // Creo una nueva nave Scout
+      $ship = General::generateShip($ex);
+      $current_ship = $ship->get('id');
+      $ex->set('current_ship',$current_ship);
+
       
       // Genero un sistema nuevo para él
       $system = General::generateSystem($ex);
@@ -119,6 +127,7 @@
     $t->add('email',$email);
     $t->add('credits',$credits);
     $t->add('last_save_point',$last_save_point);
+    $t->add('current_ship',$current_ship);
     $t->add('auth',$auth);
 
     $t->process();

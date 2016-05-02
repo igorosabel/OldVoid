@@ -5,14 +5,20 @@
       "name": "Propulsión",
       "power": 3000,
       "energy": 500,
-      "impulse": 1
+      "impulse": 1,
+      "consumption": 1,
+      "requires": 1,
+      "credits": 1000
     },
     "engine_2": {
       "id": 2,
       "name": "Impulso",
       "power": 25000,
       "energy": 1500,
-      "impulse": 2
+      "impulse": 2,
+      "consumption": 2,
+      "requires": 2,
+      "credits": 2000
     }
   }
 }

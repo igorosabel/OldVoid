@@ -15,6 +15,7 @@ class G_Planet extends G_Base{
         'survival'      => array('type'=>Base::NUM,     'com'=>'Indice de supervivencia 0 imposible 1 tipo-tierra'),
         'has_life'      => array('type'=>Base::BOOL,    'com'=>'Indica si tiene vida 1 o no 0'),
         'distance'      => array('type'=>Base::NUM,     'com'=>'Distancia del planeta a su sol'),
+        'num_moons'     => array('type'=>Base::NUM,     'com'=>'Número de lunas en el planeta'),
         'created_at'    => array('type'=>Base::CREATED, 'com'=>'Fecha de creación del registro'),
         'updated_at'    => array('type'=>Base::UPDATED, 'com'=>'Fecha de última modificación del registro')
     );

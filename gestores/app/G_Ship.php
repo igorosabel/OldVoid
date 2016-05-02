@@ -34,4 +34,31 @@ class G_Ship extends G_Base{
 
     parent::load($gestor,$tablename,$model);
   }
+
+  private $guns    = array();
+  private $modules = array();
+
+  public function setGuns($g){
+    $this->guns = $g;
+  }
+
+  public function getGuns(){
+    return $this->guns;
+  }
+
+  public function addGun($g){
+    array_push($this->guns,$g);
+  }
+
+  public function setModules($m){
+    $this->modules = $m;
+  }
+
+  public function getModules(){
+    return $this->modules;
+  }
+
+  public function addModule($m){
+    array_push($this->modules,$m);
+  }
 }

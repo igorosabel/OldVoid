@@ -3,12 +3,14 @@
     "generator_1": {
       "id": 1,
       "name": "Nuclear",
-      "power": 2500
+      "power": 2500,
+      "credits": 1000
     },
     "generator_2": {
       "id": 2,
       "name": "Fusión",
-      "power": 6750
+      "power": 6750,
+      "credits": 2000
     }
   }
 }
