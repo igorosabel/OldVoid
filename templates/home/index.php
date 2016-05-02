@@ -12,4 +12,12 @@
 <script src="js/controllers/login-controller.js"></script>
 <script src="js/controllers/register-controller.js"></script>
 <script src="js/controllers/main-controller.js"></script>
+<script src="js/controllers/header-controller.js"></script>
+<script src="js/controllers/panel-controller.js"></script>
+<script src="js/controllers/system-controller.js"></script>
 <script src="js/services/authentication-service.js"></script>
+<script src="js/services/data-share-service.js"></script>
+<script src="js/services/api-service.js"></script>
+<script src="js/directives/header-directive.js"></script>
+<script src="js/directives/panel-directive.js"></script>
+<script src="js/directives/system-directive.js"></script>

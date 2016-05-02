@@ -7,8 +7,6 @@ function configApp() {
   angular
     .module('VoidApp')
     .config(function ($routeProvider, $locationProvider) {
-      angular.voidgame = {
-      };
 
       $routeProvider
         .when('/', {

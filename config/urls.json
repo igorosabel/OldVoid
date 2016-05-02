@@ -32,6 +32,14 @@
         "action": "register",
         "comment": "Función para registrar un nuevo usuario",
         "login": "dont"
+      },
+      {
+        "id": "get_system",
+        "url": "/api/get_system",
+        "module": "api",
+        "action": "getSystem",
+        "comment": "Función para obtener los datos de un sistema",
+        "login": "dont"
       }
   ]
 }

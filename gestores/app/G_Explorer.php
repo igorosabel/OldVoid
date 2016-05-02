@@ -9,6 +9,7 @@ class G_Explorer extends G_Base{
         'email'      => array('type'=>Base::TEXTO,    'len'=>50, 'com'=>'Direccion email del usuario'),
         'pass'       => array('type'=>Base::TEXTO,    'len'=>50, 'com'=>'Contraseña cifrada del usuario'),
         'credits'    => array('type'=>Base::NUM,      'com'=>'Cantidad de créditos del usuario'),
+        'current_ship'    => array('type'=>Base::NUM, 'com'=>'Id de la nave que actualmente está usando el explorador'),
         'last_save_point' => array('type'=>Base::NUM, 'com'=>'Último punto de salvado, Id del sistema'),
         'auth'       => array('type'=>Base::TEXTO,    'len'=>50, 'com'=>'clave auth para la api'),
         'created_at' => array('type'=>Base::CREATED,  'com'=>'Fecha de creación del registro'),

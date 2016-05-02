@@ -89,6 +89,8 @@
       $start = Base::getCache('start');
       $credits = $start['credits'];
 
+      // Creo una nueva nave Scout
+
       // Creo el usuario
       $ex = new G_Explorer();
       $ex->set('name',$name);

@@ -1,0 +1,18 @@
+{
+  "engine_types": {
+    "engine_1": {
+      "id": 1,
+      "name": "Propulsión",
+      "power": 3000,
+      "energy": 500,
+      "impulse": 1
+    },
+    "engine_2": {
+      "id": 2,
+      "name": "Impulso",
+      "power": 25000,
+      "energy": 1500,
+      "impulse": 2
+    }
+  }
+}

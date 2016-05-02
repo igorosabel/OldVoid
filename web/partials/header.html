@@ -1,0 +1,28 @@
+<header>
+  <a href="#/main" class="header_logo">Void</a>
+  <ul class="header_options">
+    <li><a href="#/settings">{{vm.explorer_name}}</a></li>
+    <li><a href="#/logout">Salir</a></li>
+  </ul>
+</header>
+
+<ul class="main_options">
+  <li>
+   <a href="#/main" class="main_options_main" ng-class="{main_options_selected: vm.tab=='main'}">Principal</a>
+  </li>
+  <li>
+   <a href="#/system" class="main_options_system" ng-class="{main_options_selected: vm.tab=='system'}">Sistema</a>
+  </li>
+  <li>
+   <a href="#/ship" class="main_options_ship" ng-class="{main_options_selected: vm.tab=='ship'}">Nave</a>
+  </li>
+  <li>
+   <a href="#/missions" class="main_options_missions" ng-class="{main_options_selected: vm.tab=='missions'}">Misiones</a>
+  </li>
+  <li>
+   <a href="#/constructions" class="main_options_constructions" ng-class="{main_options_selected: vm.tab=='constructions'}">Construcciones</a>
+  </li>
+  <li>
+   <a href="#/investigation" class="main_options_investigation" ng-class="{main_options_selected: vm.tab=='investigation'}">Investigación</a>
+  </li>
+</ul>

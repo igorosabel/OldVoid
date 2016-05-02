@@ -21,7 +21,6 @@ function LoginController($location, AuthenticationService){
   vm.pass  = '';
 
   (function initController(){
-      // reset login status
       AuthenticationService.ClearCredentials();
   })();
 

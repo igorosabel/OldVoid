@@ -149,3 +149,148 @@ html, body{
 .register_continue:hover{
   background-color: #ccc;
 }
+
+header{
+  overflow: hidden;
+  position: relative;
+}
+
+.header_logo{
+  color: #000;
+  display: block;
+  float: left;
+  font-size: 3em;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.header_options{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.header_options li{
+  float: left;
+  margin-right: 10px;
+}
+
+.header_options li a{
+  color: #666;
+  text-decoration: none;
+}
+
+.header_options li a:hover{
+  color: #000;
+}
+
+.header_options li::after{
+  content: '  |  ';
+}
+
+.header_options li:last-child::after{
+  content: none;
+}
+
+.main_options{
+  box-sizing: border-box;
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 10px;
+  width: 100%;
+}
+
+.main_options li{
+  box-sizing: border-box;
+  float: left;
+  width: calc(100% / 6);
+}
+
+.main_options li a{
+  border: 1px solid #666;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #666;
+  display: block;
+  line-height: 40px;
+  margin: 0 10px;
+  padding-left: 40px;
+  text-decoration: none;
+}
+
+.main_options li a:hover{
+  border: 1px solid #000;
+  background-color: #d6d1d1;
+  color: #000;
+}
+
+.main_options_main{
+  background: rgba(0, 0, 0, 0) url("/img/control_panel.png") no-repeat scroll 5px center / 26px auto;
+}
+
+.main_options_system{
+  background: rgba(0, 0, 0, 0) url("/img/system.png") no-repeat scroll 5px center / 26px auto;
+}
+
+.main_options_ship{
+  background: rgba(0, 0, 0, 0) url("/img/ship.png") no-repeat scroll 5px center / 26px auto;
+}
+
+.main_options_missions{
+  background: rgba(0, 0, 0, 0) url("/img/missions.png") no-repeat scroll 5px center / 26px auto;
+}
+
+.main_options_constructions{
+  background: rgba(0, 0, 0, 0) url("/img/constructions.png") no-repeat scroll 5px center / 26px auto;
+}
+
+.main_options_investigation{
+  background: rgba(0, 0, 0, 0) url("/img/investigation.png") no-repeat scroll 5px center / 26px auto;
+}
+
+.main_options_selected{
+  background-color: #82c4fd;
+  color: #000 !important;
+}
+
+.panel_info_row{
+  clear: both;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.panel_info{
+  border: 1px solid #888;
+  border-radius: 4px;
+  box-sizing: border-box;
+  float: left;
+  font-size: 0.9em;
+  margin: 0 30px;
+  padding: 10px;
+  width: 30%;
+}
+
+.panel_info_item{
+  float: left;
+  width: 50%;
+}
+
+.panel_info_item label{
+  display: block;
+  float: left;
+  width: 65%;
+}
+
+.panel_info_item span{
+  display: block;
+  float: left;
+  width: 35%;
+}
+
+.panel_info_last{
+  margin-top: 10px;
+}

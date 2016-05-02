@@ -1,0 +1,31 @@
+{
+  "gun_types": {
+    "gun_1": {
+      "id": 1,
+      "name": "Cañon Laser",
+      "strength": 100,
+      "accuracy": 30,
+      "recharge_time": 10,
+      "ignores_shields": false,
+      "energy": 200
+    },
+    "gun_2": {
+      "id": 2,
+      "name": "Lanzador de misiles",
+      "strength": 300,
+      "accuracy": 60,
+      "recharge_time": 50,
+      "ignores_shields": false,
+      "energy": 150
+    },
+    "gun_3": {
+      "id": 3,
+      "name": "Haz de protones",
+      "strength": 500,
+      "accuracy": 50,
+      "recharge_time": 60,
+      "ignores_shields": true,
+      "energy": 250
+    }
+  }
+}

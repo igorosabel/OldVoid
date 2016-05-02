@@ -5,8 +5,8 @@
     .module('VoidApp')
     .factory('AuthenticationService', AuthenticationService);
  
-  AuthenticationService.$inject = ['$http','$location'];
-  function AuthenticationService($http,$location){
+  AuthenticationService.$inject = ['$http','$location','DataShareService'];
+  function AuthenticationService($http,$location,DataShareService){
     var service = {};
  
     service.Login             = Login;
@@ -40,29 +40,28 @@
     }
  
     function SetCredentials(data){
-      angular.voidgame.user = {
+      DataShareService.setUser({
         id: data.id_user,
         name: urldecode(data.name),
         email: urldecode(data.email),
         credits: data.credits,
         last_save_point: data.last_save_point
-      };
+      });
     }
     
     function ClearCredentials(){
-      angular.voidgame = {};
-      angular.voidgame.user = {};
+      DataShareService.resetUser();
       localStorage.removeItem('void_data');
     }
     
     function SaveLocalstorage(){
-      localStorage.setItem('void_data',JSON.stringify(angular.voidgame.user));
+      localStorage.setItem('void_data',JSON.stringify(DataShareService.getUser()));
     }
     
     function LoadLocalStorage(){
       var void_data = localStorage.getItem('void_data');
       if (void_data){
-        angular.voidgame.user = JSON.parse(void_data);
+        DataShareService.setUser(JSON.parse(void_data));
         return true;
       }
       return false;
