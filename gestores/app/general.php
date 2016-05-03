@@ -5,16 +5,18 @@ class General{
   }
 
   public static function generateShip($explorer){
+    global $c;
+
     // Primero creo la nave, sin armas ni módulos
     $ship = new G_Ship();
     $ship->set('id_owner',$explorer->get('id'));
 
-    $ship_name = Base::getRandomCharacters(array('num'=>3,'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>3,'numbers'=>true));
+    $ship_name = Base::getRandomCharacters(array('num'=>$c->getSystemNameChars(),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getSystemNameNums(),'numbers'=>true));
     $ship->set('original_name',$ship_name);
     $ship->set('name',$ship_name);
 
     $hull_types = Base::getCache('hull');
-    $hull_type  = $hull_types['hull_types']['hull_1'];
+    $hull_type  = $hull_types['hull_types']['hull_'.$c->getDefaultShipHull()];
     $ship->set('hull_id_type',$hull_type['id']);
     $ship->set('hull_strength',$hull_type['strength']);
     $ship->set('hull_current_strength',$hull_type['strength']);
@@ -24,14 +26,14 @@ class General{
     $ship->set('small_module_ports',$hull_type['small_module_ports']);
 
     $shield_types = Base::getCache('shield');
-    $shield_type  = $shield_types['shield_types']['shield_1'];
+    $shield_type  = $shield_types['shield_types']['shield_'.$c->getDefaultShipShield()];
     $ship->set('shield_id_type',$shield_type['id']);
     $ship->set('shield_strength',$shield_type['strength']);
     $ship->set('shield_current_strength',$shield_type['strength']);
     $ship->set('shield_energy',$shield_type['energy']);
 
     $engine_types = Base::getCache('engine');
-    $engine_type  = $engine_types['engine_types']['engine_1'];
+    $engine_type  = $engine_types['engine_types']['engine_'.$c->getDefaultShipEngine()];
     $ship->set('engine_id_type',$engine_type['id']);
     $ship->set('engine_power',$engine_type['power']);
     $ship->set('engine_energy',$engine_type['energy']);
@@ -40,7 +42,7 @@ class General{
     $ship->set('engine_fuel_actual',100);
 
     $generator_types = Base::getCache('generator');
-    $generator_type  = $generator_types['generator_types']['generator_1'];
+    $generator_type  = $generator_types['generator_types']['generator_'.$c->getDefaultShipGenerator()];
     $ship->set('generator_id_type',$generator_type['id']);
     $ship->set('generator_power',$generator_type['power']);
 
@@ -50,7 +52,7 @@ class General{
     $gun = new G_Gun();
 
     $gun_types = Base::getCache('gun');
-    $gun_type  = $gun_types['gun_types']['gun_1'];
+    $gun_type  = $gun_types['gun_types']['gun_'.$c->getDefaultGun()];
     $gun->set('id_type',$gun_type['id']);
     $gun->set('id_owner',$explorer->get('id'));
     $gun->set('id_ship',$ship->get('id'));
@@ -68,7 +70,7 @@ class General{
     $module = new G_Module();
 
     $module_types = Base::getCache('module');
-    $module_type  = $module_types['module_types']['module_1'];
+    $module_type  = $module_types['module_types']['module_'.$c->getDefaultModule()];
     $module->set('id_type',$gun_type['id']);
     $module->set('id_owner',$explorer->get('id'));
     $module->set('id_ship',$ship->get('id'));
@@ -137,9 +139,11 @@ class General{
   }
 
   public static function goToSystem($explorer,$from,$id_system=null){
+    global $c;
+
     if (is_null($id_system)){
       $system_connections = self::getSystemConnections($explorer,$from);
-      $ind = rand(0,2);
+      $ind = rand(0,$c->getMaxConnections()-1);
       $new_known = false;
       if (array_key_exists($ind,$system_connections)){
         $new_system_id = $system_connections[$ind]->get('id');
@@ -229,7 +233,46 @@ class General{
     return $ret;
   }
 
+  public static function generateRace(){
+    $race_list = Base::getCache('race');
+    $race_prob = array();
+    foreach ($race_list['race_list'] as $race){
+      for ($i=1;$i<=$race['proportion'];$i++){
+        array_push($race_prob,$race['id']);
+      }
+    }
+
+    $id_race = $race_prob[array_rand($race_prob)];
+
+    return $id_race;
+  }
+
+  public static function generateNPC(){
+    $npc = new G_NPC();
+
+    $npc_list = Base::getCache('npc');
+    $npc_name = $npc_list['character_list'][array_rand($npc_list['character_list'])];
+    $npc->set('name',$npc_name);
+
+    $npc_race = self::generateRace();
+    $npc->set('id_race',$npc_race);
+
+    // Guns
+
+    // Modules
+
+    // Crew
+
+    // Resources
+
+    $npc->salvar();
+
+    return $npc;
+  }
+
   public static function generateSystem($explorer,$from=null){
+    global $c;
+
     // Primero creo el sistema
     $s = new G_System();
     $system_types  = Base::getCache('system');
@@ -237,7 +280,7 @@ class General{
     $sun_type      = $system_types['mkk_types'][array_rand($system_types['mkk_types'])];
     $sun_spectral_type = $sun_type['spectral_types'][array_rand($sun_type['spectral_types'])];
     $sun_type_code = $sun_type['type'].'-'.$system_types['spectral_types']['type_'.$sun_spectral_type]['type'];
-    $sun_name      = Base::getRandomCharacters(array('num'=>3,'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>3,'numbers'=>true));
+    $sun_name      = Base::getRandomCharacters(array('num'=>$c->getSystemNameChars(),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getSystemNameNums(),'numbers'=>true));
     $num_planets   = rand($sun_type['min_planets'],$sun_type['max_planets']);
 
     $s->set('id_discoverer',$explorer->get('id'));
@@ -256,6 +299,9 @@ class General{
     //echo "-------------------------------------------------------------------------------------\n\n";
     
     $s->salvar();
+
+    // NPCs en el sistema
+    $npcs = 0;
 
     // Distancias a las que hay planetas, para que no choquen
     $planet_distances = array();
@@ -305,6 +351,23 @@ class General{
       //echo "  DISTANCE: ".$planet_distance."\n";
       //echo "  -------------------------------------------------------------------------------------\n\n";
 
+      // NPC
+      $planet_has_npc = false;
+      if ($npcs<$c->getMaxNPC()){
+        $npc_prob = rand(1,$c->getNPCProb());
+        if ($npc_prob==1){
+          $npc = self::generateNPC();
+          $p->set('id_owner',$npc->get('id'));
+          $p->set('npc',true);
+          $npcs++;
+          $planet_has_npc = true;
+        }
+      }
+
+      if ($planet_has_npc){
+        // Resources
+      }
+
       $p->salvar();
 
       $moon_distances = array();
@@ -329,7 +392,7 @@ class General{
         //echo "    RADIUS: ".$moon_radius."\n";
 
         // Indice de supervivencia es aleatorio entre 1 y el del planeta (+2 si tiene vida)
-        $moon_survival = rand(1, $planet_survival + ($planet_has_life?2:0));
+        $moon_survival = rand(1, $planet_survival + ($planet_has_life?$c->getLifeBonus():0));
         $m->set('survival',$moon_survival);
         
         // 50% de posibilidad de que haya vida si el indice de survival es mayor que 5
@@ -346,6 +409,16 @@ class General{
         array_push($moon_distances,$moon_distance);
         $m->set('distance',$moon_distance);
         //echo "    DISTANCE: ".$moon_distance."\n";
+
+        if ($npcs<$c->getMaxNPC()){
+          $npc_prob = rand(1,$c->getNPCProb());
+          if ($npc_prob==1){
+            $npc = self::generateNPC();
+            $m->set('id_owner',$npc->get('id'));
+            $m->set('npc',true);
+            $npcs++;
+          }
+        }
 
         //echo "    -------------------------------------------------------------------------------------\n\n";
 

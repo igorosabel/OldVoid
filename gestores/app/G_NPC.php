@@ -6,7 +6,7 @@ class G_NPC extends G_Base{
     $model = array(
         'id'               => array('type'=>Base::PK,      'com'=>'Id único del NPC'),
         'name'             => array('type'=>Base::TEXTO,   'len'=>50, 'com'=>'Nombre del NPC'),
-        'price_index'      => array('type'=>Base::NUM,     'com'=>'Índice de precios del NPC, sobre 10'),
+        'id_race'          => array('type'=>Base::NUM,     'com'=>'Id del tipo de raza del NPC'),
         'guns_start'       => array('type'=>Base::TEXTO,   'len'=>200, 'com'=>'Armas que tiene a la venta por defecto'),
         'guns_actual'      => array('type'=>Base::TEXTO,   'len'=>200, 'com'=>'Armas que tiene actualmente a la venta'),
         'modules_start'    => array('type'=>Base::TEXTO,   'len'=>200, 'com'=>'Módulos que tiene a la venta por defecto'),

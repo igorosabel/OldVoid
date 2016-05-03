@@ -42,6 +42,19 @@ class G_Config{
   private $mailing_from          = '';
   private $lang                  = '';
 
+  private $max_connections        = 3;
+  private $life_bonus             = 2;
+  private $max_npc                = 2;
+  private $npc_prob               = 3;
+  private $system_name_chars      = 3;
+  private $system_name_nums       = 3;
+  private $default_ship_hull      = 1;
+  private $default_ship_shield    = 1;
+  private $default_ship_engine    = 1;
+  private $default_ship_generator = 1;
+  private $default_gun            = 1;
+  private $default_module         = 1;
+
   function G_Config(){}
   
   // Modo debug
@@ -376,5 +389,100 @@ class G_Config{
   function getLang(){
     return $this->lang;
   }
+
+  function setMaxConnections($mc){
+    $this->max_connections = $mc;
+  }
+
+  function getMaxConnections(){
+    return $this->max_connections;
+  }
+
+  function setLifeBonus($lb){
+    $this->life_bonus = $lb;
+  }
+
+  function getLifeBonus(){
+    return $this->life_bonus;
+  }
+
+  function setMaxNPC($mn){
+    $this->max_npc = $mn;
+  }
+
+  function getMaxNPC(){
+    return $this->max_npc;
+  }
+
+  function setNPCProb($np){
+    $this->npc_prob = $np;
+  }
+
+  function getNPCProb(){
+    return $this->npc_prob;
+  }
+
+  function setSystemNameChars($snc){
+    $this->system_name_chars = $snc;
+  }
+
+  function getSystemNameChars(){
+    return $this->system_name_chars;
+  }
+
+  function setSystemNameNums($snn){
+    $this->system_name_nums = $snn;
+  }
+
+  function getSystemNameNums(){
+    return $this->system_name_nums;
+  }
+
+  function setDefaultShipHull($dsh){
+    $this->default_ship_hull = $dsh;
+  }
+
+  function getDefaultShipHull(){
+    return $this->default_ship_hull;
+  }
+
+  function setDefaultShipShield($dss){
+    $this->default_ship_shield = $dss;
+  }
+
+  function getDefaultShipShield(){
+    return $this->default_ship_shield;
+  }
+
+  function setDefaultShipEngine($dse){
+    $this->default_ship_engine = $dse;
+  }
+
+  function getDefaultShipEngine(){
+    return $this->default_ship_engine;
+  }
+
+  function setDefaultShipGenerator($dsg){
+    $this->default_ship_generator = $dsg;
+  }
+
+  function getDefaultShipGenerator(){
+    return $this->default_ship_generator;
+  }
+
+  function setDefaultGun($dg){
+    $this->default_gun = $dg;
+  }
+
+  function getDefaultGun(){
+    return $this->default_gun;
+  }
+
+  function setDefaultModule($dm){
+    $this->default_module = $dm;
+  }
+
+  function getDefaultModule(){
+    return $this->default_module;
+  }
 }
-?>

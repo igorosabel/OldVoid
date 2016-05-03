@@ -61,6 +61,22 @@
   $sql .= $m->generate();
   $sql .= "\n\n";
 
+  $m = new G_Commerce();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+
+  $m = new G_Message();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+
+  $m = new G_Notification();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+
+  $m = new G_NPCNote();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+
   echo $sql;
 
   $ruta = $c->getRutaSQL()."model.sql";

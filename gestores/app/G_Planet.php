@@ -7,7 +7,7 @@ class G_Planet extends G_Base{
         'id'            => array('type'=>Base::PK,      'com'=>'Id único del sistema solar'),
         'id_system'     => array('type'=>Base::NUM,     'com'=>'Id del sistema al que pertenece el planeta'),
         'id_owner'      => array('type'=>Base::NUM,     'com'=>'Id del dueño del planeta'),
-        'npc'           => array('type'=>Base::NUM,     'com'=>'Indica si el dueño del planeta es un NPC 1 o no 0'),
+        'npc'           => array('type'=>Base::BOOL,    'com'=>'Indica si el dueño del planeta es un NPC 1 o no 0'),
         'original_name' => array('type'=>Base::TEXTO,   'len'=>50, 'com'=>'Nombre original del planeta'),
         'name'          => array('type'=>Base::TEXTO,   'len'=>50, 'com'=>'Nombre dado por el descubridor'),
         'id_type'       => array('type'=>Base::NUM,     'com'=>'Id del tipo de planeta'),
