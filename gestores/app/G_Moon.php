@@ -11,7 +11,7 @@ class G_Moon extends G_Base{
         'original_name' => array('type'=>Base::TEXTO,   'len'=>50, 'com'=>'Nombre original de la luna'),
         'name'          => array('type'=>Base::TEXTO,   'len'=>50, 'com'=>'Nombre dado por el descubridor'),
         'radius'        => array('type'=>Base::NUM,     'com'=>'Radio de la luna en kilómetros'),
-        'survival'      => array('type'=>Base::NUM,     'com'=>'Indice de supervivencia 0 imposible 1 tipo-tierra'),
+        'survival'      => array('type'=>Base::NUM,     'com'=>'Indice de supervivencia'),
         'has_life'      => array('type'=>Base::BOOL,    'com'=>'Indica si tiene vida 1 o no 0'),
         'distance'      => array('type'=>Base::NUM,     'com'=>'Distancia de la luna a su planeta'),
         'created_at'    => array('type'=>Base::CREATED, 'com'=>'Fecha de creación del registro'),

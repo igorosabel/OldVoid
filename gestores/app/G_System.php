@@ -17,4 +17,17 @@ class G_System extends G_Base{
 
     parent::load($gestor,$tablename,$model);
   }
+
+  private $num_explorers = 0;
+
+  public function setNumExplorers($n){
+    $this->num_explorers = $n;
+  }
+  public function getNumExplorers(){
+    return $this->num_explorers;
+  }
+
+  public function loadNumExplorers(){
+    $this->setNumExplorers( General::getExplorersInSystem($this->get('id')) );
+  }
 }

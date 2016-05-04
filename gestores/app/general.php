@@ -4,6 +4,19 @@ class General{
     return substr(sha1('v_'.time().'_v'), 0, 32);
   }
 
+  public static function getExplorersInSystem($id){
+    $bd = new G_BBDD();
+    $sql = "SELECT COUNT(*) AS `num` FROM `explorer` WHERE `last_save_point` = '".$id."'";
+    $bd->consulta($sql);
+
+    if ($res = $bd->sig()){
+      return $res['num'];
+    }
+    else{
+      return 0;
+    }
+  }
+
   public static function generateShip($explorer){
     global $c;
 
@@ -67,23 +80,32 @@ class General{
     $ship->addGun($gun);
 
     // Creo un módulo
-    $module = new G_Module();
-
-    $module_types = Base::getCache('module');
-    $module_type  = $module_types['module_types']['module_'.$c->getDefaultModule()];
-    $module->set('id_type',$gun_type['id']);
-    $module->set('id_owner',$explorer->get('id'));
-    $module->set('id_ship',$ship->get('id'));
-    $module->set('size',$module_type['size']);
-    $module->set('enables',$module_type['enables']);
-    $module->set('crew',$module_type['crew']);
-    $module->set('mass',$module_type['mass']);
-    $module->set('storage',$module_type['storage']);
-    $module->set('energy',$module_type['energy']);
-    $module->set('credits',$module_type['credits']);
-
-    $module->salvar();
-    $ship->addModule($module);
+    $default_modules = $c->getDefaultModules();
+    foreach ($default_modules as $module_type){
+      $module = new G_Module();
+  
+      $module_types = Base::getCache('module');
+      $module_type  = $module_types['module_types']['module_'.$module_type];
+      $module->set('id_type',$gun_type['id']);
+      $module->set('id_owner',$explorer->get('id'));
+      $module->set('id_ship',$ship->get('id'));
+      $module->set('size',$module_type['size']);
+      $module->set('enables',$module_type['enables']);
+      $module->set('crew',$module_type['crew']);
+      $module->set('mass',$module_type['mass']);
+      $module->set('storage_capacity',$module_type['storage']);
+      if ($module_type['enables']=='storage'){
+        $module->set('storage',json_encode(array('resource_4'=>100)));
+      }
+      else{
+        $module->set('storage',null);
+      }
+      $module->set('energy',$module_type['energy']);
+      $module->set('credits',$module_type['credits']);
+  
+      $module->salvar();
+      $ship->addModule($module);
+    }
 
     $ship->set('credits',self::calculateCredits($ship,array($gun),array($module)));
     $ship->salvar();
@@ -247,7 +269,9 @@ class General{
     return $id_race;
   }
 
-  public static function generateNPC(){
+  public static function generateNPC($save=true){
+    global $c;
+
     $npc = new G_NPC();
 
     $npc_list = Base::getCache('npc');
@@ -257,15 +281,114 @@ class General{
     $npc_race = self::generateRace();
     $npc->set('id_race',$npc_race);
 
+    // Hulls
+    $hull_types = Base::getCache('hull');
+    $num_hulls  = rand(0,$c->getMaxSellHulls());
+    $hull_list  = array();
+    if ($num_hulls>0){
+      while (count($hull_list)<$num_hulls){
+        $hull = $hull_types['hull_types'][array_rand($hull_types['hull_types'])];
+        if (!in_array($hull['id'], $hull_list)){
+          array_push($hull_list, $hull['id']);
+        }
+      }
+    }
+    $npc->set('hulls_start',json_encode($hull_list));
+    $npc->set('hulls_actual',json_encode($hull_list));
+
+    // Shields
+    $shield_types = Base::getCache('shield');
+    $num_shields  = rand(0,$c->getMaxSellShields());
+    $shield_list  = array();
+    if ($num_shields>0){
+      while (count($shield_list)<$num_shields){
+        $shield = $shield_types['shield_types'][array_rand($shield_types['shield_types'])];
+        if (!in_array($shield['id'], $shield_list)){
+          array_push($shield_list, $shield['id']);
+        }
+      }
+    }
+    $npc->set('shields_start',json_encode($shield_list));
+    $npc->set('shields_actual',json_encode($shield_list));
+
+    // Engines
+    $engine_types = Base::getCache('engine');
+    $num_engines  = rand(0,$c->getMaxSellEngines());
+    $engine_list  = array();
+    if ($num_engines>0){
+      while (count($engine_list)<$num_engines){
+        $engine = $engine_types['engine_types'][array_rand($engine_types['engine_types'])];
+        if (!in_array($engine['id'], $engine_list)){
+          array_push($engine_list, $engine['id']);
+        }
+      }
+    }
+    $npc->set('engines_start',json_encode($engine_list));
+    $npc->set('engines_actual',json_encode($engine_list));
+
+    // Generators
+    $generator_types = Base::getCache('generator');
+    $num_generators  = rand(0,$c->getMaxSellGenerators());
+    $generator_list  = array();
+    if ($num_generators>0){
+      while (count($generator_list)<$num_generators){
+        $generator = $generator_types['generator_types'][array_rand($generator_types['generator_types'])];
+        if (!in_array($generator['id'], $generator_list)){
+          array_push($generator_list, $generator['id']);
+        }
+      }
+    }
+    $npc->set('generators_start',json_encode($generator_list));
+    $npc->set('generators_actual',json_encode($generator_list));
+
     // Guns
+    $gun_types = Base::getCache('gun');
+    $num_guns  = rand(0,$c->getMaxSellGuns());
+    $gun_list  = array();
+    if ($num_guns>0){
+      while (count($gun_list)<$num_guns){
+        $gun = $gun_types['gun_types'][array_rand($gun_types['gun_types'])];
+        if (!in_array($gun['id'], $gun_list)){
+          array_push($gun_list, $gun['id']);
+        }
+      }
+    }
+    $npc->set('guns_start',json_encode($gun_list));
+    $npc->set('guns_actual',json_encode($gun_list));
 
     // Modules
-
-    // Crew
+    $module_types = Base::getCache('module');
+    $num_modules  = rand(0,$c->getMaxSellModules());
+    $module_list  = array();
+    if ($num_modules>0){
+      while (count($module_list)<$num_modules){
+        $module = $module_types['module_types'][array_rand($module_types['module_types'])];
+        if (!in_array($module['id'], $module_list)){
+          array_push($module_list, $module['id']);
+        }
+      }
+    }
+    $npc->set('modules_start',json_encode($module_list));
+    $npc->set('modules_actual',json_encode($module_list));
 
     // Resources
+    $resource_types = Base::getCache('resource');
+    $num_resources  = rand(0,$c->getMaxSellResources());
+    $resource_list  = array();
+    if ($num_resources>0){
+      while (count($resource_list)<$num_resources){
+        $resource = $resource_types['resource_types'][array_rand($resource_types['resource_types'])];
+        if (!in_array($resource['id'], $resource_list)){
+          array_push($resource_list, $resource['id']);
+        }
+      }
+    }
+    $npc->set('resources_start',json_encode($resource_list));
+    $npc->set('resources_actual',json_encode($resource_list));
 
-    $npc->salvar();
+    if ($save) {
+      $npc->salvar();
+    }
 
     return $npc;
   }
@@ -364,11 +487,34 @@ class General{
         }
       }
 
-      if ($planet_has_npc){
+      $planet_resource_list  = array();
+      if (!$planet_has_npc){
         // Resources
+        $resource_types = Base::getCache('resource');
+        $num_resources  = rand(0,$c->getMaxSellResources());
+        if ($num_resources>0) {
+          while (count($planet_resource_list) < $num_resources) {
+            $resource = $resource_types['resources'][array_rand($resource_types['resources'])];
+            if (!array_key_exists($resource['id'],$planet_resource_list)){
+              $planet_resource_list[$resource['id']] = rand($resource['min'], $resource['max']);
+            }
+          }
+        }
       }
 
       $p->salvar();
+
+      if (count($planet_resource_list)>0){
+        foreach ($planet_resource_list as $resource_id=>$value){
+          $planet_resource = new G_Resources();
+          $planet_resource->set('id_planet',$p->get('id'));
+          $planet_resource->set('id_moon',0);
+          $planet_resource->set('id_resource_type',$resource_id);
+          $planet_resource->set('value',$value);
+
+          $planet_resource->salvar();
+        }
+      }
 
       $moon_distances = array();
 
@@ -402,14 +548,15 @@ class General{
         //echo "    SURVIVAL: ".$moon_survival."\n";
         //echo "    HAS LIFE: ".($moon_has_life?"Y":"N")."\n";
 
-        $moon_distance = rand(1,5);
+        $moon_distance = rand(1,$num_moons);
         while (in_array($moon_distance,$moon_distances)){
-          $moon_distance = rand(1,5);
+          $moon_distance = rand(1,$num_moons);
         }
         array_push($moon_distances,$moon_distance);
         $m->set('distance',$moon_distance);
         //echo "    DISTANCE: ".$moon_distance."\n";
 
+        $moon_has_npc = false;
         if ($npcs<$c->getMaxNPC()){
           $npc_prob = rand(1,$c->getNPCProb());
           if ($npc_prob==1){
@@ -417,13 +564,46 @@ class General{
             $m->set('id_owner',$npc->get('id'));
             $m->set('npc',true);
             $npcs++;
+            $moon_has_npc = true;
+          }
+        }
+
+        $moon_resource_list  = array();
+        if (!$moon_has_npc){
+          // Resources
+          $resource_types = Base::getCache('resource');
+          $num_resources  = rand(0,$c->getMaxSellResources());
+          if ($num_resources>0) {
+            while (count($moon_resource_list) < $num_resources) {
+              $resource = $resource_types['resources'][array_rand($resource_types['resources'])];
+              if (!array_key_exists($resource['id'],$moon_resource_list)){
+                $moon_resource_list[$resource['id']] = rand($resource['min'], $resource['max']);
+              }
+            }
           }
         }
 
         //echo "    -------------------------------------------------------------------------------------\n\n";
 
         $m->salvar();
+
+        if (count($moon_resource_list)>0){
+          foreach ($moon_resource_list as $resource_id=>$value){
+            $planet_resource = new G_Resources();
+            $planet_resource->set('id_planet',0);
+            $planet_resource->set('id_moon',$m->get('id'));
+            $planet_resource->set('id_resource_type',$resource_id);
+            $planet_resource->set('value',$value);
+
+            $planet_resource->salvar();
+          }
+        }
       }
+    }
+
+    if ($npcs>0) {
+      $s->set('num_npc',$npcs);
+      $s->salvar();
     }
 
     // Calculo distancia entre sistemas

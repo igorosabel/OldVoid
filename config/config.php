@@ -37,6 +37,3 @@
 
   /* Idioma de la página */
   $c->setLang('es');
-  
-  /* Para cerrar la página descomentar la siguiente linea */
-  $c->setPaginaCerrada(false);

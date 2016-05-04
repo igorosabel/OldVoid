@@ -32,4 +32,32 @@ class G_Explorer extends G_Base{
       return false;
     }
   }
+
+  private $ship   = null;
+
+  public function setShip($s){
+    $this->ship = $s;
+  }
+  public function getShip(){
+    return $this->ship;
+  }
+
+  private $system = null;
+
+  public function setSystem($s){
+    $this->system = $s;
+  }
+  public function getSystem(){
+    return $this->system;
+  }
+
+  public function loadData(){
+    $ship = new G_Ship();
+    $ship->buscar(array('id'=>$this->get('current_ship')));
+    $this->setShip($ship);
+
+    $system = new G_System();
+    $system->buscar(array('id'=>$this->get('last_save_point')));
+    $this->setSystem($system);
+  }
 }

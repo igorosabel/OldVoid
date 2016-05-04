@@ -12,7 +12,7 @@ class G_Planet extends G_Base{
         'name'          => array('type'=>Base::TEXTO,   'len'=>50, 'com'=>'Nombre dado por el descubridor'),
         'id_type'       => array('type'=>Base::NUM,     'com'=>'Id del tipo de planeta'),
         'radius'        => array('type'=>Base::NUM,     'com'=>'Radio del planeta en kilómetros'),
-        'survival'      => array('type'=>Base::NUM,     'com'=>'Indice de supervivencia 0 imposible 1 tipo-tierra'),
+        'survival'      => array('type'=>Base::NUM,     'com'=>'Indice de supervivencia'),
         'has_life'      => array('type'=>Base::BOOL,    'com'=>'Indica si tiene vida 1 o no 0'),
         'distance'      => array('type'=>Base::NUM,     'com'=>'Distancia del planeta a su sol'),
         'num_moons'     => array('type'=>Base::NUM,     'com'=>'Número de lunas en el planeta'),

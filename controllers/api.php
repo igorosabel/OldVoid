@@ -12,12 +12,19 @@
     $email  = Base::getParam('email', $req['url_params'], false);
     $pass   = Base::getParam('pass',  $req['url_params'], false);
     
-    $id_user         = 0;
-    $name            = '';
-    $auth            = '';
-    $credits         = 0;
-    $last_save_point = 0;
-    $current_ship    = 0;
+    $id_user          = 0;
+    $name             = '';
+    $auth             = '';
+    $credits          = 0;
+    $last_save_point  = 0;
+    $current_ship     = 0;
+    $system_name      = '';
+    $system_type      = '';
+    $system_planets   = 0;
+    $system_explorers = 0;
+    $system_npc       = 0;
+    $ship_strength    = 0;
+    $ship_fuel        = 0;
 
     if ($email===false || $pass===false){
       $status = 'error';
@@ -33,12 +40,26 @@
 
         $ex->set('auth',$auth);
         $ex->salvar();
+
+        $ex->loadData();
+
+        $ship = $ex->getShip();
+        $system = $ex->getSystem();
+        $system->loadNumExplorers();
+
+        $system_name      = $system->get('name');
+        $system_type      = $system->get('sun_type');
+        $system_planets   = $system->get('num_planets');
+        $system_explorers = $system->getNumExplorers();
+        $system_npc       = $system->get('num_npc');
+        $ship_strength    = $ship->get('hull_current_strength');
+        $ship_fuel        = $ship->get('engine_fuel_actual');
         
-        $id_user         = $ex->get('id');
-        $name            = $ex->get('name');
-        $credits         = $ex->get('credits');
-        $last_save_point = $ex->get('last_save_point');
-        $current_ship    = $ex->get('current_ship');
+        $id_user          = $ex->get('id');
+        $name             = $ex->get('name');
+        $credits          = $ex->get('credits');
+        $last_save_point  = $ex->get('last_save_point');
+        $current_ship     = $ex->get('current_ship');
       }
       else{
         $status = 'error';
@@ -56,6 +77,13 @@
     $t->add('last_save_point',$last_save_point);
     $t->add('current_ship',$current_ship);
     $t->add('email',$email);
+    $t->add('system_name',$system_name);
+    $t->add('system_type',$system_type);
+    $t->add('system_planets',$system_planets);
+    $t->add('system_explorers',$system_explorers);
+    $t->add('system_npc',$system_npc);
+    $t->add('ship_strength',$ship_strength);
+    $t->add('ship_fuel',$ship_fuel);
 
     $t->process();
   }
@@ -74,11 +102,18 @@
     $email  = Base::getParam('email', $req['url_params'], false);
     $pass   = Base::getParam('pass',  $req['url_params'], false);
     
-    $id_user         = 0;
-    $auth            = '';
-    $credits         = 0;
-    $last_save_point = 0;
-    $current_ship    = 0;
+    $id_user          = 0;
+    $auth             = '';
+    $credits          = 0;
+    $last_save_point  = 0;
+    $current_ship     = 0;
+    $system_name      = '';
+    $system_type      = '';
+    $system_planets   = 0;
+    $system_explorers = 0;
+    $system_npc       = 0;
+    $ship_strength    = 0;
+    $ship_fuel        = 0;
 
     if ($name===false || $email===false || $pass===false){
       $status = 'error';
@@ -116,6 +151,20 @@
       $last_save_point = $system->get('id');
       $ex->set('last_save_point',$last_save_point);
       $ex->salvar();
+      
+      $ex->loadData();
+
+      $ship = $ex->getShip();
+      $system = $ex->getSystem();
+      $system->loadNumExplorers();
+
+      $system_name      = $system->get('name');
+      $system_type      = $system->get('sun_type');
+      $system_planets   = $system->get('num_planets');
+      $system_explorers = $system->getNumExplorers();
+      $system_npc       = $system->get('num_npc');
+      $ship_strength    = $ship->get('hull_current_strength');
+      $ship_fuel        = $ship->get('engine_fuel_actual');
     }
 
     $t->setLayout(false);
@@ -129,6 +178,13 @@
     $t->add('last_save_point',$last_save_point);
     $t->add('current_ship',$current_ship);
     $t->add('auth',$auth);
+    $t->add('system_name',$system_name);
+    $t->add('system_type',$system_type);
+    $t->add('system_planets',$system_planets);
+    $t->add('system_explorers',$system_explorers);
+    $t->add('system_npc',$system_npc);
+    $t->add('ship_strength',$ship_strength);
+    $t->add('ship_fuel',$ship_fuel);
 
     $t->process();
   }
