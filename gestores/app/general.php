@@ -4,9 +4,12 @@ class General{
     return substr(sha1('v_'.time().'_v'), 0, 32);
   }
 
-  public static function getExplorersInSystem($id){
+  public static function getExplorersInSystem($explorer,$id_system){
     $bd = new G_BBDD();
-    $sql = "SELECT COUNT(*) AS `num` FROM `explorer` WHERE `last_save_point` = '".$id."'";
+    $sql = "SELECT COUNT(*) AS `num` FROM `explorer` WHERE `last_save_point` = '".$id_system."'";
+    if (!is_null($explorer)) {
+      $sql .= " AND `id` != '" . $explorer->get('id') . "'";
+    }
     $bd->consulta($sql);
 
     if ($res = $bd->sig()){
@@ -15,6 +18,63 @@ class General{
     else{
       return 0;
     }
+  }
+
+  public static function getNotifications($ex){
+    $bd = new G_BBDD();
+    $sql = "SELECT * FROM `notification` WHERE `id_explorer` = '".$ex->get('id')."' AND `discarded` = 0";
+
+    $ret = array();
+    $bd->consulta($sql);
+    while ($res=$bd->sig()){
+      $notification = new G_Notification();
+      $notification->actualizar($res);
+
+      array_push($ret,$notification);
+    }
+
+    return $ret;
+  }
+
+  public static function getPeopleInSystem($id){
+    $bd = new G_BBDD();
+
+    $ret = array('npc'=>array(),'explorer'=>array());
+
+    // NPC en planetas
+    $sql = "SELECT a.*, b.`name` AS `planet_name` FROM `npc` a, `planet` b WHERE a.`id` = b.`id_owner` AND b.`npc` = 1 AND b.`id_system` = ".$id;
+
+    $bd->consulta($sql);
+    while ($res=$bd->sig()){
+      $npc = new G_NPC();
+      $npc->actualizar($res);
+
+      array_push($ret['npc'],array('npc'=>$npc,'where'=>$res['planet_name']));
+    }
+
+    // NPC en lunas
+    $sql = "SELECT a.*, c.`name` AS `moon_name` FROM `npc` a, `planet` b, `moon` c WHERE a.`id` = c.`id_owner` AND c.`npc` = 1 AND c.`id_planet` = b.`id` AND b.`id_system` = ".$id;
+
+    $bd->consulta($sql);
+    while ($res=$bd->sig()){
+      $npc = new G_NPC();
+      $npc->actualizar($res);
+
+      array_push($ret['npc'],array('npc'=>$npc,'where'=>$res['moon_name']));
+    }
+
+    // Exploradores en el sistema
+    $sql = "SELECT a.*, b.`name` AS `system_name` FROM `explorer` a, `system` b WHERE a.`last_save_point` = b.`id` AND b.`id` = ".$id;
+
+    $bd->consulta($sql);
+    while ($res=$bd->sig()){
+      $ex = new G_Explorer();
+      $ex->actualizar($res);
+
+      array_push($ret['explorer'],array('explorer'=>$ex,'where'=>$res['system_name']));
+    }
+
+    return $ret;
   }
 
   public static function generateShip($explorer){

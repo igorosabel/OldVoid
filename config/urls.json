@@ -40,6 +40,22 @@
         "action": "getSystem",
         "comment": "Función para obtener los datos de un sistema",
         "login": "dont"
+      },
+      {
+        "id": "get_notifications",
+        "url": "/api/get_notifications",
+        "module": "api",
+        "action": "getNotifications",
+        "comment": "Función para obtener las notificaciones de un usuario",
+        "login": "dont"
+      },
+      {
+        "id": "get_people_in_system",
+        "url": "/api/get_people_in_system",
+        "module": "api",
+        "action": "getPeopleInSystem",
+        "comment": "Función para obtener los exploradores y NPCs de un sistema",
+        "login": "dont"
       }
   ]
 }

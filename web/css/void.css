@@ -65,11 +65,15 @@ html, body{
 }
 
 .login_continue{
+  background-color: #fff;
   border: 1px solid #888;
   border-radius: 4px;
   color: #000;
+  cursor: pointer;
   display: block;
   float: right;
+  font-family: Verdana;
+  font-size: 16px;
   margin-right: 10px;
   margin-top: 10px;
   padding: 10px;
@@ -269,9 +273,10 @@ header{
   box-sizing: border-box;
   float: left;
   font-size: 0.9em;
-  margin: 0 30px;
+  height: 110px;
+  margin: 0 3%;
   padding: 10px;
-  width: 30%;
+  width: 44%;
 }
 
 .panel_info_item{
@@ -293,4 +298,70 @@ header{
 
 .panel_info_last{
   margin-top: 10px;
+}
+
+.panel_notifications{
+  border: 1px solid #888;
+  border-radius: 4px;
+  box-sizing: border-box;
+  float: left;
+  font-size: 0.9em;
+  height: 110px;
+  list-style-type: none;
+  margin: 0 3%;
+  overflow: auto;
+  padding: 10px;
+  width: 44%;
+}
+
+.panel_notifications li{
+  border-bottom: 1px solid #ccc;
+}
+
+.panel_notifications li:last-child{
+  border-bottom: 0;
+}
+
+.panel_explorers{
+
+}
+
+.panel_explorers li{
+
+}
+
+.panel_explorers li:last-child{
+
+}
+
+.panel_explorers_ico{
+
+}
+
+.panel_explorers_name{
+
+}
+
+.panel_explorers_where{
+
+}
+
+.panel_explorers_attack{
+
+}
+
+.panel_explorers_no_attack{
+
+}
+
+.panel_explorers_commerce{
+
+}
+
+.panel_explorers_message{
+
+}
+
+.panel_explorers_npc_notes{
+
 }

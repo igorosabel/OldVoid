@@ -53,11 +53,11 @@ class G_Explorer extends G_Base{
 
   public function loadData(){
     $ship = new G_Ship();
-    $ship->buscar(array('id'=>$this->get('current_ship')));
+    $ship->buscar(array('id' => $this->get('current_ship')));
     $this->setShip($ship);
 
     $system = new G_System();
-    $system->buscar(array('id'=>$this->get('last_save_point')));
+    $system->buscar(array('id' => $this->get('last_save_point')));
     $this->setSystem($system);
   }
 }

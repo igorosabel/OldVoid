@@ -6,7 +6,7 @@ function startApp() {
 function configApp() {
   angular
     .module('VoidApp')
-    .config(function ($routeProvider, $locationProvider) {
+    .config(function ($routeProvider, $locationProvider){
 
       $routeProvider
         .when('/', {
@@ -24,8 +24,19 @@ function configApp() {
           controller: 'MainController',
           controllerAs: 'vm'
         })
+        .when('/system', {
+          templateUrl: 'partials/main.html',
+          controller: 'MainController',
+          controllerAs: 'vm'
+        })
         .otherwise({redirectTo: '/'});
       //$locationProvider.html5Mode(true);
+    })
+    .filter('urldecode', function () {
+      return function (str) {
+        str = urldecode(str);
+        return str;
+      };
     });
 }
 

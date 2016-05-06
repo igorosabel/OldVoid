@@ -1,14 +1,16 @@
-<div class="login_box">
-  <div class="login_title">Iniciar sesión</div>
-  <div class="login_row">
-    <input type="email" name="login_email" id="login_email" ng-model="vm.email" placeholder="Email" class="login_field" />
+<form ng-submit="vm.login()" role="form">
+  <div class="login_box">
+    <div class="login_title">Iniciar sesión</div>
+    <div class="login_row">
+      <input type="email" name="login_email" id="login_email" ng-model="vm.email" placeholder="Email" class="login_field" />
+    </div>
+    <div class="login_row">
+      <input type="password" name="login_pass" id="login_pass" ng-model="vm.pass" placeholder="Contraseña" class="login_field" />
+      <a href ng-click="vm.recoverPass()" class="login_recover">He olvidado mi contraseña</a>
+    </div>
+    <div class="login_row">
+      <a href="#/register" class="login_register">Regístrate</a>
+      <input type="submit" class="login_continue" value="Continuar" />
+    </div>
   </div>
-  <div class="login_row">
-    <input type="password" name="login_pass" id="login_pass" ng-model="vm.pass" placeholder="Contraseña" class="login_field" />
-    <a href ng-click="vm.recoverPass()" class="login_recover">He olvidado mi contraseña</a>
-  </div>
-  <div class="login_row">
-    <a href="#/register" class="login_register">Regístrate</a>
-    <a href ng-click="vm.login()" class="login_continue">Continuar</a>
-  </div>
-</div>
+</form>

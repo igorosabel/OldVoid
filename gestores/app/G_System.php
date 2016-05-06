@@ -27,7 +27,7 @@ class G_System extends G_Base{
     return $this->num_explorers;
   }
 
-  public function loadNumExplorers(){
-    $this->setNumExplorers( General::getExplorersInSystem($this->get('id')) );
+  public function loadNumExplorers($ex=null){
+    $this->setNumExplorers( General::getExplorersInSystem($ex,$this->get('id')) );
   }
 }

@@ -45,7 +45,7 @@
 
         $ship = $ex->getShip();
         $system = $ex->getSystem();
-        $system->loadNumExplorers();
+        $system->loadNumExplorers($ex);
 
         $system_name      = $system->get('name');
         $system_type      = $system->get('sun_type');
@@ -185,6 +185,124 @@
     $t->add('system_npc',$system_npc);
     $t->add('ship_strength',$ship_strength);
     $t->add('ship_fuel',$ship_fuel);
+
+    $t->process();
+  }
+
+  /*
+    Función para obtener los datos de un sistema
+  */
+  function executeGetSystem($req, $t){
+    /*
+      Código de la página
+    */
+    global $c, $s;
+
+    $status = 'ok';
+    $id     = Base::getParam('id', $req['url_params'], false);
+
+    $system_name      = '';
+    $system_type      = '';
+    $system_planets   = 0;
+    $system_explorers = 0;
+    $system_npc       = 0;
+
+    if ($id===false){
+      $status = 'error';
+    }
+
+    if ($status=='ok'){
+      $system = new G_System();
+      if ($system->buscar(array('id'=>$id))){
+        $system->loadNumExplorers();
+        $system_name = $system->get('name');
+        $system_type = $system->get('sun_type');
+        $system_planets = $system->get('num_planets');
+        $system_explorers = $system->getNumExplorers();
+        $system_npc = $system->get('num_npc');
+      }
+      else{
+        $status = 'error';
+      }
+    }
+
+    $t->setLayout(false);
+    $t->setJson(true);
+
+    $t->add('status',$status);
+    $t->add('system_name',$system_name);
+    $t->add('system_type',$system_type);
+    $t->add('system_planets',$system_planets);
+    $t->add('system_explorers',$system_explorers);
+    $t->add('system_npc',$system_npc);
+
+    $t->process();
+  }
+
+  /*
+    Función para obtener las notificaciones de un usuario
+  */
+  function executeGetNotifications($req, $t){
+    /*
+      Código de la página
+    */
+    global $c, $s;
+
+    $status = 'ok';
+    $id     = Base::getParam('id', $req['url_params'], false);
+
+    $notifications = array();
+
+    if ($id===false){
+      $status = 'error';
+    }
+
+    if ($status=='ok'){
+      $explorer = new G_Explorer();
+      if ($explorer->buscar(array('id'=>$id))){
+        $notifications = General::getNotifications($explorer);
+      }
+      else{
+        $status = 'error';
+      }
+    }
+
+    $t->setLayout(false);
+    $t->setJson(true);
+
+    $t->add('status',$status);
+    $t->addPartial('notifications','api/notifications',array('notifications'=>$notifications,'extra'=>'nourlencode'));
+
+    $t->process();
+  }
+
+  /*
+    Función para obtener los exploradores y NPCs de un sistema
+  */
+  function executeGetPeopleInSystem($req, $t){
+    /*
+      Código de la página
+    */
+    global $c, $s;
+
+    $status = 'ok';
+    $id     = Base::getParam('id', $req['url_params'], false);
+
+    $people_in_system = array('npc'=>array(),'explorer'=>array());
+
+    if ($id===false){
+      $status = 'error';
+    }
+
+    if ($status=='ok'){
+      $people_in_system = General::getPeopleInSystem($id);
+    }
+
+    $t->setLayout(false);
+    $t->setJson(true);
+
+    $t->add('status',$status);
+    $t->addPartial('people_in_system','api/people_in_system',array('people_in_system'=>$people_in_system,'extra'=>'nourlencode'));
 
     $t->process();
   }

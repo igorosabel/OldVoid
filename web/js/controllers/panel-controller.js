@@ -1,62 +1,41 @@
-'use strict';
+(function(){
+  'use strict';
 
-angular
-  .module('VoidApp')
-  .controller('PanelController', PanelController);
+  angular
+    .module('VoidApp')
+    .controller('PanelController', PanelController);
 
-PanelController.$inject = ['$location', 'AuthenticationService', 'DataShareService', 'APIService'];
-function PanelController($location, AuthenticationService, DataShareService, APIService){
-  console.log('PanelController');
+  PanelController.$inject = ['DataShareService', 'APIService'];
+  function PanelController(DataShareService, APIService){
+    console.log('PanelController');
 
-  var vm = this;
-  vm.info_list = [];
+    var vm = this;
 
-  APIService.GetSystem(DataShareService.getUser().last_save_point, function(response){
-    vm.info_list = response.list;
-  });
-  
-  vm.info_list = [
-    {
-      last: false,
-      label: 'Sistema:',
-      value: 'DVS-123'
-    },
-    {
-      last: false,
-      label: 'Créditos:',
-      value: 5000
-    },
-    {
-      last: false,
-      label: 'Tipo de estrella:',
-      value: 'K-IV'
-    },
-    {
-      last: false,
-      label: 'Integridad nave:',
-      value: '87%'
-    },
-    {
-      last: false,
-      label: 'Num. planetas:',
-      value: 8
-    },
-    {
-      last: false,
-      label: 'Combustible:',
-      value: '50%'
-    },
-    {
-      last: true,
-      label: 'Exploradores:',
-      value: 1
-    },
-    {
-      last: true,
-      label: 'Comerciantes:',
-      value: 2
-    }
-  ];
+    var user   = DataShareService.getUser();
+    var ship   = DataShareService.getShip();
+    var system = DataShareService.getSystem();
 
-  DataShareService.setGlobal('tab','main');
-}
+    vm.user_id = user.id;
+
+    vm.panel_info = {
+      system: system.name,
+      credits: user.credits,
+      system_type: system.type,
+      ship_strength: ship.strength,
+      num_planets: system.planets,
+      fuel: ship.fuel,
+      explorers: system.explorers,
+      npc: system.npc
+    };
+
+    vm.notifications = [];
+    APIService.GetNotifications(user.id,function(response){
+      vm.notifications = response.notifications;
+    });
+
+    vm.people_in_system = [];
+    APIService.GetPeopleInSystem(system.current,function(response){
+      vm.people_in_system = response.people_in_system;
+    });
+  }
+})();

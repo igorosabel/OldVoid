@@ -1,8 +1,54 @@
 <div class="panel_info_row">
   <div class="panel_info">
-    <div class="panel_info_item" ng-repeat="item in vm.info_list" ng-class="{panel_info_last: item.last}">
-      <label>{{item.label}}</label>
-      <span>{{item.value}}</span>
+    <div class="panel_info_item">
+      <label>Sistema:</label>
+      <span>{{vm.panel_info.system}}</span>
+    </div>
+    <div class="panel_info_item">
+      <label>Créditos:</label>
+      <span>{{vm.panel_info.credits}}</span>
+    </div>
+    <div class="panel_info_item">
+      <label>Tipo de estrella:</label>
+      <span>{{vm.panel_info.system_type}}</span>
+    </div>
+    <div class="panel_info_item">
+      <label>Integridad nave:</label>
+      <span>{{vm.panel_info.ship_strength}}</span>
+    </div>
+    <div class="panel_info_item">
+      <label>Num. planetas:</label>
+      <span>{{vm.panel_info.num_planets}}</span>
+    </div>
+    <div class="panel_info_item">
+      <label>Combustible:</label>
+      <span>{{vm.panel_info.fuel}}</span>
+    </div>
+    <div class="panel_info_item panel_info_last">
+      <label>Exploradores:</label>
+      <span>{{vm.panel_info.explorers}}</span>
+    </div>
+    <div class="panel_info_item panel_info_last">
+      <label>Comerciantes:</label>
+      <span>{{vm.panel_info.npc}}</span>
     </div>
   </div>
+  <ul class="panel_notifications">
+    <li ng-hide="vm.notifications.length">No hay notificaciones</li>
+    <li ng-repeat="notification in vm.notifications">
+      {{notification.type}} - {{notification.value}}
+    </li>
+  </ul>
 </div>
+<ul class="panel_explorers">
+  <li ng-hide="vm.people_in_system.length">Sistema deshabitado</li>
+  <li ng-repeat="item in vm.people_in_system" ng-if="(item.type=='npc') || (item.type=='explorer' && item.id!=vm.user_id)">
+    <img ng-src="/img/panel_ico_{{item.type}}.png" class="panel_explorers_ico" />
+    <div class="panel_explorers_name">{{item.name | urldecode}}</div>
+    <div class="panel_explorers_where">{{item.where | urldecode}}</div>
+    <a href class="panel_explorers_attack" ng-class="{panel_explorers_no_attack:item.type=='npc'}">Atacar</a>
+    <a href class="panel_explorers_commerce">Comerciar</a>
+    <a href class="panel_explorers_message" ng-hide="item.type=='npc'">Enviar mensaje</a>
+    <a href class="panel_explorers_npc_notes" ng-hide="item.type=='explorer'">Notas del comerciante</a>
+  </li>
+</ul>

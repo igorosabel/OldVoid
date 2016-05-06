@@ -1,0 +1,6 @@
+{
+  "status": "{{STATUS}}",
+  "notifications": [
+{{NOTIFICATIONS}}
+  ]
+}
