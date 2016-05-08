@@ -22,4 +22,22 @@ class G_Planet extends G_Base{
 
     parent::load($gestor,$tablename,$model);
   }
+  
+  private $moons = array();
+  
+  public function setMoons($m){
+    $this->moons = $m;
+  }
+  public function getMoons(){
+    return $this->moons;
+  }
+  
+  private $npc = false;
+  
+  public function setNPC($n){
+    $this->npc = $n;
+  }
+  public function getNPC(){
+    return $this->npc;
+  }
 }

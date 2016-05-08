@@ -20,4 +20,13 @@ class G_Moon extends G_Base{
 
     parent::load($gestor,$tablename,$model);
   }
+  
+  private $npc = false;
+  
+  public function setNPC($n){
+    $this->npc = $n;
+  }
+  public function getNPC(){
+    return $this->npc;
+  }
 }

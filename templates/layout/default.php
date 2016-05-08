@@ -6,6 +6,7 @@
     <title>{{TITLE}}</title>
     <link rel="icon" type="image/png" href="/img/favicon.png" />
     <base href="/">
+    <style type="text/css" id="system_style"></style>
     {{CSS}}
     {{JS}}
   </head>

@@ -29,6 +29,11 @@ function configApp() {
           controller: 'MainController',
           controllerAs: 'vm'
         })
+        .when('/system/:system_id/:system_name', {
+          templateUrl: 'partials/main.html',
+          controller: 'MainController',
+          controllerAs: 'vm'
+        })
         .otherwise({redirectTo: '/'});
       //$locationProvider.html5Mode(true);
     })

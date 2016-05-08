@@ -323,45 +323,336 @@ header{
 }
 
 .panel_explorers{
-
+  border: 1px solid #888;
+  border-radius: 4px;
+  list-style-type: none;
+  margin: 0 5% 10px;
+  padding: 0;
+  width: 90%;
 }
 
 .panel_explorers li{
-
+  border-bottom: 1px solid #ccc;
+  overflow: hidden;
+  padding: 10px;
 }
 
 .panel_explorers li:last-child{
-
+  border-bottom: 0 none;
 }
 
 .panel_explorers_ico{
-
+  float: left;
+  margin-right: 10px;
 }
 
 .panel_explorers_name{
-
+  float: left;
+  font-size: 20px;
+  line-height: 48px;
+  width: 15%;
 }
 
 .panel_explorers_where{
-
+  background: rgba(0, 0, 0, 0) url("/img/panel_ico_system.png") no-repeat scroll 0 center / 30px auto;
+  float: left;
+  font-size: 20px;
+  line-height: 48px;
+  margin-left: 30px;
+  padding-left: 35px;float: left;
+  font-size: 20px;
+  line-height: 48px;
 }
 
 .panel_explorers_attack{
-
+  background: rgba(0, 0, 0, 0) url("/img/panel_ico_attack.png") no-repeat scroll 8px center / 30px auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #666;
+  display: block;
+  float: left;
+  font-size: 20px;
+  line-height: 40px;
+  margin-left: 30px;
+  margin-top: 3px;
+  padding-left: 45px;
+  padding-right: 10px;
+  text-align: center;
+  text-decoration: none;
 }
 
 .panel_explorers_no_attack{
-
+  visibility: hidden;
 }
 
 .panel_explorers_commerce{
-
+  background: rgba(0, 0, 0, 0) url("/img/panel_ico_commerce.png") no-repeat scroll 8px center / 30px auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #666;
+  display: block;
+  float: left;
+  font-size: 20px;
+  line-height: 40px;
+  margin-left: 30px;
+  margin-top: 3px;
+  padding-left: 45px;
+  padding-right: 10px;
+  text-align: center;
+  text-decoration: none;
 }
 
 .panel_explorers_message{
-
+  background: rgba(0, 0, 0, 0) url("/img/panel_ico_message.png") no-repeat scroll 8px center / 30px auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #666;
+  display: block;
+  float: left;
+  font-size: 20px;
+  line-height: 40px;
+  margin-left: 30px;
+  margin-top: 3px;
+  padding-left: 45px;
+  padding-right: 10px;
+  text-align: center;
+  text-decoration: none;
 }
 
 .panel_explorers_npc_notes{
+  background: rgba(0, 0, 0, 0) url("/img/panel_ico_npc_notes.png") no-repeat scroll 8px center / 30px auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #666;
+  display: block;
+  float: left;
+  font-size: 20px;
+  line-height: 40px;
+  margin-left: 30px;
+  margin-top: 3px;
+  padding-left: 45px;
+  padding-right: 10px;
+  text-align: center;
+  text-decoration: none;
+}
 
+.panel_explorers a:hover{
+  background-color: #eee;
+  border: 1px solid #000;
+  color: #000;
+  box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+/* SYSTEM */
+.system_header{
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 auto;
+  overflow: hidden;
+  width: 94%;
+}
+
+.system_header a{
+  color: #888;
+  display: block;
+  float: left;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.system_header a:hover{
+  color: #000;
+}
+
+.system_header_selected{
+  color: #000 !important;
+}
+
+.system_body{
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 10px 2%;
+  overflow: hidden;
+  width: 96%;
+}
+
+.system_main{
+  float: left;
+  height: 500px;
+  width: 80%;
+}
+
+.system_main_top_left{
+  color: #888;
+  float: left;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.system_main_top_rigth{
+  color: #888;
+  float: right;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.system_main_top_rigth:hover{
+  color: #000;
+}
+
+.system_sidebar{
+  border-left: 1px solid #ccc;
+  box-sizing: border-box;
+  float: left;
+  height: 500px;
+  width: 20%;
+}
+
+.system_info_box{
+  border: 1px solid #ccc;
+  margin: 10px;
+}
+
+.system_info_box_header{
+  border-bottom: 1px solid #ccc;
+  font-size: 1.2em;
+  line-height: 30px;
+  text-align: center;
+}
+
+.system_info_box_line{
+  clear: both;
+  overflow: hidden;
+  padding: 5px 10px;
+}
+
+.system_info_box_line label{
+  display: block;
+  float: left;
+  width: 60%;
+}
+
+.system_info_box_line span{
+  display: block;
+  float: left;
+  width: 40%;
+}
+
+.system_info_box_info{
+  background: rgba(0, 0, 0, 0) url("/img/system_sidebar_info.png") no-repeat scroll center center / 20px auto;
+  display: block;
+  float: right;
+  height: 25px;
+  width: 25px;
+}
+
+.system_info_box_desc{
+  clear: both;
+  margin-left: 60%;
+}
+
+.system_jump_to{
+  background: rgba(0, 0, 0, 0) url("/img/system_jump_to.png") no-repeat scroll 5px center / 25px auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #888;
+  font-size: 0.9em;
+  margin: 0 auto;
+  padding: 10px 10px 10px 40px;
+  width: 94%;
+}
+
+.system_jump_to:hover{
+  border: 1px solid #000;
+  color: #000;
+  cursor: pointer;
+}
+
+.system_jump_to span{
+  float: right;
+  font-size: 0.9em;
+}
+
+.system_sidebar_title{
+  font-size: 1.2em;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.system_sidebar_list{
+  list-style-type: none;
+  margin: 0 3%;
+  padding: 0;
+  width: 94%;
+}
+
+.system_sidebar_list li{
+  border-bottom: 1px solid #ccc;
+  padding: 10px 10px 20px;
+}
+
+.system_sidebar_list li img{
+  display: block;
+  float: left;
+  margin-right: 10px;
+  width: 25px;
+}
+
+.system_sidebar_list li span{
+  font-size: 0.9em;
+  line-height: 25px;
+}
+
+.system_sidebar_list li a{
+  background: rgba(0, 0, 0, 0) url("/img/system_jump_to.png") no-repeat scroll 5px center / 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #888;
+  float: right;
+  font-size: 0.9em;
+  line-height: 30px;
+  padding: 0 10px 0 40px;
+  text-decoration: none;
+}
+
+.system_sidebar_list li a:hover{
+  border: 1px solid #000;
+  color: #000;
+}
+
+.system_sidebar_list_disabled{
+  background-color: #ccc !important;
+  cursor: default;
+}
+
+.system_sidebar_list_disabled:hover{
+  border: 1px solid #ccc !important;
+  color: #888 !important;
+}
+
+/*
+@keyframes rotate1{
+	from{
+		transform:rotate(0deg) translate(-90px) rotate(0deg);
+	}
+	to{
+		transform:rotate(360deg) translate(-90px) rotate(-360deg);
+	}
+}
+
+@keyframes rotate2{
+	from{
+		transform:rotate(0deg) translate(-200px) rotate(0deg);
+	}
+	to{
+		transform:rotate(360deg) translate(-200px) rotate(-360deg);
+	}
+}
+*/
+.system{
+  width: 500px;
+  height: 500px;
+  position: relative;
+  margin: 0 auto;
 }

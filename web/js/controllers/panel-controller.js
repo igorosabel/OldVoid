@@ -34,7 +34,7 @@
     });
 
     vm.people_in_system = [];
-    APIService.GetPeopleInSystem(system.current,function(response){
+    APIService.GetPeopleInSystem(system.id,function(response){
       vm.people_in_system = response.people_in_system;
     });
   }

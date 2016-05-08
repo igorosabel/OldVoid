@@ -2,7 +2,7 @@
  Función para renderizar plantillas
  */
 function template(id,data){
-  var obj = $('#'+id).html();
+  var obj = document.getElementById(id).innerHTML;
   var temp = '';
 
   for (var ind in data){

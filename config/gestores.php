@@ -23,3 +23,13 @@
     }
     closedir($gestor);
   }
+  
+  // Static
+  if ($gestor = opendir($c->getRutaGestoresStatic())) {
+    while (false !== ($entrada = readdir($gestor))) {
+      if ($entrada != "." && $entrada != "..") {
+        include($c->getRutaGestoresStatic().$entrada);
+      }
+    }
+    closedir($gestor);
+  }

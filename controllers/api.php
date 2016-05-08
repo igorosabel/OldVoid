@@ -16,15 +16,20 @@
     $name             = '';
     $auth             = '';
     $credits          = 0;
-    $last_save_point  = 0;
     $current_ship     = 0;
-    $system_name      = '';
-    $system_type      = '';
-    $system_planets   = 0;
-    $system_explorers = 0;
-    $system_npc       = 0;
     $ship_strength    = 0;
     $ship_fuel        = 0;
+    $system = array(
+      'name' => '',
+      'type' => '',
+      'id_discoverer' => 0,
+      'discoverer' => '',
+      'planets' => 0,
+      'explorers ' => 0,
+      'npc' => 0,
+      'planet_list' => array(),
+      'connections' => array()
+    );
 
     if ($email===false || $pass===false){
       $status = 'error';
@@ -44,21 +49,35 @@
         $ex->loadData();
 
         $ship = $ex->getShip();
-        $system = $ex->getSystem();
-        $system->loadNumExplorers($ex);
+        $sys = $ex->getSystem();
+        $sys->loadNumExplorers($ex);
+        
+        $system['id']            = $sys->get('id');
+        $system['name']          = $sys->get('name');
+        $system['id_discoverer'] = $sys->get('id_discoverer');
+        $system['type']          = $sys->get('sun_type');
+        $system['color']         = System::getSystemColor($sys->get('sun_type'));
+        $system['radius']        = $sys->get('sun_radius');
+        $system['planets']       = $sys->get('num_planets');
+        $system['explorers']     = $sys->getNumExplorers();
+        $system['npc']           = $sys->get('num_npc');
+        
+        $system['planet_list']   = System::loadPlanets($sys);
+        $system['connections']   = System::loadSystemConnections($ex,$sys);
+        
+        $disc = new G_Explorer();
+        $discoverer = '';
+        if ($disc->buscar(array('id'=>$sys->get('id_discoverer')))){
+          $discoverer = $disc->get('name');
+        }
+        $system['discoverer']    = $discoverer;
 
-        $system_name      = $system->get('name');
-        $system_type      = $system->get('sun_type');
-        $system_planets   = $system->get('num_planets');
-        $system_explorers = $system->getNumExplorers();
-        $system_npc       = $system->get('num_npc');
         $ship_strength    = $ship->get('hull_current_strength');
         $ship_fuel        = $ship->get('engine_fuel_actual');
         
         $id_user          = $ex->get('id');
         $name             = $ex->get('name');
         $credits          = $ex->get('credits');
-        $last_save_point  = $ex->get('last_save_point');
         $current_ship     = $ex->get('current_ship');
       }
       else{
@@ -71,19 +90,16 @@
 
     $t->add('status',$status);
     $t->add('id_user',$id_user);
+    $t->add('id_discoverer',$id_discoverer);
+    $t->add('discoverer',$discoverer);
     $t->add('name',$name);
     $t->add('auth',$auth);
     $t->add('credits',$credits);
-    $t->add('last_save_point',$last_save_point);
     $t->add('current_ship',$current_ship);
     $t->add('email',$email);
-    $t->add('system_name',$system_name);
-    $t->add('system_type',$system_type);
-    $t->add('system_planets',$system_planets);
-    $t->add('system_explorers',$system_explorers);
-    $t->add('system_npc',$system_npc);
     $t->add('ship_strength',$ship_strength);
     $t->add('ship_fuel',$ship_fuel);
+    $t->addPartial('system','api/system',array('system'=>$system,'extra'=>'nourlencode'));
 
     $t->process();
   }
@@ -141,13 +157,13 @@
       $id_user = $ex->get('id');
 
       // Creo una nueva nave Scout
-      $ship = General::generateShip($ex);
+      $ship = Ship::generateShip($ex);
       $current_ship = $ship->get('id');
       $ex->set('current_ship',$current_ship);
 
       
       // Genero un sistema nuevo para él
-      $system = General::generateSystem($ex);
+      $system = System::generateSystem($ex);
       $last_save_point = $system->get('id');
       $ex->set('last_save_point',$last_save_point);
       $ex->salvar();
@@ -200,26 +216,38 @@
 
     $status = 'ok';
     $id     = Base::getParam('id', $req['url_params'], false);
-
-    $system_name      = '';
-    $system_type      = '';
-    $system_planets   = 0;
-    $system_explorers = 0;
-    $system_npc       = 0;
+    
+    $system = array(
+      'name' => '',
+      'type' => '',
+      'id_discoverer' => 0,
+      'discoverer' => '',
+      'planets' => 0,
+      'explorers ' => 0,
+      'npc' => 0,
+      'planet_list' => array()
+    );
 
     if ($id===false){
       $status = 'error';
     }
 
     if ($status=='ok'){
-      $system = new G_System();
-      if ($system->buscar(array('id'=>$id))){
-        $system->loadNumExplorers();
-        $system_name = $system->get('name');
-        $system_type = $system->get('sun_type');
-        $system_planets = $system->get('num_planets');
-        $system_explorers = $system->getNumExplorers();
-        $system_npc = $system->get('num_npc');
+      $sys = new G_System();
+      if ($sys->buscar(array('id'=>$id))){
+        $sys->loadNumExplorers();
+        $system['id']            = $id;
+        $system['name']          = $sys->get('name');
+        $system['id_discoverer'] = $sys->get('id_discoverer');
+        $system['discoverer']    = '';
+        $system['type']          = $sys->get('sun_type');
+        $system['color']         = System::getSystemColor($sys->get('sun_type'));
+        $system['radius']        = $sys->get('sun_radius');
+        $system['planets']       = $sys->get('num_planets');
+        $system['explorers']     = $sys->getNumExplorers();
+        $system['npc']           = $sys->get('num_npc');
+        
+        $system['planet_list']   = System::loadPlanets($sys);
       }
       else{
         $status = 'error';
@@ -230,11 +258,7 @@
     $t->setJson(true);
 
     $t->add('status',$status);
-    $t->add('system_name',$system_name);
-    $t->add('system_type',$system_type);
-    $t->add('system_planets',$system_planets);
-    $t->add('system_explorers',$system_explorers);
-    $t->add('system_npc',$system_npc);
+    $t->addPartial('system','api/system',array('system'=>$system,'extra'=>'nourlencode'));
 
     $t->process();
   }
@@ -295,7 +319,7 @@
     }
 
     if ($status=='ok'){
-      $people_in_system = General::getPeopleInSystem($id);
+      $people_in_system = System::getPeopleInSystem($id);
     }
 
     $t->setLayout(false);

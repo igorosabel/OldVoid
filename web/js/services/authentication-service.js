@@ -52,14 +52,7 @@
         strength: data.ship.strength,
         fuel: data.ship.fuel
       });
-      DataShareService.setSystem({
-        current: data.system.current,
-        name: urldecode(data.system.name),
-        type: urldecode(data.system.type),
-        planets: data.system.planets,
-        explorers: data.system.explorers,
-        npc: data.system.npc
-      });
+      DataShareService.setSystem(data.system);
     }
     
     function ClearCredentials(){

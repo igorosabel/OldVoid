@@ -2,19 +2,20 @@
 class G_Config{
   private $modo_debug = false;
 
-  private $ruta_base          = '';
-  private $ruta_cache         = '';
-  private $ruta_config        = '';
-  private $ruta_gestores      = '';
-  private $ruta_gestores_app  = '';
-  private $ruta_gestores_base = '';
-  private $ruta_logs          = '';
-  private $ruta_debug_log     = '';
-  private $ruta_tasks         = '';
-  private $ruta_sql           = '';
-  private $ruta_web           = '';
-  private $ruta_controllers   = '';
-  private $ruta_templates     = '';
+  private $ruta_base            = '';
+  private $ruta_cache           = '';
+  private $ruta_config          = '';
+  private $ruta_gestores        = '';
+  private $ruta_gestores_app    = '';
+  private $ruta_gestores_base   = '';
+  private $ruta_gestores_static = '';
+  private $ruta_logs            = '';
+  private $ruta_debug_log       = '';
+  private $ruta_tasks           = '';
+  private $ruta_sql             = '';
+  private $ruta_web             = '';
+  private $ruta_controllers     = '';
+  private $ruta_templates       = '';
 
   private $db_user = '';
   private $db_pass = '';
@@ -77,6 +78,7 @@ class G_Config{
     $this->setRutaGestores($rb."gestores/");
     $this->setRutaGestoresApp($rb."gestores/app/");
     $this->setRutaGestoresBase($rb."gestores/base/");
+    $this->setRutaGestoresStatic($rb."gestores/static/");
     $this->setRutaLogs($rb."logs/");
     $this->setRutaDebugLog($rb."logs/debug.log");
     $this->setRutaTasks($rb."task/");
@@ -123,6 +125,13 @@ class G_Config{
   }
   function getRutaGestoresBase(){
     return $this->ruta_gestores_base;
+  }
+  
+  function setRutaGestoresStatic($rgs){
+    $this->ruta_gestores_static = $rgs;
+  }
+  function getRutaGestoresStatic(){
+    return $this->ruta_gestores_static;
   }
   
   function setRutaLogs($rl){

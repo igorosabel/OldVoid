@@ -1,1 +1,130 @@
-system
+<div class="system_header">
+  <a href ng-click="vm.selectSystem()" ng-class="{system_header_selected: vm.system_tab=='system'}">Sistema</a>
+  <a href ng-click="vm.selectGalaxy()" ng-class="{system_header_selected: vm.system_tab=='galaxy'}">Galaxia</a>
+</div>
+
+<div class="system_body">
+  <div class="system_main">
+    <a href class="system_main_top_rigth">Ver Galaxia</a>
+    <div class="system">
+     <div id="sun"></div>
+     <div id="sun_name">{{vm.system_name}}</div>
+     <div ng-repeat="item in vm.system_list" id="p{{$index}}"></div>
+     <div ng-repeat="item in vm.system_list" id="p{{$index}}_walk"></div>
+       
+     <!--div id="p1_walk"></div>
+     <div id="p1"></div>
+     <div id="p2_walk"></div>
+     <div id="p2"></div-->
+   </div>
+  </div>
+  <div class="system_sidebar">
+
+    <div class="system_info_box">
+      <div class="system_info_box_header">{{vm.system_name}}</div>
+      <div class="system_info_box_line">
+        <label>Tipo de estrella:</label>
+        <span>
+          {{vm.system_type}} <a href class="system_info_box_info"></a>
+        </span>
+        <span class="system_info_box_desc">{{vm.system_type_desc}}</span>
+      </div>
+      <div class="system_info_box_line">
+        <label>Num. planetas:</label>
+        <span>
+          {{vm.system_planets}}
+        </span>
+      </div>
+      <div class="system_info_box_line">
+        <label>Descubridor:</label>
+        <span>
+          {{vm.system_discoverer}}
+        </span>
+      </div>
+      <div class="system_info_box_line">
+        <label>Comerciantes:</label>
+        <span>
+          {{vm.system_npcs}}
+        </span>
+      </div>
+    </div>
+    
+    <div class="system_jump_to" ng-hide="vm.system_hide_jump_to">
+      <label>Saltar a este sistema</label>
+      <span>{{vm.system_jump_to_time}}</span>
+    </div>
+    
+    <div class="system_sidebar_title">Sistemas vecinos</div>
+    
+    <ul class="system_sidebar_list">
+      <li ng-repeat="item in vm.sidebar_list">
+        <img ng-src="/img/{{item.icon}}.png" />
+        <span>{{item.name}}</span>
+        <a href ng-class="{system_sidebar_list_disabled:item.disabled}">{{item.time}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script type="text/x-template" id="sun_style">
+#sun{
+  box-shadow: 2px 2px 5px 0 rgba(50, 50, 50, 0.75);
+  position: absolute;
+  width: {{width}}px;
+  height: {{width}}px;
+  top: calc( 50% - {{width_half}}px);
+  left: calc( 50% - {{width_half}}px);
+  background-color: {{color}};
+  border-radius: {{width_half}}px;
+  z-index: 2;
+}
+
+#sun_name{
+  left: calc(50% - 50px);
+  position: absolute;
+  text-align: center;
+  top: calc(50% + {{width_half}}px);
+  width: 100px;
+  z-index: 2;
+}
+</script>
+
+<script type="text/x-template" id="planet_style">
+@keyframes rotate{{ind}}{
+	from{
+		transform:rotate(0deg) translate(-{{distance_half}}px) rotate(0deg);
+	}
+	to{
+		transform:rotate(360deg) translate(-{{distance_half}}px) rotate(-360deg);
+	}
+}
+
+#p{{ind}}_walk{
+  position: absolute;
+  width: {{distance}}px;
+  height: {{distance}}px;
+  top: calc( 50% - {{distance_half}}px);
+  left: calc( 50% - {{distance_half}}px);
+  border-radius: {{distance_half}}px;
+  border: 1px solid #000;
+  z-index: 1;
+}
+
+
+#p{{ind}}{
+  position: absolute;
+  width: {{width}}px;
+  height: {{width}}px;
+  top: calc( 50% - {{width_half}}px);
+  left: calc( 50% - {{width_half}}px);
+  background-color: #888888;
+  border-radius: {{width_half}}px;
+  z-index: 2;
+  animation: rotate{{ind}} {{rotate_time}}s infinite linear;
+}
+
+#p{{ind}}:hover{
+  background-color: #f00;
+  cursor: pointer;
+}
+</script>

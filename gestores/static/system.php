@@ -1,7 +1,17 @@
 <?php
-class General{
-  public static function generateAuth(){
-    return substr(sha1('v_'.time().'_v'), 0, 32);
+class System{
+  public static function getSystemColor($type){
+    $type_data = split("-", $type);
+    $system = Base::getCache('system');
+    $ret = '#000';
+    foreach ($system['spectral_types'] as $stype){
+      if ($stype['type']==$type_data[1]){
+        $ret = $stype['color'];
+        break;
+      }
+    }
+    
+    return $ret;
   }
 
   public static function getExplorersInSystem($explorer,$id_system){
@@ -19,23 +29,7 @@ class General{
       return 0;
     }
   }
-
-  public static function getNotifications($ex){
-    $bd = new G_BBDD();
-    $sql = "SELECT * FROM `notification` WHERE `id_explorer` = '".$ex->get('id')."' AND `discarded` = 0";
-
-    $ret = array();
-    $bd->consulta($sql);
-    while ($res=$bd->sig()){
-      $notification = new G_Notification();
-      $notification->actualizar($res);
-
-      array_push($ret,$notification);
-    }
-
-    return $ret;
-  }
-
+  
   public static function getPeopleInSystem($id){
     $bd = new G_BBDD();
 
@@ -76,150 +70,49 @@ class General{
 
     return $ret;
   }
-
-  public static function generateShip($explorer){
-    global $c;
-
-    // Primero creo la nave, sin armas ni módulos
-    $ship = new G_Ship();
-    $ship->set('id_owner',$explorer->get('id'));
-
-    $ship_name = Base::getRandomCharacters(array('num'=>$c->getSystemNameChars(),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getSystemNameNums(),'numbers'=>true));
-    $ship->set('original_name',$ship_name);
-    $ship->set('name',$ship_name);
-
-    $hull_types = Base::getCache('hull');
-    $hull_type  = $hull_types['hull_types']['hull_'.$c->getDefaultShipHull()];
-    $ship->set('hull_id_type',$hull_type['id']);
-    $ship->set('hull_strength',$hull_type['strength']);
-    $ship->set('hull_current_strength',$hull_type['strength']);
-    $ship->set('hull_mass',$hull_type['mass']);
-    $ship->set('gun_ports',$hull_type['gun_ports']);
-    $ship->set('big_module_ports',$hull_type['big_module_ports']);
-    $ship->set('small_module_ports',$hull_type['small_module_ports']);
-
-    $shield_types = Base::getCache('shield');
-    $shield_type  = $shield_types['shield_types']['shield_'.$c->getDefaultShipShield()];
-    $ship->set('shield_id_type',$shield_type['id']);
-    $ship->set('shield_strength',$shield_type['strength']);
-    $ship->set('shield_current_strength',$shield_type['strength']);
-    $ship->set('shield_energy',$shield_type['energy']);
-
-    $engine_types = Base::getCache('engine');
-    $engine_type  = $engine_types['engine_types']['engine_'.$c->getDefaultShipEngine()];
-    $ship->set('engine_id_type',$engine_type['id']);
-    $ship->set('engine_power',$engine_type['power']);
-    $ship->set('engine_energy',$engine_type['energy']);
-    $ship->set('engine_impulse',$engine_type['impulse']);
-    $ship->set('engine_fuel_cost',$engine_type['consumption']);
-    $ship->set('engine_fuel_actual',100);
-
-    $generator_types = Base::getCache('generator');
-    $generator_type  = $generator_types['generator_types']['generator_'.$c->getDefaultShipGenerator()];
-    $ship->set('generator_id_type',$generator_type['id']);
-    $ship->set('generator_power',$generator_type['power']);
-
-    $ship->salvar();
-
-    // Creo un arma
-    $gun = new G_Gun();
-
-    $gun_types = Base::getCache('gun');
-    $gun_type  = $gun_types['gun_types']['gun_'.$c->getDefaultGun()];
-    $gun->set('id_type',$gun_type['id']);
-    $gun->set('id_owner',$explorer->get('id'));
-    $gun->set('id_ship',$ship->get('id'));
-    $gun->set('strength',$gun_type['strength']);
-    $gun->set('accuracy',$gun_type['accuracy']);
-    $gun->set('recharge_time',$gun_type['recharge_time']);
-    $gun->set('ignores_shields',$gun_type['ignores_shields']);
-    $gun->set('energy',$gun_type['energy']);
-    $gun->set('credits',$gun_type['credits']);
-
-    $gun->salvar();
-    $ship->addGun($gun);
-
-    // Creo un módulo
-    $default_modules = $c->getDefaultModules();
-    foreach ($default_modules as $module_type){
-      $module = new G_Module();
   
-      $module_types = Base::getCache('module');
-      $module_type  = $module_types['module_types']['module_'.$module_type];
-      $module->set('id_type',$gun_type['id']);
-      $module->set('id_owner',$explorer->get('id'));
-      $module->set('id_ship',$ship->get('id'));
-      $module->set('size',$module_type['size']);
-      $module->set('enables',$module_type['enables']);
-      $module->set('crew',$module_type['crew']);
-      $module->set('mass',$module_type['mass']);
-      $module->set('storage_capacity',$module_type['storage']);
-      if ($module_type['enables']=='storage'){
-        $module->set('storage',json_encode(array('resource_4'=>100)));
+  public static function loadPlanets($system){
+    $bd = new G_BBDD();
+    $ret = array();
+    
+    $sql = "SELECT * FROM `planet` WHERE `id_system` = ".$system->get('id')." ORDER BY `distance` ASC";
+    $bd->consulta($sql);
+    
+    while ($res=$bd->sig()){
+      $planet = new G_Planet();
+      $planet->actualizar($res);
+      
+      $planet->setMoons(self::loadMoons($planet));
+      if ($planet->get('npc')){
+        $planet->setNpc(NPC::loadNPC($planet->get('id_owner')));
       }
-      else{
-        $module->set('storage',null);
-      }
-      $module->set('energy',$module_type['energy']);
-      $module->set('credits',$module_type['credits']);
-  
-      $module->salvar();
-      $ship->addModule($module);
+      array_push($ret, $planet);
     }
-
-    $ship->set('credits',self::calculateCredits($ship,array($gun),array($module)));
-    $ship->salvar();
-
-    return $ship;
-  }
-
-  public static function calculateCredits($ship,$guns,$modules){
-    $ret = 0;
-
-    // Calculo precio de la nave (base + mejoras)
-    $hull_types = Base::getCache('hull');
-    $hull_type  = $hull_types['hull_types']['hull_'.$ship->get('hull_id_type')];
-    $hull_type_diff = floor( ( ($ship->get('hull_strength')*100) / $hull_type['strength'] ) / 100 );
-    $shield_types = Base::getCache('shield');
-    $shield_type  = $shield_types['shield_types']['shield_'.$ship->get('shield_id_type')];
-    $shield_type_diff = floor( ( ($ship->get('shield_strength')*100) / $shield_type['strength'] ) / 100 );
-    $engine_types = Base::getCache('engine');
-    $engine_type  = $engine_types['engine_types']['engine_'.$ship->get('engine_id_type')];
-    $engine_type_diff = floor( ( ($ship->get('engine_power')*100) / $engine_type['power'] ) / 100 );
-    $generator_types = Base::getCache('generator');
-    $generator_type  = $generator_types['generator_types']['generator_'.$ship->get('generator_id_type')];
-    $generator_type_diff = floor( ( ($ship->get('generator_power')*100) / $generator_type['power'] ) / 100 );
-
-    //echo "hull_type credits: ".$hull_type['credits']."\n";
-    //echo "hull_type diff: ".$hull_type_diff."\n";
-    //echo "shield_type credits: ".$shield_type['credits']."\n";
-    //echo "shield_type diff: ".$shield_type_diff."\n";
-    //echo "engine_type credits: ".$engine_type['credits']."\n";
-    //echo "engine_type diff: ".$engine_type_diff."\n";
-    //echo "generator_type credits: ".$generator_type['credits']."\n";
-    //echo "generator_type diff: ".$generator_type_diff."\n";
-
-    $ret = ($hull_type['credits'] * $hull_type_diff) + ($shield_type['credits'] * $shield_type_diff) + ($engine_type['credits'] * $engine_type_diff) + ($generator_type['credits'] * $generator_type_diff);
-
-    // Sumo precio de las armas que tiene equipadas
-    $gun_types = Base::getCache('gun');
-    foreach ($guns as $g){
-      $gun_type = $gun_types['gun_types']['gun_'.$g->get('id_type')];
-      $ret += $gun_type['credits'];
-      //echo "gun_type (".$gun_type['id'].") credits: ".$gun_type['credits']."\n";
-    }
-
-    // Sumo precio de los módulos que tiene equipados
-    $module_types = Base::getCache('module');
-    foreach ($modules as $m){
-      $module_type = $module_types['module_types']['module_'.$m->get('id_type')];
-      $ret += $module_type['credits'];
-      //echo "module_type (".$module_type['id'].") credits: ".$module_type['credits']."\n";
-    }
-
+    
     return $ret;
   }
-
+  
+  public static function loadMoons($planet){
+    $bd = new G_BBDD();
+    $ret = array();
+    
+    $sql = "SELECT * FROM `moon` WHERE `id_planet` = ".$planet->get('id')." ORDER BY `distance` ASC";
+    $bd->consulta($sql);
+    
+    while ($res=$bd->sig()){
+      $moon = new G_Moon();
+      $moon->actualizar($res);
+      
+      if ($moon->get('npc')){
+        $moon->setNpc(NPC::loadNPC($moon->get('id_owner')));
+      }
+      
+      array_push($ret, $moon);
+    }
+    
+    return $ret;
+  }
+  
   public static function goToSystem($explorer,$from,$id_system=null){
     global $c;
 
@@ -286,6 +179,17 @@ class General{
 
     return $ret;
   }
+  
+  public static function loadSystemConnections($explorer,$from){
+    $ret = array('connection_1'=>false,'connection_2'=>false,'connection_3'=>false);
+    $connections = self::getSystemConnections($explorer,$from);
+    
+    foreach ($connections as $i => $conn){
+      $ret['connection_'.($i+1)] = $conn;
+    }
+    
+    return $ret;
+  }
 
   public static function getSystemConnections($explorer,$from){
     $sql = "SELECT * FROM `system_distance` WHERE `id_system_1` = '".$from->get('id')."' AND `distance` = 1";
@@ -314,145 +218,7 @@ class General{
 
     return $ret;
   }
-
-  public static function generateRace(){
-    $race_list = Base::getCache('race');
-    $race_prob = array();
-    foreach ($race_list['race_list'] as $race){
-      for ($i=1;$i<=$race['proportion'];$i++){
-        array_push($race_prob,$race['id']);
-      }
-    }
-
-    $id_race = $race_prob[array_rand($race_prob)];
-
-    return $id_race;
-  }
-
-  public static function generateNPC($save=true){
-    global $c;
-
-    $npc = new G_NPC();
-
-    $npc_list = Base::getCache('npc');
-    $npc_name = $npc_list['character_list'][array_rand($npc_list['character_list'])];
-    $npc->set('name',$npc_name);
-
-    $npc_race = self::generateRace();
-    $npc->set('id_race',$npc_race);
-
-    // Hulls
-    $hull_types = Base::getCache('hull');
-    $num_hulls  = rand(0,$c->getMaxSellHulls());
-    $hull_list  = array();
-    if ($num_hulls>0){
-      while (count($hull_list)<$num_hulls){
-        $hull = $hull_types['hull_types'][array_rand($hull_types['hull_types'])];
-        if (!in_array($hull['id'], $hull_list)){
-          array_push($hull_list, $hull['id']);
-        }
-      }
-    }
-    $npc->set('hulls_start',json_encode($hull_list));
-    $npc->set('hulls_actual',json_encode($hull_list));
-
-    // Shields
-    $shield_types = Base::getCache('shield');
-    $num_shields  = rand(0,$c->getMaxSellShields());
-    $shield_list  = array();
-    if ($num_shields>0){
-      while (count($shield_list)<$num_shields){
-        $shield = $shield_types['shield_types'][array_rand($shield_types['shield_types'])];
-        if (!in_array($shield['id'], $shield_list)){
-          array_push($shield_list, $shield['id']);
-        }
-      }
-    }
-    $npc->set('shields_start',json_encode($shield_list));
-    $npc->set('shields_actual',json_encode($shield_list));
-
-    // Engines
-    $engine_types = Base::getCache('engine');
-    $num_engines  = rand(0,$c->getMaxSellEngines());
-    $engine_list  = array();
-    if ($num_engines>0){
-      while (count($engine_list)<$num_engines){
-        $engine = $engine_types['engine_types'][array_rand($engine_types['engine_types'])];
-        if (!in_array($engine['id'], $engine_list)){
-          array_push($engine_list, $engine['id']);
-        }
-      }
-    }
-    $npc->set('engines_start',json_encode($engine_list));
-    $npc->set('engines_actual',json_encode($engine_list));
-
-    // Generators
-    $generator_types = Base::getCache('generator');
-    $num_generators  = rand(0,$c->getMaxSellGenerators());
-    $generator_list  = array();
-    if ($num_generators>0){
-      while (count($generator_list)<$num_generators){
-        $generator = $generator_types['generator_types'][array_rand($generator_types['generator_types'])];
-        if (!in_array($generator['id'], $generator_list)){
-          array_push($generator_list, $generator['id']);
-        }
-      }
-    }
-    $npc->set('generators_start',json_encode($generator_list));
-    $npc->set('generators_actual',json_encode($generator_list));
-
-    // Guns
-    $gun_types = Base::getCache('gun');
-    $num_guns  = rand(0,$c->getMaxSellGuns());
-    $gun_list  = array();
-    if ($num_guns>0){
-      while (count($gun_list)<$num_guns){
-        $gun = $gun_types['gun_types'][array_rand($gun_types['gun_types'])];
-        if (!in_array($gun['id'], $gun_list)){
-          array_push($gun_list, $gun['id']);
-        }
-      }
-    }
-    $npc->set('guns_start',json_encode($gun_list));
-    $npc->set('guns_actual',json_encode($gun_list));
-
-    // Modules
-    $module_types = Base::getCache('module');
-    $num_modules  = rand(0,$c->getMaxSellModules());
-    $module_list  = array();
-    if ($num_modules>0){
-      while (count($module_list)<$num_modules){
-        $module = $module_types['module_types'][array_rand($module_types['module_types'])];
-        if (!in_array($module['id'], $module_list)){
-          array_push($module_list, $module['id']);
-        }
-      }
-    }
-    $npc->set('modules_start',json_encode($module_list));
-    $npc->set('modules_actual',json_encode($module_list));
-
-    // Resources
-    $resource_types = Base::getCache('resource');
-    $num_resources  = rand(0,$c->getMaxSellResources());
-    $resource_list  = array();
-    if ($num_resources>0){
-      while (count($resource_list)<$num_resources){
-        $resource = $resource_types['resource_types'][array_rand($resource_types['resource_types'])];
-        if (!in_array($resource['id'], $resource_list)){
-          array_push($resource_list, $resource['id']);
-        }
-      }
-    }
-    $npc->set('resources_start',json_encode($resource_list));
-    $npc->set('resources_actual',json_encode($resource_list));
-
-    if ($save) {
-      $npc->salvar();
-    }
-
-    return $npc;
-  }
-
+  
   public static function generateSystem($explorer,$from=null){
     global $c;
 
@@ -539,7 +305,7 @@ class General{
       if ($npcs<$c->getMaxNPC()){
         $npc_prob = rand(1,$c->getNPCProb());
         if ($npc_prob==1){
-          $npc = self::generateNPC();
+          $npc = NPC::generateNPC();
           $p->set('id_owner',$npc->get('id'));
           $p->set('npc',true);
           $npcs++;
@@ -620,7 +386,7 @@ class General{
         if ($npcs<$c->getMaxNPC()){
           $npc_prob = rand(1,$c->getNPCProb());
           if ($npc_prob==1){
-            $npc = self::generateNPC();
+            $npc = NPC::generateNPC();
             $m->set('id_owner',$npc->get('id'));
             $m->set('npc',true);
             $npcs++;
