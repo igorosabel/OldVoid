@@ -39,7 +39,7 @@
       if (system.connections[i]===false){
         vm.sidebar_list.push({
           id: (i+1),
-          icon: 'system_unknown',
+          icon: 'unknown',
           name: 'Desconocido',
           time: '04:45',
           disabled: false
@@ -48,7 +48,7 @@
       else{
         vm.sidebar_list.push({
           id: (i+1),
-          icon: 'panel_ico_system',
+          icon: 'system',
           name: urldecode(system.connections[i].name),
           time: '04:45',
           disabled: false

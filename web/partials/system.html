@@ -1,70 +1,81 @@
-<div class="system_header">
-  <a href ng-click="vm.selectSystem()" ng-class="{system_header_selected: vm.system_tab=='system'}">Sistema</a>
-  <a href ng-click="vm.selectGalaxy()" ng-class="{system_header_selected: vm.system_tab=='galaxy'}">Galaxia</a>
-</div>
+<md-content ui-view class="full_height" flex layout="row" layout-xs="column" layout-align="center stretch">
+  <md-card flex-xs="90" flex-gt-md="70">
+    <md-card-title>
+      <md-card-title-text><span class="md-headline">Sistema</span></md-card-title-text>
+    </md-card-title>
+    <md-card-content layout="row" layout-xs="column">
+      <div class="system">
+        <div id="sun"></div>
+        <div id="sun_name">{{vm.system_name}}</div>
+        <div ng-repeat="item in vm.system_list" id="p{{$index}}"></div>
+        <div ng-repeat="item in vm.system_list" id="p{{$index}}_walk"></div>
+      </div>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button>Ver Galaxia</md-button>
+    </md-card-actions>
+  </md-card>
 
-<div class="system_body">
-  <div class="system_main">
-    <a href class="system_main_top_rigth">Ver Galaxia</a>
-    <div class="system">
-     <div id="sun"></div>
-     <div id="sun_name">{{vm.system_name}}</div>
-     <div ng-repeat="item in vm.system_list" id="p{{$index}}"></div>
-     <div ng-repeat="item in vm.system_list" id="p{{$index}}_walk"></div>
-       
-     <!--div id="p1_walk"></div>
-     <div id="p1"></div>
-     <div id="p2_walk"></div>
-     <div id="p2"></div-->
-   </div>
-  </div>
-  <div class="system_sidebar">
+  <md-card flex-xs="90" flex-gt-md="30">
+    <md-card-content>
+      <div class="system_info_box">
+        <div class="system_info_box_header">{{vm.system_name}}</div>
+        <div class="system_info_box_line">
+          <label>Tipo de estrella:</label>
+          <span>
+            {{vm.system_type}} <a href class="system_info_box_info"></a>
+          </span>
+          <span class="system_info_box_desc">{{vm.system_type_desc}}</span>
+        </div>
+        <div class="system_info_box_line">
+          <label>Num. planetas:</label>
+          <span>
+            {{vm.system_planets}}
+          </span>
+        </div>
+        <div class="system_info_box_line">
+          <label>Descubridor:</label>
+          <span>
+            {{vm.system_discoverer}}
+          </span>
+        </div>
+        <div class="system_info_box_line">
+          <label>Comerciantes:</label>
+          <span>
+            {{vm.system_npcs}}
+          </span>
+        </div>
+      </div>
 
-    <div class="system_info_box">
-      <div class="system_info_box_header">{{vm.system_name}}</div>
-      <div class="system_info_box_line">
-        <label>Tipo de estrella:</label>
-        <span>
-          {{vm.system_type}} <a href class="system_info_box_info"></a>
-        </span>
-        <span class="system_info_box_desc">{{vm.system_type_desc}}</span>
-      </div>
-      <div class="system_info_box_line">
-        <label>Num. planetas:</label>
-        <span>
-          {{vm.system_planets}}
-        </span>
-      </div>
-      <div class="system_info_box_line">
-        <label>Descubridor:</label>
-        <span>
-          {{vm.system_discoverer}}
-        </span>
-      </div>
-      <div class="system_info_box_line">
-        <label>Comerciantes:</label>
-        <span>
-          {{vm.system_npcs}}
-        </span>
-      </div>
-    </div>
-    
-    <div class="system_jump_to" ng-hide="vm.system_hide_jump_to">
-      <label>Saltar a este sistema</label>
-      <span>{{vm.system_jump_to_time}}</span>
-    </div>
-    
-    <div class="system_sidebar_title">Sistemas vecinos</div>
-    
-    <ul class="system_sidebar_list">
-      <li ng-repeat="item in vm.sidebar_list">
-        <img ng-src="/img/{{item.icon}}.png" />
-        <span>{{item.name}}</span>
-        <a href ng-class="{system_sidebar_list_disabled:item.disabled}">{{item.time}}</a>
-      </li>
-    </ul>
-  </div>
-</div>
+      <md-button class="md-raised md-accent system_jump_to">
+        <div layout="row">
+          <md-icon md-svg-icon="img/system/jump_to.svg"></md-icon>
+          <p flex>Saltar a este sistema</p>
+          <p>{{vm.system_jump_to_time}}</p>
+        </div>
+      </md-button>
+
+      <h3 class="center">Sistemas vecinos</h3>
+
+      <md-list>
+        <md-list-item ng-repeat="item in vm.sidebar_list" class="md-2-line">
+          <img ng-src="img/system/{{item.icon}}.svg" class="md-avatar" alt="{{item.name}}" />
+          <div class="md-list-item-text">
+            <p>{{item.name}}</p>
+          </div>
+          <md-button class="md-raised md-secondary">
+            <div layout="row">
+              <md-icon md-svg-icon="img/system/jump_to.svg"></md-icon>
+              <p flex>{{item.time}}</p>
+            </div>
+          </md-button>
+          <md-divider ></md-divider>
+        </md-list-item>
+      </md-list>
+
+    </md-card-content>
+  </md-card>
+</md-content>
 
 <script type="text/x-template" id="sun_style">
 #sun{
