@@ -23,8 +23,8 @@
         });
     }
 
-    function GetNotifications(id, callback){
-      $http.post(api_url + 'get_notifications', {id: id, auth: DataShareService.getUser().auth})
+    function GetNotifications(callback){
+      $http.post(api_url + 'get_notifications', {auth: DataShareService.getUser().auth})
         .success(function (response){
           callback && callback(response);
         });

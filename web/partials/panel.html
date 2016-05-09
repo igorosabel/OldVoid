@@ -1,4 +1,150 @@
-<div class="panel_info_row">
+<md-content ui-view class="full_height" flex layout="column" layout-align="center center">
+
+  <div layout="row" layout-xs="column" class="full_width">
+    <md-card flex-gt-md="50" flex-xs="100">
+      <md-card-content>
+        <div layout="row" layout-xs="column">
+          <div flex layout="row">
+            <div flex>Sistema:</div>
+            <div flex>{{vm.panel_info.system}}</div>
+          </div>
+          <div flex layout="row">
+            <div flex>Créditos:</div>
+            <div flex>{{vm.panel_info.credits}}</div>
+          </div>
+        </div>
+        <div layout="row" layout-xs="column">
+          <div flex layout="row">
+            <div flex>Tipo de estrella:</div>
+            <div flex>{{vm.panel_info.system_type}}</div>
+          </div>
+          <div flex layout="row">
+            <div flex>Integridad nave:</div>
+            <div flex>{{vm.panel_info.ship_strength}}</div>
+          </div>
+        </div>
+        <div layout="row" layout-xs="column">
+          <div flex layout="row">
+            <div flex>Num. planetas:</div>
+            <div flex>{{vm.panel_info.num_planets}}</div>
+          </div>
+          <div flex layout="row">
+            <div flex>Combustible:</div>
+            <div flex>{{vm.panel_info.fuel}}</div>
+          </div>
+        </div>
+        <div layout="row" layout-xs="column" class="panel_info_last">
+          <div flex layout="row">
+            <div flex>Exploradores:</div>
+            <div flex>{{vm.panel_info.explorers}}</div>
+          </div>
+          <div flex layout="row">
+            <div flex>Comerciantes:</div>
+            <div flex>{{vm.panel_info.npc}}</div>
+          </div>
+        </div>
+      </md-card-content>
+    </md-card>
+
+    <md-card flex-gt-md="50" flex-xs="100">
+      <md-card-content>
+        <md-list>
+          <md-list-item ng-hide="vm.notifications.length">
+            <p>No hay notificaciones</p>
+          </md-list-item>
+          <md-list-item class="md-2-line" ng-repeat="notification in vm.notifications">
+            <md-icon md-svg-icon="img/panel/{{notification.type}}.svg" class="md-accent"></md-icon>
+            <div class="md-list-item-text">
+              {{notification.value}}
+            </div>
+          </md-list-item>
+          <md-divider ></md-divider>
+        </md-list>
+      </md-card-content>
+    </md-card>
+  </div>
+
+  <div layout="row" flex="100" class="full_width">
+    <md-card flex="100">
+      <md-card-content>
+        <md-list>
+          <md-list-item ng-hide="vm.people_in_system.length">
+            <p>Sistema deshabitado</p>
+          </md-list-item>
+          <md-list-item class="md-2-line" ng-repeat="item in vm.people_in_system" ng-if="(item.type=='npc') || (item.type=='explorer' && item.id!=vm.user_id)">
+            <md-icon md-svg-icon="img/panel/{{item.type}}.svg" class="md-accent"></md-icon>
+            <div class="md-list-item-text">
+              <h3>{{item.name | urldecode}}</h3>
+              <p class="panel_explorers_where">{{item.where | urldecode}}</p>
+              <div class="md-secondary" hide-xs>
+                <md-button class="md-raised" ng-class="{panel_explorers_no_attack:item.type=='npc'}">
+                  <md-icon md-svg-icon="img/panel/attack.svg"></md-icon>
+                  Atacar
+                </md-button>
+                <md-button class="md-raised">
+                  <md-icon md-svg-icon="img/panel/commerce.svg"></md-icon>
+                  Comerciar
+                </md-button>
+                <md-button class="md-raised" ng-hide="item.type=='npc'">
+                  <md-icon md-svg-icon="img/panel/message.svg"></md-icon>
+                  Enviar mensaje
+                </md-button>
+                <md-button class="md-raised" ng-hide="item.type=='explorer'">
+                  <md-icon md-svg-icon="img/panel/npc_notes.svg"></md-icon>
+                  Notas del comerciante
+                </md-button>
+              </divhide-xs>
+              <md-menu class="md-secondary" hide-gt-sm>
+                <md-button aria-label="Opciones" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                  <md-icon md-svg-icon="img/panel/options.svg"></md-icon>
+                </md-button>
+                <md-menu-content width="4">
+                  <md-menu-item ng-if="item.type=='explorer'">
+                    <md-button>
+                      <div layout="row">
+                        <md-icon md-menu-align-target md-svg-icon="img/panel/attack.svg"></md-icon>
+                        <p flex>Atacar</p>
+                      </div>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider ng-if="item.type=='explorer'"></md-menu-divider>
+                  <md-menu-item>
+                    <md-button>
+                      <div layout="row">
+                        <md-icon md-menu-align-target md-svg-icon="img/panel/commerce.svg"></md-icon>
+                        <p flex>Comerciar</p>
+                      </div>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider></md-menu-divider>
+                  <md-menu-item ng-if="item.type=='explorer'">
+                    <md-button>
+                      <div layout="row">
+                        <md-icon md-menu-align-target md-svg-icon="img/panel/message.svg"></md-icon>
+                        <p flex>Enviar mensaje</p>
+                      </div>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item ng-if="item.type=='npc'">
+                    <md-button>
+                      <div layout="row">
+                        <md-icon md-menu-align-target md-svg-icon="img/panel/npc_notes.svg"></md-icon>
+                        <p flex>Notas del comerciante</p>
+                      </div>
+                    </md-button>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
+            </div>
+            <md-divider ></md-divider>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+    </md-card>
+  </div>
+</md-content>
+
+<!--div class="panel_info_row">
   <div class="panel_info">
     <div class="panel_info_item">
       <label>Sistema:</label>
@@ -51,4 +197,4 @@
     <a href class="panel_explorers_message" ng-hide="item.type=='npc'">Enviar mensaje</a>
     <a href class="panel_explorers_npc_notes" ng-hide="item.type=='explorer'">Notas del comerciante</a>
   </li>
-</ul>
+</ul-->

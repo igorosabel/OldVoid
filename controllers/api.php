@@ -90,13 +90,11 @@
 
     $t->add('status',$status);
     $t->add('id_user',$id_user);
-    $t->add('id_discoverer',$id_discoverer);
-    $t->add('discoverer',$discoverer);
     $t->add('name',$name);
     $t->add('auth',$auth);
     $t->add('credits',$credits);
-    $t->add('current_ship',$current_ship);
     $t->add('email',$email);
+    $t->add('current_ship',$current_ship);
     $t->add('ship_strength',$ship_strength);
     $t->add('ship_fuel',$ship_fuel);
     $t->addPartial('system','api/system',array('system'=>$system,'extra'=>'nourlencode'));
@@ -273,17 +271,17 @@
     global $c, $s;
 
     $status = 'ok';
-    $id     = Base::getParam('id', $req['url_params'], false);
+    $auth   = Base::getParam('auth', $req['url_params'], false);
 
     $notifications = array();
 
-    if ($id===false){
+    if ($auth===false){
       $status = 'error';
     }
 
     if ($status=='ok'){
       $explorer = new G_Explorer();
-      if ($explorer->buscar(array('id'=>$id))){
+      if ($explorer->buscar(array('auth'=>$auth))){
         $notifications = General::getNotifications($explorer);
       }
       else{
@@ -310,16 +308,23 @@
     global $c, $s;
 
     $status = 'ok';
-    $id     = Base::getParam('id', $req['url_params'], false);
+    $id     = Base::getParam('id',   $req['url_params'], false);
+    $auth   = Base::getParam('auth', $req['url_params'], false);
 
     $people_in_system = array('npc'=>array(),'explorer'=>array());
 
-    if ($id===false){
+    if ($id===false || $auth===false){
       $status = 'error';
     }
 
     if ($status=='ok'){
-      $people_in_system = System::getPeopleInSystem($id);
+      $explorer = new G_Explorer();
+      if ($explorer->buscar(array('auth'=>$auth))) {
+        $people_in_system = System::getPeopleInSystem($id);
+      }
+      else{
+        $status = 'error';
+      }
     }
 
     $t->setLayout(false);

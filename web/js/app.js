@@ -1,6 +1,6 @@
 function startApp() {
   angular
-    .module('VoidApp', ['ngRoute']);
+    .module('VoidApp', ['ngMaterial','ngRoute']);
 }
 
 function configApp() {

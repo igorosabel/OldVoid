@@ -1,22 +1,48 @@
-<div class="register_box">
-  <div class="register_title">Regístrate</div>
-  <div class="register_subtitle">
-    Para registrarte solo tienes que introducir tu nuevo nombre de usuario, una dirección de email, la contraseña que quieras tener y luego confirmarla. Se te enviará un email con instrucciones para confirmar tu cuenta.
-  </div>
-  <div class="register_row">
-    <input type="text" name="register_name" id="register_name" ng-model="vm.name" placeholder="Nombre de usuario" class="register_field" />
-  </div>
-  <div class="register_row">
-    <input type="email" name="register_email" id="register_email" ng-model="vm.email" placeholder="Email" class="register_field" />
-  </div>
-  <div class="login_row">
-    <input type="password" name="register_pass" id="register_pass" ng-model="vm.pass" placeholder="Contraseña" class="register_field" />
-  </div>
-  <div class="login_row">
-    <input type="password" name="register_conf" id="register_conf" ng-model="vm.conf" placeholder="Confirmar contraseña" class="register_field" />
-  </div>
-  <div class="login_row">
-    <a href="#/" class="register_back">Iniciar sesión</a>
-    <a href ng-click="vm.register()" class="register_continue">Continuar</a>
-  </div>
+<div class="full_height" layout="column" flex class="content">
+  <md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+      <md-button href="#/" class="md-icon-button" aria-label="Volver">
+        <md-icon md-svg-icon="img/header/back.svg"></md-icon>
+      </md-button>
+      <h2>
+        <span>Void - Registro</span>
+      </h2>
+    </div>
+  </md-toolbar>
+
+  <form class="full_height" ng-submit="vm.register()">
+    <md-content ui-view class="full_height" flex layout="row" layout-align="center center">
+      <md-card flex-gt-sm="90" flex-gt-md="80">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Regístrate</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <p>
+            Para registrarte solo tienes que introducir tu nuevo nombre de usuario, una dirección de email, la contraseña que quieras tener y luego confirmarla. Se te enviará un email con instrucciones para confirmar tu cuenta.
+          </p>
+          <md-input-container class="md-block">
+            <label>Nombre de usuario</label>
+            <input ng-model="vm.name" />
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Email</label>
+            <input ng-model="vm.email" type="email" />
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Contraseña</label>
+            <input ng-model="vm.pass" type="password" />
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Confirmar contraseña</label>
+            <input ng-model="vm.conf" type="password" />
+          </md-input-container>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button type="submit">Continuar</md-button>
+          </md-card-actions>
+      </md-card>
+    </md-content>
+  </form>
 </div>

@@ -25,11 +25,11 @@
   $c->setAdminEmail('inigo.gorosabel@gmail.com');
   
   /* Lista de CSS por defecto */
-  $css = array('void');
+  $css = array('angular-material.min','void');
   $c->setCssList( $css );
   
   /* Lista de JavaScript por defecto */
-  $js = array('lib/common');
+  $js = array();
   $c->setJsList( $js );
   
   /* Título de la página */

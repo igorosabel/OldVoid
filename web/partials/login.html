@@ -1,16 +1,36 @@
-<form ng-submit="vm.login()" role="form">
-  <div class="login_box">
-    <div class="login_title">Iniciar sesión</div>
-    <div class="login_row">
-      <input type="email" name="login_email" id="login_email" ng-model="vm.email" placeholder="Email" class="login_field" />
+<div class="full_height" layout="column" flex class="content">
+  <md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+      <h2>
+        <span>Void</span>
+      </h2>
     </div>
-    <div class="login_row">
-      <input type="password" name="login_pass" id="login_pass" ng-model="vm.pass" placeholder="Contraseña" class="login_field" />
-      <a href ng-click="vm.recoverPass()" class="login_recover">He olvidado mi contraseña</a>
-    </div>
-    <div class="login_row">
-      <a href="#/register" class="login_register">Regístrate</a>
-      <input type="submit" class="login_continue" value="Continuar" />
-    </div>
-  </div>
-</form>
+  </md-toolbar>
+
+  <form class="full_height" ng-submit="vm.login()">
+    <md-content ui-view class="full_height" flex layout="row" layout-align="center center">
+      <md-card flex-xs="90" flex-gt-md="60">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Iniciar sesión</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <md-input-container class="md-block">
+            <label>Email</label>
+            <input ng-model="vm.email" type="email" />
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Contraseña</label>
+            <input ng-model="vm.pass" type="password" />
+          </md-input-container>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button href="#/register">Regístrate</md-button>
+            <span flex></span>
+            <md-button type="submit">Continuar</md-button>
+          </md-card-actions>
+      </md-card>
+    </md-content>
+  </form>
+</div>

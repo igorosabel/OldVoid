@@ -29,7 +29,7 @@
     };
 
     vm.notifications = [];
-    APIService.GetNotifications(user.id,function(response){
+    APIService.GetNotifications(function(response){
       vm.notifications = response.notifications;
     });
 

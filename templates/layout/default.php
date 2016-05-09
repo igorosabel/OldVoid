@@ -2,7 +2,7 @@
 <html lang="es">
   <head id="head">
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{TITLE}}</title>
     <link rel="icon" type="image/png" href="/img/favicon.png" />
     <base href="/">
@@ -12,8 +12,6 @@
   </head>
   
   <body>
-    <div id="mesg_box"></div>
     {{BODY}}
-    <div id="dark_bg"></div>
   </body>
 </html>
