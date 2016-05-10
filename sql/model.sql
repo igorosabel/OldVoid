@@ -21,6 +21,7 @@ CREATE TABLE `system` (
   `num_planets` int(11) NOT NULL COMMENT 'Número de planetas en el sistema' ,
   `num_npc` int(11) NOT NULL COMMENT 'Número de NPC en el sistema' ,
   `sun_type` varchar(5) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Tipo de Sol' ,
+  `sun_radius` int(11) NOT NULL COMMENT 'Radio del Sol' ,
   `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
   `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
   PRIMARY KEY (`id`)
