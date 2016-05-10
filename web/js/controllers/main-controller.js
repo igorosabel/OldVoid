@@ -5,8 +5,8 @@
     .module('VoidApp')
     .controller('MainController', MainController);
 
-  MainController.$inject = ['$routeParams', '$location', 'AuthenticationService', 'DataShareService'];
-  function MainController($routeParams, $location, AuthenticationService, DataShareService){
+  MainController.$inject = ['$routeParams', '$location', '$mdSidenav', 'AuthenticationService', 'DataShareService'];
+  function MainController($routeParams, $location, $mdSidenav, AuthenticationService, DataShareService){
     console.log('MainController');
     if (AuthenticationService.loadLocalStorage() && !DataShareService.getUser()){
       AuthenticationService.ClearCredentials();
@@ -26,6 +26,18 @@
     
     if ($routeParams.system_id){
       DataShareService.setGlobal('system_id',$routeParams.system_id);
+    }
+
+    vm.openMenu = openMenu;
+    function openMenu(){
+      $mdSidenav('leftmenu')
+        .toggle();
+    }
+
+    vm.logout = logout;
+    function logout(){
+      AuthenticationService.ClearCredentials();
+      $location.path('/');
     }
   }
 })();

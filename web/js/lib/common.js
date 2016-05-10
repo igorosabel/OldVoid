@@ -1,4 +1,18 @@
 /*
+ * Función para mostrar un objeto
+ */
+function show(id){
+  document.getElementById(id).style.display = 'block';
+}
+
+/*
+ * Función para ocultar un objeto
+ */
+function hide(id){
+  document.getElementById(id).style.display = 'none';
+}
+
+/*
  Función para renderizar plantillas
  */
 function template(id,data){

@@ -7,11 +7,15 @@
       <div class="system">
         <div id="sun"></div>
         <div id="sun_name">{{vm.system_name}}</div>
-        <div ng-repeat="item in vm.system_list" id="p{{$index}}"></div>
-        <div ng-repeat="item in vm.system_list" id="p{{$index}}_walk"></div>
+        <div ng-repeat="item in vm.system_list" id="{{item.type}}{{item.id}}" ng-click="vm.selectSystem(item)"></div>
+        <div ng-repeat="item in vm.system_list" id="{{item.type}}{{item.id}}_walk"></div>
       </div>
     </md-card-content>
     <md-card-actions layout="row" layout-align="end center">
+      <md-button ng-if="vm.system_view=='planet'" ng-click="vm.selectPlanet()">Ver Sistema {{vm.selectedSystem.name}}</md-button>
+      <span ng-if="vm.system_view=='planet'" flex></span>
+      <md-button ng-if="vm.system_view=='moon'" ng-click="vm.selectMoon()">Ver Planeta {{vm.selectedPlanet.name}}</md-button>
+      <span ng-if="vm.system_view=='moon'" flex></span>
       <md-button>Ver Galaxia</md-button>
     </md-card-actions>
   </md-card>
@@ -19,59 +23,130 @@
   <md-card flex-xs="90" flex-gt-md="30">
     <md-card-content>
       <div class="system_info_box">
-        <div class="system_info_box_header">{{vm.system_name}}</div>
-        <div class="system_info_box_line">
-          <label>Tipo de estrella:</label>
-          <span>
-            {{vm.system_type}} <a href class="system_info_box_info"></a>
-          </span>
-          <span class="system_info_box_desc">{{vm.system_type_desc}}</span>
+        <div class="system_info_box_header">{{vm.info_box.name}}</div>
+        <div ng-if="vm.info_box.view=='system'">
+          <div class="system_info_box_line">
+            <label>Tipo de estrella:</label>
+            <span>
+              {{vm.info_box.type}} <a href class="system_info_box_info"></a>
+            </span>
+            <span class="system_info_box_desc">{{vm.info_box.type_desc}}</span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Num. planetas:</label>
+            <span>
+              {{vm.info_box.planets}}
+            </span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Descubridor:</label>
+            <span>
+              {{vm.info_box.discoverer}}
+            </span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Comerciantes:</label>
+            <span>
+              {{vm.info_box.npcs}}
+            </span>
+          </div>
         </div>
-        <div class="system_info_box_line">
-          <label>Num. planetas:</label>
-          <span>
-            {{vm.system_planets}}
-          </span>
+        <div ng-if="vm.info_box.view=='planet'">
+          <div class="system_info_box_line">
+            <label>Tipo:</label>
+            <span>
+              {{vm.info_box.type}} <a href class="system_info_box_info"></a>
+            </span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Radio:</label>
+            <span>
+              {{vm.info_box.radius}}
+            </span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Indice sup.:</label>
+            <span>
+              {{vm.info_box.survival}} / 10
+            </span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Tiene vida:</label>
+            <span>
+              {{vm.info_box.has_life}}
+            </span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Num. lunas:</label>
+            <span>
+              {{vm.info_box.moons}}
+            </span>
+          </div>
         </div>
-        <div class="system_info_box_line">
-          <label>Descubridor:</label>
-          <span>
-            {{vm.system_discoverer}}
-          </span>
-        </div>
-        <div class="system_info_box_line">
-          <label>Comerciantes:</label>
-          <span>
-            {{vm.system_npcs}}
-          </span>
+        <div ng-if="vm.info_box.view=='moon'">
+          <div class="system_info_box_line">
+            <label>Radio:</label>
+            <span>
+              {{vm.info_box.radius}}
+            </span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Indice sup.:</label>
+            <span>
+              {{vm.info_box.survival}} / 10
+            </span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Tiene vida:</label>
+            <span>
+              {{vm.info_box.has_life}}
+            </span>
+          </div>
+          <div class="system_info_box_line">
+            <label>Recursos:</label>
+            <span></span>
+          </div>
         </div>
       </div>
 
-      <md-button class="md-raised md-accent system_jump_to">
-        <div layout="row">
-          <md-icon md-svg-icon="img/system/jump_to.svg"></md-icon>
-          <p flex>Saltar a este sistema</p>
-          <p>{{vm.system_jump_to_time}}</p>
-        </div>
-      </md-button>
-
-      <h3 class="center">Sistemas vecinos</h3>
-
-      <md-list>
-        <md-list-item ng-repeat="item in vm.sidebar_list" class="md-2-line">
-          <img ng-src="img/system/{{item.icon}}.svg" class="md-avatar" alt="{{item.name}}" />
-          <div class="md-list-item-text">
-            <p>{{item.name}}</p>
+      <div ng-if="vm.info_box.view=='system'">
+        <md-button class="md-raised md-accent system_jump_to" ng-hide="!vm.system_id">
+          <div layout="row">
+            <md-icon md-svg-icon="img/system/jump_to.svg"></md-icon>
+            <p flex>Saltar a este sistema</p>
+            <p>{{vm.system_jump_to_time}}</p>
           </div>
-          <md-button class="md-raised md-secondary">
-            <div layout="row">
-              <md-icon md-svg-icon="img/system/jump_to.svg"></md-icon>
-              <p flex>{{item.time}}</p>
+        </md-button>
+
+        <h3 class="center">
+          <md-icon md-svg-icon="img/system/connections.svg"></md-icon>
+          Sistemas vecinos
+        </h3>
+
+        <md-list>
+          <md-list-item ng-repeat="item in vm.sidebar_list" class="md-2-line">
+            <img ng-src="img/system/{{item.icon}}.svg" class="md-avatar" alt="{{item.name}}" />
+            <div class="md-list-item-text">
+              <p>{{item.name}}</p>
             </div>
-          </md-button>
-          <md-divider ></md-divider>
-        </md-list-item>
-      </md-list>
+            <md-button class="md-raised md-secondary">
+              <div layout="row">
+                <md-icon md-svg-icon="img/system/jump_to.svg"></md-icon>
+                <p flex>{{item.time}}</p>
+              </div>
+            </md-button>
+            <md-divider ></md-divider>
+          </md-list-item>
+        </md-list>
+      </div>
+
+      <div ng-if="vm.info_box.view=='planet'">
+        planet
+      </div>
+
+      <div ng-if="vm.info_box.view=='moon'">
+        moon
+      </div>
 
     </md-card-content>
   </md-card>
@@ -101,41 +176,86 @@
 </script>
 
 <script type="text/x-template" id="planet_style">
-@keyframes rotate{{ind}}{
-	from{
-		transform:rotate(0deg) translate(-{{distance_half}}px) rotate(0deg);
-	}
-	to{
-		transform:rotate(360deg) translate(-{{distance_half}}px) rotate(-360deg);
-	}
-}
+  @keyframes planetRotate{{id}}{
+    from{
+      transform:rotate(0deg) translate(-{{distance_half}}px) rotate(0deg);
+    }
+    to{
+      transform:rotate(360deg) translate(-{{distance_half}}px) rotate(-360deg);
+    }
+  }
 
-#p{{ind}}_walk{
-  position: absolute;
-  width: {{distance}}px;
-  height: {{distance}}px;
-  top: calc( 50% - {{distance_half}}px);
-  left: calc( 50% - {{distance_half}}px);
-  border-radius: {{distance_half}}px;
-  border: 1px solid #000;
-  z-index: 1;
-}
+  #planet{{id}}_walk{
+    display: {{visible}};
+    position: absolute;
+    width: {{distance}}px;
+    height: {{distance}}px;
+    top: calc( 50% - {{distance_half}}px);
+    left: calc( 50% - {{distance_half}}px);
+    border-radius: {{distance_half}}px;
+    border: 1px solid #000;
+    z-index: 1;
+  }
 
 
-#p{{ind}}{
-  position: absolute;
-  width: {{width}}px;
-  height: {{width}}px;
-  top: calc( 50% - {{width_half}}px);
-  left: calc( 50% - {{width_half}}px);
-  background-color: #888888;
-  border-radius: {{width_half}}px;
-  z-index: 2;
-  animation: rotate{{ind}} {{rotate_time}}s infinite linear;
-}
+  #planet{{id}}{
+    display: {{visible}};
+    position: absolute;
+    width: {{width}}px;
+    height: {{width}}px;
+    top: calc( 50% - {{width_half}}px);
+    left: calc( 50% - {{width_half}}px);
+    background-color: #888888;
+    border-radius: {{width_half}}px;
+    z-index: 2;
+    animation: planetRotate{{id}} {{rotate_time}}s infinite linear;
+  }
 
-#p{{ind}}:hover{
-  background-color: #f00;
-  cursor: pointer;
-}
+  #planet{{id}}:hover{
+    background-color: #f00;
+    cursor: pointer;
+  }
+</script>
+
+<script type="text/x-template" id="moon_style">
+  @keyframes moonRotate{{id}}{
+    from{
+      transform:rotate(0deg) translate(-{{distance_half}}px) rotate(0deg);
+    }
+    to{
+      transform:rotate(360deg) translate(-{{distance_half}}px) rotate(-360deg);
+    }
+  }
+
+  #moon{{id}}_walk{
+    display: {{visible}};
+    position: absolute;
+    width: {{distance}}px;
+    height: {{distance}}px;
+    top: calc( 50% - {{distance_half}}px);
+    left: calc( 50% - {{distance_half}}px);
+    border-radius: {{distance_half}}px;
+    border: 1px solid #000;
+    z-index: 1;
+  }
+
+
+  #moon{{id}}{
+    display: {{visible}};
+    position: absolute;
+    width: {{width}}px;
+    height: {{width}}px;
+    top: calc( 50% - {{width_half}}px);
+    left: calc( 50% - {{width_half}}px);
+    background-color: #eee;
+    border-radius: {{width_half}}px;
+    border: 1px solid #000;
+    z-index: 2;
+    animation: moonRotate{{id}} {{rotate_time}}s infinite linear;
+  }
+
+  #moon{{id}}:hover{
+    background-color: #f00;
+    cursor: pointer;
+  }
 </script>

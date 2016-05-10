@@ -89,3 +89,17 @@ html, body{
   position: relative;
   margin: 0 auto;
 }
+
+.planet_zoomed{
+  animation: none !important;
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  top: calc(50% - 100px);
+  left: calc(50% - 100px);
+}
+
+.planet_zoomed:hover{
+  background-color: #888888 !important;
+  cursor: default !important;
+}

@@ -1,7 +1,22 @@
 <div class="full_height" layout="column" flex class="content">
+  <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="leftmenu">
+    <md-toolbar class="md-tall md-hue-2">
+      <span flex></span>
+      <div layout="column" class="md-toolbar-tools-bottom inset">
+        <h3>Void</h3>
+      </div>
+    </md-toolbar>
+    <md-list>
+      <md-list-item md-ink-ripple class="md-clickable" ng-click="vm.logout()">
+        <md-icon md-svg-src="/img/header/logout.svg"></md-icon>
+        <p>Salir</p>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+
   <md-toolbar layout="row">
     <div class="md-toolbar-tools">
-      <md-button href="#/" class="md-icon-button" aria-label="Menú">
+      <md-button class="md-icon-button" aria-label="Menú" ng-click="vm.openMenu()">
         <md-icon md-svg-icon="img/header/menu.svg"></md-icon>
       </md-button>
       <h2>
