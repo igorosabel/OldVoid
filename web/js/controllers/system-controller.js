@@ -39,9 +39,11 @@
       resources:  []
     };
 
-    vm.selectSystem = selectSystem;
-    vm.selectPlanet = selectPlanet;
-    vm.selectMoon   = selectMoon;
+    vm.selectSystem  = selectSystem;
+    vm.selectPlanet  = selectPlanet;
+    vm.selectMoon    = selectMoon;
+    vm.explorePlanet = explorePlanet;
+    vm.exploreMoon   = exploreMoon;
     
     // Datos
     var explorer_system = DataShareService.getSystem();
@@ -331,6 +333,12 @@
         vm.info_box.has_life = obj.has_life;
         vm.info_box.moons    = obj.moons;
       }
+      if (vm.info_box.view=='moon'){
+        vm.info_box.name     = obj.name;
+        vm.info_box.radius   = obj.radius;
+        vm.info_box.survival = obj.survival;
+        vm.info_box.has_life = obj.has_life;
+      }
     }
 
     function calculateCSS(list){
@@ -350,6 +358,50 @@
       }
 
       return css;
+    }
+
+    function explorePlanet(){
+      APIService.Explore(vm.selectedPlanet.id, 'planet', function(response){
+        
+        if (response.status=='working'){
+          
+        }
+        else{
+          
+        }
+        vm.selectedPlanet.explored = true;
+
+        for (var i=0;i<vm.selectedSystem.planet_list.length;i++){
+          if (vm.selectedSystem.planet_list[i].id==vm.selectedPlanet.id){
+            vm.selectedSystem.planet_list[i].explored = true;
+            break;
+          }
+        }
+
+        DataShareService.setSystem(vm.selectedSystem);
+        AuthenticationService.SaveLocalstorage();
+      });
+    }
+
+    function exploreMoon(){
+      APIService.Explore(vm.selectedMoon.id, 'moon', function(response){
+        vm.selectedMoon.explored = true;
+
+        var found = false;
+        for (var i=0;i<vm.selectedSystem.planet_list.length;i++){
+          for (var j=0;j<vm.selectedSystem.planet_list[i].moon_list.length;j++){
+            if (vm.selectedSystem.planet_list[i].moon_list[j].id==vm.selectedMoon.id){
+              vm.selectedSystem.planet_list[i].moon_list[j].explored = true;
+              found = true;
+              break;
+            }
+          }
+          if (found){ break; }
+        }
+
+        DataShareService.setSystem(vm.selectedSystem);
+        AuthenticationService.SaveLocalstorage();
+      });
     }
   }
 })();

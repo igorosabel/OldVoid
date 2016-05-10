@@ -23,7 +23,10 @@ class G_Planet extends G_Base{
     parent::load($gestor,$tablename,$model);
   }
   
-  private $moons = array();
+  private $moons     = array();
+  private $npc       = null;
+  private $explored  = false;
+  private $resources = array();
   
   public function setMoons($m){
     $this->moons = $m;
@@ -32,12 +35,24 @@ class G_Planet extends G_Base{
     return $this->moons;
   }
   
-  private $npc = false;
-  
   public function setNPC($n){
     $this->npc = $n;
   }
   public function getNPC(){
     return $this->npc;
+  }
+
+  public function setExplored($e){
+    $this->explored = $e;
+  }
+  public function getExplored(){
+    return $this->explored;
+  }
+
+  public function setResources($r){
+    $this->resources = $r;
+  }
+  public function getResources(){
+    return $this->resources;
   }
 }

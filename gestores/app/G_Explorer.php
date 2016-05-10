@@ -11,6 +11,7 @@ class G_Explorer extends G_Base{
         'credits'    => array('type'=>Base::NUM,      'com'=>'Cantidad de créditos del usuario'),
         'current_ship'    => array('type'=>Base::NUM, 'com'=>'Id de la nave que actualmente está usando el explorador'),
         'last_save_point' => array('type'=>Base::NUM, 'com'=>'Último punto de salvado, Id del sistema'),
+        'id_job'     => array('type'=>Base::NUM,      'com'=>'Id del trabajo en curso o NULL si no está haciendo ninguno'),
         'auth'       => array('type'=>Base::TEXTO,    'len'=>50, 'com'=>'clave auth para la api'),
         'created_at' => array('type'=>Base::CREATED,  'com'=>'Fecha de creación del registro'),
         'updated_at' => array('type'=>Base::UPDATED,  'com'=>'Fecha de última modificación del registro')

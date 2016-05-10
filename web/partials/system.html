@@ -82,6 +82,10 @@
               {{vm.info_box.moons}}
             </span>
           </div>
+          <div class="system_info_box_line">
+            <label>Recursos:</label>
+            <span ng-hide="vm.selectedPlanet.explored">Sin explorar</span>
+          </div>
         </div>
         <div ng-if="vm.info_box.view=='moon'">
           <div class="system_info_box_line">
@@ -104,7 +108,7 @@
           </div>
           <div class="system_info_box_line">
             <label>Recursos:</label>
-            <span></span>
+            <span ng-hide="vm.selectedPlanet.explored">Sin explorar</span>
           </div>
         </div>
       </div>
@@ -141,11 +145,31 @@
       </div>
 
       <div ng-if="vm.info_box.view=='planet'">
-        planet
+        <h3 class="center">
+          Acciones
+        </h3>
+
+        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedPlanet.explored" ng-click="vm.explorePlanet()">
+          <div layout="row">
+            <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
+            <p flex>Explorar planeta</p>
+            <p>03:25</p>
+          </div>
+        </md-button>
       </div>
 
       <div ng-if="vm.info_box.view=='moon'">
-        moon
+        <h3 class="center">
+          Acciones
+        </h3>
+
+        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedMoon.explored" ng-click="vm.exploreMoon()">
+          <div layout="row">
+            <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
+            <p flex>Explorar luna</p>
+            <p>03:25</p>
+          </div>
+        </md-button>
       </div>
 
     </md-card-content>

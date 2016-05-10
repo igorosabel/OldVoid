@@ -6,6 +6,7 @@ CREATE TABLE `explorer` (
   `credits` int(11) NOT NULL COMMENT 'Cantidad de créditos del usuario' ,
   `current_ship` int(11) NOT NULL COMMENT 'Id de la nave que actualmente está usando el explorador' ,
   `last_save_point` int(11) NOT NULL COMMENT 'Último punto de salvado, Id del sistema' ,
+  `id_job` int(11) NOT NULL COMMENT 'Id del trabajo en curso o NULL si no está haciendo ninguno' ,
   `auth` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'clave auth para la api' ,
   `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
   `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
@@ -247,6 +248,29 @@ CREATE TABLE `npc_note` (
   `id_explorer` int(11) NOT NULL COMMENT 'Id del usuario que pone la nota' ,
   `id_npc` int(11) NOT NULL COMMENT 'Id del NPC que tiene la nota' ,
   `note` text COLLATE utf8_unicode_ci  NOT NULL COMMENT 'Nota que el explorador pone al NPC' ,
+  `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
+  `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+
+CREATE TABLE `explored` (
+  `id_explorer` int(11) NOT NULL COMMENT 'Id del explorador' ,
+  `id_planet` int(11) NOT NULL COMMENT 'Id del planeta explorado o null si es una luna' ,
+  `id_moon` int(11) NOT NULL COMMENT 'Id de la luna explorada o null si es un planeta' ,
+  `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
+  `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
+  PRIMARY KEY (`id_explorer`,`id_planet`,`id_moon`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+
+CREATE TABLE `job` (
+  `id` int(11) NOT NULL COMMENT 'Id único del trabajo' AUTO_INCREMENT,
+  `id_explorer` int(11) NOT NULL COMMENT 'Id del explorador que hace el trabajo' ,
+  `type` int(11) NOT NULL COMMENT 'Tipo de trabajo' ,
+  `value` text COLLATE utf8_unicode_ci  NOT NULL COMMENT 'Información extra del trabajo' ,
+  `start` int(11) NOT NULL COMMENT 'Timestamp de la fecha de inicio' ,
+  `duration` int(11) NOT NULL COMMENT 'Duración del trabajo' ,
   `created_at` datetime NOT NULL COMMENT 'Fecha de creación del registro' ,
   `updated_at` datetime NOT NULL COMMENT 'Fecha de última modificación del registro' ,
   PRIMARY KEY (`id`)

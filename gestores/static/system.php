@@ -71,7 +71,7 @@ class System{
     return $ret;
   }
   
-  public static function loadPlanets($system){
+  public static function loadPlanets($explorer,$system){
     $bd = new G_BBDD();
     $ret = array();
     
@@ -81,18 +81,31 @@ class System{
     while ($res=$bd->sig()){
       $planet = new G_Planet();
       $planet->actualizar($res);
-      
-      $planet->setMoons(self::loadMoons($planet));
+
+      // Busco NPC en el planeta
       if ($planet->get('npc')){
         $planet->setNpc(NPC::loadNPC($planet->get('id_owner')));
       }
+
+      // Compruebo si el planeta ya ha sido explorado
+      $explored = new G_Explored();
+      if ($explored->buscar(array(
+        'id_explorer' => $explorer->get('id'),
+        'id_planet' =>$planet->get('id')
+      ))){
+        $planet->setExplored(true);
+      }
+
+      // Cargo lunas del planeta
+      $planet->setMoons(self::loadMoons($explorer,$planet));
+
       array_push($ret, $planet);
     }
     
     return $ret;
   }
   
-  public static function loadMoons($planet){
+  public static function loadMoons($explorer,$planet){
     $bd = new G_BBDD();
     $ret = array();
     
@@ -102,9 +115,19 @@ class System{
     while ($res=$bd->sig()){
       $moon = new G_Moon();
       $moon->actualizar($res);
-      
+
+      // Busco NPC en la luna
       if ($moon->get('npc')){
         $moon->setNpc(NPC::loadNPC($moon->get('id_owner')));
+      }
+
+      // Compruebo si el planeta ya ha sido explorado
+      $explored = new G_Explored();
+      if ($explored->buscar(array(
+        'id_explorer' => $explorer->get('id'),
+        'id_moon' =>$moon->get('id')
+      ))){
+        $moon->setExplored(true);
       }
       
       array_push($ret, $moon);

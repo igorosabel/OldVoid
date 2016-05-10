@@ -11,8 +11,8 @@
  
     service.GetSystem         = GetSystem;
     service.GetNotifications  = GetNotifications;
-    //service.people_in_system  = [];
     service.GetPeopleInSystem = GetPeopleInSystem;
+    service.Explore           = Explore;
 
     return service;
  
@@ -33,7 +33,13 @@
     function GetPeopleInSystem(id, callback){
       $http.post(api_url + 'get_people_in_system', {id: id, auth: DataShareService.getUser().auth})
         .success(function (response){
-          //angular.copy(response, service.people_in_system);
+          callback && callback(response);
+        });
+    }
+
+    function Explore(id, type, callback){
+      $http.post(api_url + 'explore', {id: id, type: type, auth: DataShareService.getUser().auth})
+        .success(function (response){
           callback && callback(response);
         });
     }

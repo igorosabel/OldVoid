@@ -79,6 +79,16 @@
 
   echo $sql;
 
+  $m = new G_Explored();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+  
+  $m = new G_Job();
+  $sql .= $m->generate();
+  $sql .= "\n\n";
+
+  echo $sql;
+
   $ruta = $c->getRutaSQL()."model.sql";
   if (file_exists($ruta)){
     unlink($ruta);

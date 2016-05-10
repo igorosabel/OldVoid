@@ -22,11 +22,27 @@ class G_Moon extends G_Base{
   }
   
   private $npc = false;
+  private $explored  = false;
+  private $resources = array();
   
   public function setNPC($n){
     $this->npc = $n;
   }
   public function getNPC(){
     return $this->npc;
+  }
+
+  public function setExplored($e){
+    $this->explored = $e;
+  }
+  public function getExplored(){
+    return $this->explored;
+  }
+
+  public function setResources($r){
+    $this->resources = $r;
+  }
+  public function getResources(){
+    return $this->resources;
   }
 }

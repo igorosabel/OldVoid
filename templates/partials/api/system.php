@@ -23,6 +23,7 @@
       "survival": <?php echo $planet->get('survival') ?>,
       "has_life": <?php echo ($planet->get('has_life')==1)?'true':'false' ?>,
       "distance": <?php echo $planet->get('distance') ?>,
+      "explored": <?php echo ($planet->getExplored())?'true':'false' ?>,
       "npc": <?php if (!$planet->get('npc')): ?>false<?php else: ?>
         {
           "id": <? echo $planet->getNPC()->get('id') ?>,
@@ -48,6 +49,7 @@
           "survival": <?php echo $moon->get('survival') ?>,
           "has_life": <?php echo ($moon->get('has_life')==1)?'true':'false' ?>,
           "distance": <?php echo $moon->get('distance') ?>,
+          "explored": <?php echo ($moon->getExplored())?'true':'false' ?>,
           "npc": <?php if (!$moon->get('npc')): ?>false<?php else: ?>
             {
               "id": <? echo $moon->getNPC()->get('id') ?>,

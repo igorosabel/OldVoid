@@ -56,6 +56,14 @@
         "action": "getPeopleInSystem",
         "comment": "Función para obtener los exploradores y NPCs de un sistema",
         "login": "dont"
+      },
+      {
+        "id": "explore",
+        "url": "/api/explore",
+        "module": "api",
+        "action": "explore",
+        "comment": "Función para explorar un planeta o una luna",
+        "login": "dont"
       }
   ]
 }
