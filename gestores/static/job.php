@@ -4,6 +4,7 @@ class Job{
     Tipos de trabajos
   */
   const EXPLORE         = 1;
+  const JUMP            = 2;
   
   const STATUS_WORKING  = 1;
   const STATUS_FINISHED = 2;
@@ -36,5 +37,17 @@ class Job{
     }
     
     return $ret;
+  }
+
+  public static function getJobName($type){
+    switch($type){
+      case self::EXPLORE:{
+        return "Exploración";
+      }
+      case self::JUMP:{
+        return "Navegación";
+      }
+    }
+    return "";
   }
 }

@@ -20,23 +20,6 @@
       $explorer->set('id_job',null);
       $explorer->salvar();
 
-      // Cojo datos del trabajo
-      $data = json_decode($job->get('value'),true);
-      
-      // Si el trabajo era de exploración, marco el planeta como explorado
-      if ($job->get('type')==Job::EXPLORE){
-        $explored = new G_Explored();
-        $explored->set('id_explorer',$explorer->get('id'));
-        if ($data['type']=='planet') {
-          $explored->set('id_moon', 0);
-          $explored->set('id_planet', $data['id']);
-        }
-        if ($data['type']=='moon') {
-          $explored->set('id_moon', $data['id']);
-          $explored->set('id_planet', 0);
-        }
-  
-        $explored->salvar();
-      }
+      $job->jobDone();
     }
   }

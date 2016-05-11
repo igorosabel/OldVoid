@@ -149,7 +149,7 @@
           Acciones
         </h3>
 
-        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedPlanet.explored" ng-click="vm.explorePlanet()">
+        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedPlanet.explored" ng-click="vm.explorePlanet($event)">
           <div layout="row">
             <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
             <p flex>Explorar planeta</p>
@@ -163,7 +163,7 @@
           Acciones
         </h3>
 
-        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedMoon.explored" ng-click="vm.exploreMoon()">
+        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedMoon.explored" ng-click="vm.exploreMoon($event)">
           <div layout="row">
             <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
             <p flex>Explorar luna</p>

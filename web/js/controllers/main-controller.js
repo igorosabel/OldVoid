@@ -8,7 +8,7 @@
   MainController.$inject = ['$routeParams', '$location', '$mdSidenav', 'AuthenticationService', 'DataShareService'];
   function MainController($routeParams, $location, $mdSidenav, AuthenticationService, DataShareService){
     console.log('MainController');
-    if (AuthenticationService.loadLocalStorage() && !DataShareService.getUser()){
+    if (AuthenticationService.loadLocalStorage() && !DataShareService.GetUser()){
       AuthenticationService.ClearCredentials();
       $location.path('/');
       return false;
@@ -22,10 +22,10 @@
     };
 
     var header_tab = $location.path().substr(1,$location.path().length);
-    DataShareService.setGlobal('tab',header_tab);
+    DataShareService.SetGlobal('tab',header_tab);
     
     if ($routeParams.system_id){
-      DataShareService.setGlobal('system_id',$routeParams.system_id);
+      DataShareService.SetGlobal('system_id',$routeParams.system_id);
     }
 
     vm.openMenu = openMenu;

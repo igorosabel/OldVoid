@@ -5,20 +5,21 @@
     .module('VoidApp')
     .controller('SystemController', SystemController);
 
-  SystemController.$inject = ['DataShareService', 'APIService'];
-  function SystemController(DataShareService, APIService){
+  SystemController.$inject = ['$rootScope','$mdDialog', 'DataShareService', 'APIService', 'JobService', 'AuthenticationService'];
+  function SystemController($rootScope, $mdDialog, DataShareService, APIService, JobService, AuthenticationService){
     console.log('SystemController');
 
     var vm = this;
     
-    vm.system_tab = DataShareService.getGlobal('system_tab');
+    vm.system_tab = DataShareService.GetGlobal('system_tab');
     if (!vm.system_tab){
       vm.system_tab = 'system';
     }
 
     vm.system_view    = 'system';
-    vm.system_id      = DataShareService.getGlobal('system_id');
+    vm.system_id      = DataShareService.GetGlobal('system_id');
     vm.sidebar_list   = [];
+    vm.working        = DataShareService.GetGlobal('working');
     vm.selectedSystem = null;
     vm.selectedPlanet = null;
     vm.selectedMoon   = null;
@@ -46,14 +47,14 @@
     vm.exploreMoon   = exploreMoon;
     
     // Datos
-    var explorer_system = DataShareService.getSystem();
+    var explorer_system = DataShareService.GetSystem();
     vm.selectedSystem = {};
     if (!vm.system_id){
-      vm.selectedSystem = DataShareService.getSystem();
+      vm.selectedSystem = DataShareService.GetSystem();
       loadSystem();
     }
     else{
-      vm.selectedSystem = DataShareService.getGlobal('system_current');
+      vm.selectedSystem = DataShareService.GetGlobal('system_current');
       if (!vm.selectedSystem || (vm.selectedSystem && vm.selectedSystem.id!=vm.system_id)){
         APIService.GetSystem(vm.system_id,function(response){
           vm.selectedSystem = response.system;
@@ -83,7 +84,37 @@
         });
       }
     }
-    
+
+    // Eventos de trabajo terminado: exploración, navegación...
+    $rootScope.$on('job_finish', function(event, e){
+      switch (e.type){
+        // Explorar
+        case 1: {
+          APIService.GetSystem(vm.selectedSystem.id,function(response){
+            
+          });
+          vm.selectedPlanet.explored = true;
+
+          for (var i=0;i<vm.selectedSystem.planet_list.length;i++){
+            if (vm.selectedSystem.planet_list[i].id==vm.selectedPlanet.id){
+              vm.selectedSystem.planet_list[i].explored = true;
+              break;
+            }
+          }
+
+          vm.working = DataShareService.GetGlobal('working');
+          DataShareService.SetSystem(vm.selectedSystem);
+          AuthenticationService.SaveLocalstorage();
+        }
+        break;
+        // Saltar
+        case 2: {
+
+        }
+        break;
+      }
+    });
+
     function loadSystem(){
       // Sistema
       vm.system_list = [];
@@ -360,26 +391,23 @@
       return css;
     }
 
-    function explorePlanet(){
+    function explorePlanet(ev){
       APIService.Explore(vm.selectedPlanet.id, 'planet', function(response){
         
         if (response.status=='working'){
-          
+          $mdDialog.show(
+            $mdDialog.alert()
+            .clickOutsideToClose(true)
+            .title('Trabajando...')
+            .textContent('Actualmente estás realizando otro trabajo. Tendrás que esperar a que acabe para poder explorar este planeta.')
+            .ariaLabel('Trabajando...')
+            .ok('Entendido')
+            .targetEvent(ev)
+          );
         }
         else{
-          
+          JobService.AddJob(response.job);
         }
-        vm.selectedPlanet.explored = true;
-
-        for (var i=0;i<vm.selectedSystem.planet_list.length;i++){
-          if (vm.selectedSystem.planet_list[i].id==vm.selectedPlanet.id){
-            vm.selectedSystem.planet_list[i].explored = true;
-            break;
-          }
-        }
-
-        DataShareService.setSystem(vm.selectedSystem);
-        AuthenticationService.SaveLocalstorage();
       });
     }
 
@@ -399,7 +427,7 @@
           if (found){ break; }
         }
 
-        DataShareService.setSystem(vm.selectedSystem);
+        DataShareService.SetSystem(vm.selectedSystem);
         AuthenticationService.SaveLocalstorage();
       });
     }

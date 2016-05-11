@@ -25,4 +25,42 @@ class G_Job extends G_Base{
   public function getStatus(){
     return $this->status;
   }
+
+  public function jobDone(){
+    if ($this->get('type')==Job::EXPLORE){
+      jobDoneExplore();
+    }
+  }
+
+  public function jobDoneExplore(){
+    $data = json_decode($this->get('value'),true);
+    $explored = new G_Explored();
+    $explored->set('id_explorer',$this->get('id_explorer'));
+    if ($data['type']=='planet') {
+      $explored->set('id_moon', 0);
+      $explored->set('id_planet', $data['id']);
+
+      $pl = new G_Planet();
+      $pl->buscar(array('id'=>$data['id']));
+      if (!$pl->get('explored')){
+        $pl->setExplored(true);
+        $pl->salvar();
+        System::generateResources('planet',$pl);
+      }
+    }
+    if ($data['type']=='moon') {
+      $explored->set('id_moon', $data['id']);
+      $explored->set('id_planet', 0);
+
+      $mo = new G_Moon();
+      $mo->buscar(array('id'=>$data['id']));
+      if (!$mo->get('explored')){
+        $mo->setExplored(true);
+        $mo->salvar();
+        System::generateResources('moon',$mo);
+      }
+    }
+
+    $explored->salvar();
+  }
 }

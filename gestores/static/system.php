@@ -135,6 +135,40 @@ class System{
     
     return $ret;
   }
+
+  public static function generateResources($type,$obj){
+    $resources = Base::getCache('resource');
+    $id_planet = 0;
+    $id_moon = 0;
+    if ($type=='planet'){
+      $id_planet = $obj->get('id');
+    }
+    if ($type=='moon'){
+      $id_moon = $obj->get('id');
+    }
+
+    $num_resources = rand(0,4);
+    $resource_list = array();
+    $resource_ids = array();
+    while (count($resource_list)<$num_resources){
+      $resource = $resources['resources'][array_rand($resources['resources'])];
+      if (!in_array($resource['id'],$resource_ids)){
+        array_push($resource_ids,$resource['id']);
+        $value = rand($resource['min'],$resource['max']);
+
+        $res = new G_Resources();
+        $res->set('id_planet',$id_planet);
+        $res->set('id_moon',$id_moon);
+        $res->set('id_resource_type',$resource['id']);
+        $res->set('value',$value);
+        $res->salvar();
+
+        array_push($resource_list,$res);
+      }
+    }
+
+    return $resource_list;
+  }
   
   public static function goToSystem($explorer,$from,$id_system=null){
     global $c;

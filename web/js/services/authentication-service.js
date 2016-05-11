@@ -40,34 +40,34 @@
     }
  
     function SetCredentials(data){
-      DataShareService.setUser({
+      DataShareService.SetUser({
         id: data.id_user,
         name: urldecode(data.name),
         email: urldecode(data.email),
         credits: data.credits,
         auth: data.auth
       });
-      DataShareService.setShip({
+      DataShareService.SetShip({
         current: data.ship.current,
         strength: data.ship.strength,
         fuel: data.ship.fuel
       });
-      DataShareService.setSystem(data.system);
+      DataShareService.SetSystem(data.system);
     }
     
     function ClearCredentials(){
-      DataShareService.resetUser();
-      DataShareService.resetShip();
-      DataShareService.resetSystem();
+      DataShareService.ResetUser();
+      DataShareService.ResetShip();
+      DataShareService.ResetSystem();
       localStorage.removeItem('void_user_data');
       localStorage.removeItem('void_ship_data');
       localStorage.removeItem('void_system_data');
     }
     
     function SaveLocalstorage(){
-      localStorage.setItem('void_user_data',  JSON.stringify(DataShareService.getUser()));
-      localStorage.setItem('void_ship_data',  JSON.stringify(DataShareService.getShip()));
-      localStorage.setItem('void_system_data',JSON.stringify(DataShareService.getSystem()));
+      localStorage.setItem('void_user_data',  JSON.stringify(DataShareService.GetUser()));
+      localStorage.setItem('void_ship_data',  JSON.stringify(DataShareService.GetShip()));
+      localStorage.setItem('void_system_data',JSON.stringify(DataShareService.GetSystem()));
     }
     
     function LoadLocalStorage(){
@@ -75,9 +75,9 @@
       var void_ship_data   = localStorage.getItem('void_ship_data');
       var void_system_data = localStorage.getItem('void_system_data');
       if (void_user_data && void_ship_data && void_system_data){
-        DataShareService.setUser(  JSON.parse(void_user_data));
-        DataShareService.setShip(  JSON.parse(void_ship_data));
-        DataShareService.setSystem(JSON.parse(void_system_data));
+        DataShareService.SetUser(  JSON.parse(void_user_data));
+        DataShareService.SetShip(  JSON.parse(void_ship_data));
+        DataShareService.SetSystem(JSON.parse(void_system_data));
         return true;
       }
       return false;

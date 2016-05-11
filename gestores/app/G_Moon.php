@@ -14,6 +14,7 @@ class G_Moon extends G_Base{
         'survival'      => array('type'=>Base::NUM,     'com'=>'Indice de supervivencia'),
         'has_life'      => array('type'=>Base::BOOL,    'com'=>'Indica si tiene vida 1 o no 0'),
         'distance'      => array('type'=>Base::NUM,     'com'=>'Distancia de la luna a su planeta'),
+        'explored'      => array('type'=>Base::BOOL,    'com'=>'Indica si la luna ya ha sido explorada por alguien'),
         'created_at'    => array('type'=>Base::CREATED, 'com'=>'Fecha de creación del registro'),
         'updated_at'    => array('type'=>Base::UPDATED, 'com'=>'Fecha de última modificación del registro')
     );

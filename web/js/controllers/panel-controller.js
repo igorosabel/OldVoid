@@ -11,9 +11,9 @@
 
     var vm = this;
 
-    var user   = DataShareService.getUser();
-    var ship   = DataShareService.getShip();
-    var system = DataShareService.getSystem();
+    var user   = DataShareService.GetUser();
+    var ship   = DataShareService.GetShip();
+    var system = DataShareService.GetSystem();
 
     vm.user_id = user.id;
 

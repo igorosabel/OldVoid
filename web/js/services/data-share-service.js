@@ -9,57 +9,58 @@
     var service = {};
 
     service.globals     = {};
-    service.setGlobal   = setGlobal;
-    service.getGlobal   = getGlobal;
     service.user        = {};
-    service.resetUser   = resetUser;
-    service.setUser     = setUser;
-    service.getUser     = getUser;
     service.ship        = {};
-    service.resetShip   = resetShip;
-    service.setShip     = setShip;
-    service.getShip     = getShip;
-    service.system      = {};
-    service.resetSystem = resetSystem;
-    service.setSystem   = setSystem;
-    service.getSystem   = getSystem;
+    service.System      = {};
+
+    service.SetGlobal   = SetGlobal;
+    service.GetGlobal   = GetGlobal;
+    service.ResetUser   = ResetUser;
+    service.SetUser     = SetUser;
+    service.GetUser     = GetUser;
+    service.ResetShip   = ResetShip;
+    service.SetShip     = SetShip;
+    service.GetShip     = GetShip;
+    service.ResetSystem = ResetSystem;
+    service.SetSystem   = SetSystem;
+    service.GetSystem   = GetSystem;
  
     return service;
 
-    function setGlobal(key,val){
+    function SetGlobal(key,val){
       service.globals[key] = val;
     }
-    function getGlobal(key){
+    function GetGlobal(key){
       return (service.globals[key]) ? service.globals[key] : null;
     }
 
-    function resetUser(){
+    function ResetUser(){
       service.user = {};
     }
-    function setUser(user){
+    function SetUser(user){
       service.user = user;
     }
-    function getUser(){
+    function GetUser(){
       return service.user;
     }
 
-    function resetShip(){
+    function ResetShip(){
       service.ship = {};
     }
-    function setShip(ship){
+    function SetShip(ship){
       service.ship = ship;
     }
-    function getShip(){
+    function GetShip(){
       return service.ship;
     }
 
-    function resetSystem(){
+    function ResetSystem(){
       service.system = {};
     }
-    function setSystem(system){
+    function SetSystem(system){
       service.system = system;
     }
-    function getSystem(){
+    function GetSystem(){
       return service.system;
     }
   }

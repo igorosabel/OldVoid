@@ -397,12 +397,23 @@
         }
         
         if ($status=='ok'){
+          $name = '';
+          if ($type=='planet'){
+            $pl = new G_Planet();
+            $pl->buscar(array('id'=>$id));
+            $name = $pl->get('name');
+          }
+          if ($type=='moon'){
+            $mo = new G_Moon();
+            $mo->buscar(array('id'=>$id));
+            $name = $mo->get('name');
+          }
           $job = new G_Job();
           $job->set('id_explorer',$explorer->get('id'));
           $job->set('type',Job::EXPLORE);
-          $job->set('value','{"type":"'.$type.'","id":'.$id.'}');
+          $job->set('value','{"type":"'.$type.'","id":'.$id.',"name":"'.$name.'"}');
           $job->set('start',time());
-          $job->set('duration',200);
+          $job->set('duration',300);
           $job->salvar();
         }
       }
