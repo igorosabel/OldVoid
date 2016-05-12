@@ -90,21 +90,42 @@
       switch (e.type){
         // Explorar
         case 1: {
-          APIService.GetSystem(vm.selectedSystem.id,function(response){
+          var current = {
+            system: vm.selectedSystem.id,
+            planet: (vm.selectedPlanet)?vm.selectedPlanet.id:null,
+            moon: (vm.selectedMoon)?vm.selectedMoon.id:null
+          };
+          APIService.GetSystem(current.system,function(response){
+            vm.selectedSystem = response.system;
             
-          });
-          vm.selectedPlanet.explored = true;
-
-          for (var i=0;i<vm.selectedSystem.planet_list.length;i++){
-            if (vm.selectedSystem.planet_list[i].id==vm.selectedPlanet.id){
-              vm.selectedSystem.planet_list[i].explored = true;
-              break;
+            var planet_ind = -1;
+            var moon_ind   = -1;
+            var i;
+            
+            if (current.planet){
+              for (i=0;i<vm.selectedSystem.planet_list.length;i++){
+                if (vm.selectedSystem.planet_list[i].id==current.planet){
+                  planet_ind = i;
+                  break;
+                }
+              }
+              vm.selectedPlanet = vm.selectedSystem.planet_list[planet_ind];
             }
-          }
-
-          vm.working = DataShareService.GetGlobal('working');
-          DataShareService.SetSystem(vm.selectedSystem);
-          AuthenticationService.SaveLocalstorage();
+            
+            if (current.moon){
+              for (i=0;i<vm.selectedPlanet.moon_list.length;i++){
+                if (vm.selectedPlanet.moon_list[i].id==current.moon){
+                  moon_ind = i;
+                  break;
+                }
+              }
+              vm.selectedMoon = vm.selectedPlanet.moon_list[moon_ind];
+            }
+            
+            vm.working = DataShareService.GetGlobal('working');
+            DataShareService.SetSystem(vm.selectedSystem);
+            AuthenticationService.SaveLocalstorage();
+          });
         }
         break;
         // Saltar
@@ -407,7 +428,9 @@
         }
         else{
           JobService.AddJob(response.job);
+          vm.working = true;
         }
+
       });
     }
 

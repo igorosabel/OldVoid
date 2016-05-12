@@ -149,7 +149,7 @@
           Acciones
         </h3>
 
-        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedPlanet.explored" ng-click="vm.explorePlanet($event)">
+        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedPlanet.explored" ng-click="vm.explorePlanet($event)" ng-disabled="vm.working">
           <div layout="row">
             <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
             <p flex>Explorar planeta</p>

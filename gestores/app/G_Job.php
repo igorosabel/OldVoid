@@ -28,7 +28,7 @@ class G_Job extends G_Base{
 
   public function jobDone(){
     if ($this->get('type')==Job::EXPLORE){
-      jobDoneExplore();
+      $this->jobDoneExplore();
     }
   }
 
