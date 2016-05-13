@@ -62,7 +62,7 @@
         });
       }
     }
-
+console.log(vm.selectedSystem);
     // Sistemas vecinos
     for (var i=0;i<vm.selectedSystem.connections.length;i++){
       if (vm.selectedSystem.connections[i]===false){
@@ -152,12 +152,11 @@
           type: 'planet',
           distance: vm.selectedSystem.planet_list[i].distance,
           radius: vm.selectedSystem.planet_list[i].radius,
+          rotation: vm.selectedSystem.planet_list[i].rotation,
           visible: {item: true, walk: true}
         });
 
         // Añado sus lunas
-        console.log('lunas');
-        console.log(vm.selectedSystem.planet_list[i]);
         for (var j=0;j<vm.selectedSystem.planet_list[i].moon_list.length;j++){
           vm.system_list.push({
             id: vm.selectedSystem.planet_list[i].moon_list[j].id,
@@ -166,12 +165,12 @@
             planet_id: vm.selectedSystem.planet_list[i].id,
             distance: vm.selectedSystem.planet_list[i].moon_list[j].distance,
             radius: vm.selectedSystem.planet_list[i].moon_list[j].radius,
+            rotation: vm.selectedSystem.planet_list[i].moon_list[j].rotation,
             visible: {item: false, walk: false}
           });
         }
       }
       vm.system_style += calculateCSS(vm.system_list);
-      console.log(vm.selectedSystem);
       document.getElementById('system_style').innerHTML = vm.system_style;
       
       // Sidebar
@@ -402,7 +401,7 @@
           id: item.id,
           distance: (180 + (50 * item.distance)),
           distance_half: Math.floor( (180 + (50 * item.distance)) / 2 ),
-          rotate_time: (Math.random() * (100 - 2) + 2),
+          rotate_time: item.rotation,
           width: (10 * (item.radius / 10000)),
           width_half: Math.floor( (10 * (item.radius / 10000)) /2 ),
           visible: (item.type=='planet')?'block':'none'
@@ -430,28 +429,27 @@
           JobService.AddJob(response.job);
           vm.working = true;
         }
-
       });
     }
 
     function exploreMoon(){
       APIService.Explore(vm.selectedMoon.id, 'moon', function(response){
-        vm.selectedMoon.explored = true;
 
-        var found = false;
-        for (var i=0;i<vm.selectedSystem.planet_list.length;i++){
-          for (var j=0;j<vm.selectedSystem.planet_list[i].moon_list.length;j++){
-            if (vm.selectedSystem.planet_list[i].moon_list[j].id==vm.selectedMoon.id){
-              vm.selectedSystem.planet_list[i].moon_list[j].explored = true;
-              found = true;
-              break;
-            }
-          }
-          if (found){ break; }
+        if (response.status=='working'){
+          $mdDialog.show(
+            $mdDialog.alert()
+              .clickOutsideToClose(true)
+              .title('Trabajando...')
+              .textContent('Actualmente estás realizando otro trabajo. Tendrás que esperar a que acabe para poder explorar esta luna.')
+              .ariaLabel('Trabajando...')
+              .ok('Entendido')
+              .targetEvent(ev)
+          );
         }
-
-        DataShareService.SetSystem(vm.selectedSystem);
-        AuthenticationService.SaveLocalstorage();
+        else{
+          JobService.AddJob(response.job);
+          vm.working = true;
+        }
       });
     }
   }

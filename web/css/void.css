@@ -103,3 +103,14 @@ html, body{
   background-color: #888888 !important;
   cursor: default !important;
 }
+
+.npc_avatar{
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 150px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  overflow: hidden;
+  width: 150px;
+}

@@ -42,6 +42,13 @@ function configApp() {
         str = urldecode(str);
         return str;
       };
+    })
+    .filter('showtime', function () {
+      return function (num) {
+        var m = Math.floor(num / 60);
+        var s = Math.floor(num - (m * 60) );
+        return ((m<10)?'0'+m:m)+':'+((s<10)?'0'+s:s);
+      };
     });
 }
 

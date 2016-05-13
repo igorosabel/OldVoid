@@ -416,18 +416,17 @@
         
         if ($status=='ok'){
           $name   = '';
-          $common = Base::getCache('common');
-          //$explore_time = rand($common['min_time_explore'],$common['max_time_explore']);
-          $explore_time = 20;
           if ($type=='planet'){
             $pl = new G_Planet();
             $pl->buscar(array('id'=>$id));
             $name = $pl->get('name');
+            $explore_time = $pl->get('explore_time');
           }
           if ($type=='moon'){
             $mo = new G_Moon();
             $mo->buscar(array('id'=>$id));
             $name = $mo->get('name');
+            $explore_time = $mo->get('explore_time');
           }
           $job = new G_Job();
           $job->set('id_explorer',$explorer->get('id'));

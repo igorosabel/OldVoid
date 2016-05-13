@@ -12,11 +12,13 @@ class G_Planet extends G_Base{
         'name'          => array('type'=>Base::TEXTO,   'len'=>50, 'com'=>'Nombre dado por el descubridor'),
         'id_type'       => array('type'=>Base::NUM,     'com'=>'Id del tipo de planeta'),
         'radius'        => array('type'=>Base::NUM,     'com'=>'Radio del planeta en kilómetros'),
+        'rotation'      => array('type'=>Base::NUM,     'com'=>'Velocidad de rotación del planeta alrededor de la estrella'),
         'survival'      => array('type'=>Base::NUM,     'com'=>'Indice de supervivencia'),
         'has_life'      => array('type'=>Base::BOOL,    'com'=>'Indica si tiene vida 1 o no 0'),
         'distance'      => array('type'=>Base::NUM,     'com'=>'Distancia del planeta a su sol'),
         'num_moons'     => array('type'=>Base::NUM,     'com'=>'Número de lunas en el planeta'),
         'explored'      => array('type'=>Base::BOOL,    'com'=>'Indica si el planeta ya ha sido explorado por alguien'),
+        'explore_time'  => array('type'=>Base::NUM,     'com'=>'Tiempo, en segundos, necesarios para explorar el planeta'),
         'created_at'    => array('type'=>Base::CREATED, 'com'=>'Fecha de creación del registro'),
         'updated_at'    => array('type'=>Base::UPDATED, 'com'=>'Fecha de última modificación del registro')
     );

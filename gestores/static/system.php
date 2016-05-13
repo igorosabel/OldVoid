@@ -283,6 +283,7 @@ class System{
     $s = new G_System();
     $system_types  = Base::getCache('system');
     $planet_types  = Base::getCache('planet');
+    $common        = Base::getCache('common');
     $sun_type      = $system_types['mkk_types'][array_rand($system_types['mkk_types'])];
     $sun_spectral_type = $sun_type['spectral_types'][array_rand($sun_type['spectral_types'])];
     $sun_type_code = $sun_type['type'].'-'.$system_types['spectral_types']['type_'.$sun_spectral_type]['type'];
@@ -331,8 +332,10 @@ class System{
       $planet_type_id = $sun_type['planet_types'][$ind];
       $planet_type = $planet_types['planet_types']['type_'.$planet_type_id];
       $planet_radius = rand($planet_type['min_radius'],$planet_type['max_radius']);
+      $planet_rotation = rand(2,100);
       $planet_survival = $planet_type['survival'];
       $planet_has_life = $planet_type['has_life'];
+      $planet_explore_time = rand($common['min_time_explore'],$common['max_time_explore']);
       $num_moons = rand($planet_type['min_moons'],$planet_type['max_moons']);
 
       //echo "  TYPE: ".$planet_type_id."\n";
@@ -343,9 +346,12 @@ class System{
 
       $p->set('id_type',$planet_type_id);
       $p->set('radius',$planet_radius);
+      $p->set('rotation',$planet_rotation);
       $p->set('survival',$planet_survival);
       $p->set('has_life',$planet_has_life);
       $p->set('num_moons',$num_moons);
+      $p->set('explored',false);
+      $p->set('explore_time',$planet_explore_time);
 
       $planet_distance = rand($planet_type['min_distance'],$planet_type['max_distance']);
       while (in_array($planet_distance,$planet_distances)){
@@ -417,6 +423,9 @@ class System{
 
         $moon_radius = rand(1000,floor($planet_radius*0.66));
         $m->set('radius',$moon_radius);
+        
+        $moon_rotation = rand(2,100);
+        $m->set('rotation',$moon_rotation);
 
         //echo "    RADIUS: ".$moon_radius."\n";
 
@@ -438,6 +447,10 @@ class System{
         array_push($moon_distances,$moon_distance);
         $m->set('distance',$moon_distance);
         //echo "    DISTANCE: ".$moon_distance."\n";
+
+        $moon_explore_time = rand($common['min_time_explore'],$common['max_time_explore']);
+        $m->set('explored',false);
+        $m->set('explore_time',$moon_explore_time);
 
         $moon_has_npc = false;
         if ($npcs<$c->getMaxNPC()){

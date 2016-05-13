@@ -45,17 +45,25 @@ var meses = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto
 /*
  Función equivalente al urlencode de php
 */
-function urlencode( s )
-{
-  return encodeURIComponent( s ).replace( /\%20/g, '+' ).replace( /!/g, '%21' ).replace( /'/g, '%27' ).replace( /\(/g, '%28' ).replace( /\)/g, '%29' ).replace( /\*/g, '%2A' ).replace( /\~/g, '%7E' );
+function urlencode( s ){
+  if (s){
+    return encodeURIComponent( s ).replace( /\%20/g, '+' ).replace( /!/g, '%21' ).replace( /'/g, '%27' ).replace( /\(/g, '%28' ).replace( /\)/g, '%29' ).replace( /\*/g, '%2A' ).replace( /\~/g, '%7E' );
+  }
+  else{
+    return '';
+  }
 }
 
 /*
  Función equivalente al urldecode de php
 */
-function urldecode( s )
-{
-  return decodeURIComponent( s.replace( /\+/g, '%20' ).replace( /\%21/g, '!' ).replace( /\%27/g, "'" ).replace( /\%28/g, '(' ).replace( /\%29/g, ')' ).replace( /\%2A/g, '*' ).replace( /\%7E/g, '~' ) );
+function urldecode( s ){
+  if (s){
+    return decodeURIComponent( s.replace( /\+/g, '%20' ).replace( /\%21/g, '!' ).replace( /\%27/g, "'" ).replace( /\%28/g, '(' ).replace( /\%29/g, ')' ).replace( /\%2A/g, '*' ).replace( /\%7E/g, '~' ) );
+  }
+  else{
+    return '';
+  }
 }
 
 /*

@@ -153,7 +153,21 @@
           <div layout="row">
             <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
             <p flex>Explorar planeta</p>
-            <p>03:25</p>
+            <p>{{vm.selectedPlanet.explore_time | showtime}}</p>
+          </div>
+        </md-button>
+
+        <md-button class="md-raised md-warn system_jump_to" ng-hide="!vm.selectedPlanet.explored || !vm.selectedPlanet.npc">
+          <div layout="row">
+            <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
+            <p flex>Comercio</p>
+          </div>
+          <md-divider></md-divider>
+          <div layout="row">
+            <div class="npc_avatar">
+              <img ng-src="/img/race/race_{{vm.selectedPlanet.npc.id_race}}.png" />
+            </div>
+            <p>{{vm.selectedPlanet.npc.name | urldecode}}</p>
           </div>
         </md-button>
       </div>
@@ -163,11 +177,25 @@
           Acciones
         </h3>
 
-        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedMoon.explored" ng-click="vm.exploreMoon($event)">
+        <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedMoon.explored" ng-click="vm.exploreMoon($event)" ng-disabled="vm.working">
           <div layout="row">
             <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
             <p flex>Explorar luna</p>
-            <p>03:25</p>
+            <p>{{vm.selectedMoon.explore_time | showtime}}</p>
+          </div>
+        </md-button>
+        
+        <md-button class="md-raised md-warn system_jump_to" ng-hide="!vm.selectedMoon.explored || !vm.selectedMoon.npc">
+          <div layout="row">
+            <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
+            <p flex>Comercio</p>
+          </div>
+          <md-divider></md-divider>
+          <div layout="row">
+            <div class="npc_avatar">
+              <img ng-src="/img/race/race_{{vm.selectedMoon.npc.id_race}}.png" />
+            </div>
+            <p>{{vm.selectedMoon.npc.name | urldecode}}</p>
           </div>
         </md-button>
       </div>

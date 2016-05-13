@@ -20,10 +20,12 @@
       "id_type": <?php echo $planet->get('id_type') ?>,
       "type": "",
       "radius": <?php echo $planet->get('radius') ?>,
+      "rotation": <?php echo $planet->get('rotation') ?>,
       "survival": <?php echo $planet->get('survival') ?>,
       "has_life": <?php echo ($planet->get('has_life')==1)?'true':'false' ?>,
       "distance": <?php echo $planet->get('distance') ?>,
       "explored": <?php echo ($planet->getExplored())?'true':'false' ?>,
+      "explore_time": <?php echo $planet->get('explore_time') ?>,
       "npc": <?php if (!$planet->get('npc')): ?>false<?php else: ?>
         {
           "id": <? echo $planet->getNPC()->get('id') ?>,
@@ -46,14 +48,17 @@
           "id_owner": <?php echo $moon->get('id_owner') ?>,
           "owner": "",
           "radius": <?php echo $moon->get('radius') ?>,
+          "rotation": <?php echo $moon->get('rotation') ?>,
           "survival": <?php echo $moon->get('survival') ?>,
           "has_life": <?php echo ($moon->get('has_life')==1)?'true':'false' ?>,
           "distance": <?php echo $moon->get('distance') ?>,
           "explored": <?php echo ($moon->getExplored())?'true':'false' ?>,
+          "explore_time": <?php echo $planet->get('explore_time') ?>,
           "npc": <?php if (!$moon->get('npc')): ?>false<?php else: ?>
             {
               "id": <? echo $moon->getNPC()->get('id') ?>,
               "id_race": <? echo $moon->getNPC()->get('id_race') ?>,
+              "name": "<?php echo urlencode($moon->getNPC()->get('name')) ?>",
               "race": "",
               "hulls": <?php echo $moon->getNPC()->get('hulls_actual') ?>,
               "shields": <?php echo $moon->getNPC()->get('shields_actual') ?>,
