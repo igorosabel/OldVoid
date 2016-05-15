@@ -85,6 +85,12 @@
           <div class="system_info_box_line">
             <label>Recursos:</label>
             <span ng-hide="vm.selectedPlanet.explored">Sin explorar</span>
+            <div class="system_resources" ng-show="vm.selectedPlanet.resources">
+              <div class="system_resources_line" ng-repeat="resource in vm.selectedPlanet.resources" title="{{resource.name | urldecode}}">
+                <img ng-src="/img/resources/resource_{{resource.id}}.png" />
+                {{resource.value}}
+              </div>
+            </div>
           </div>
         </div>
         <div ng-if="vm.info_box.view=='moon'">
@@ -108,7 +114,13 @@
           </div>
           <div class="system_info_box_line">
             <label>Recursos:</label>
-            <span ng-hide="vm.selectedPlanet.explored">Sin explorar</span>
+            <span ng-hide="vm.selectedMoon.explored">Sin explorar</span>
+            <div class="system_resources" ng-show="vm.selectedMoon.resources">
+              <div class="system_resources_line" ng-repeat="resource in vm.selectedMoon.resources" title="{{resource.name | urldecode}}">
+                <img ng-src="/img/resources/resource_{{resource.id}}.png" />
+                {{resource.value}}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -170,6 +182,14 @@
             <p>{{vm.selectedPlanet.npc.name | urldecode}}</p>
           </div>
         </md-button>
+        
+        <md-button class="md-raised md-warn system_jump_to" ng-show="vm.selectedPlanet.resources" ng-click="vm.getResourcesPlanet($event)" ng-disabled="vm.working">
+          <div layout="row">
+            <md-icon md-svg-icon="img/system/pick.svg"></md-icon>
+            <p flex>Obtener recursos</p>
+            <p>{{vm.selectedPlanet.explore_time | showtime}}</p>
+          </div>
+        </md-button>
       </div>
 
       <div ng-if="vm.info_box.view=='moon'">
@@ -196,6 +216,14 @@
               <img ng-src="/img/race/race_{{vm.selectedMoon.npc.id_race}}.png" />
             </div>
             <p>{{vm.selectedMoon.npc.name | urldecode}}</p>
+          </div>
+        </md-button>
+        
+        <md-button class="md-raised md-warn system_jump_to" ng-show="vm.selectedMoon.resources" ng-click="vm.getResourcesMoon($event)" ng-disabled="vm.working">
+          <div layout="row">
+            <md-icon md-svg-icon="img/system/pick.svg"></md-icon>
+            <p flex>Obtener recursos</p>
+            <p>{{vm.selectedMoon.explore_time | showtime}}</p>
           </div>
         </md-button>
       </div>

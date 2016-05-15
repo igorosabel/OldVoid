@@ -19,4 +19,16 @@ class General{
 
     return $ret;
   }
+  
+  public static function getResourceName($id){
+    $resources = Base::getCache('resource');
+    
+    foreach ($resources['resources'] as $res){
+      if ($res['id']==$id){
+        return $res['name'];
+      }
+    }
+    
+    return '';
+  }
 }

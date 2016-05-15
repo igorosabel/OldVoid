@@ -98,6 +98,9 @@ class System{
 
       // Cargo lunas del planeta
       $planet->setMoons(self::loadMoons($explorer,$planet));
+      
+      // Cargo recursos del planeta
+      $planet->setResources(self::loadResources($planet,'planet'));
 
       array_push($ret, $planet);
     }
@@ -130,7 +133,27 @@ class System{
         $moon->setExplored(true);
       }
       
+      // Cargo recursos de la luna
+      $moon->setResources(self::loadResources($moon,'moon'));
+      
       array_push($ret, $moon);
+    }
+    
+    return $ret;
+  }
+  
+  public static function loadResources($where,$type){
+    $bd = new G_BBDD();
+    $ret = array();
+    
+    $sql = "SELECT * FROM `resources` WHERE `id_".$type."` = ".$where->get('id');
+    $bd->consulta($sql);
+    
+    while ($res=$bd->sig()){
+      $resource = new G_Resources();
+      $resource->actualizar($res);
+      
+      array_push($ret, $resource);
     }
     
     return $ret;

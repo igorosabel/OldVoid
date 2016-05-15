@@ -40,11 +40,13 @@
       resources:  []
     };
 
-    vm.selectSystem  = selectSystem;
-    vm.selectPlanet  = selectPlanet;
-    vm.selectMoon    = selectMoon;
-    vm.explorePlanet = explorePlanet;
-    vm.exploreMoon   = exploreMoon;
+    vm.selectSystem       = selectSystem;
+    vm.selectPlanet       = selectPlanet;
+    vm.selectMoon         = selectMoon;
+    vm.explorePlanet      = explorePlanet;
+    vm.exploreMoon        = exploreMoon;
+    vm.getResourcesPlanet = getResourcesPlanet;
+    vm.getResourcesMoon   = getResourcesMoon;
     
     // Datos
     var explorer_system = DataShareService.GetSystem();
@@ -90,47 +92,17 @@ console.log(vm.selectedSystem);
       switch (e.type){
         // Explorar
         case 1: {
-          var current = {
-            system: vm.selectedSystem.id,
-            planet: (vm.selectedPlanet)?vm.selectedPlanet.id:null,
-            moon: (vm.selectedMoon)?vm.selectedMoon.id:null
-          };
-          APIService.GetSystem(current.system,function(response){
-            vm.selectedSystem = response.system;
-            
-            var planet_ind = -1;
-            var moon_ind   = -1;
-            var i;
-            
-            if (current.planet){
-              for (i=0;i<vm.selectedSystem.planet_list.length;i++){
-                if (vm.selectedSystem.planet_list[i].id==current.planet){
-                  planet_ind = i;
-                  break;
-                }
-              }
-              vm.selectedPlanet = vm.selectedSystem.planet_list[planet_ind];
-            }
-            
-            if (current.moon){
-              for (i=0;i<vm.selectedPlanet.moon_list.length;i++){
-                if (vm.selectedPlanet.moon_list[i].id==current.moon){
-                  moon_ind = i;
-                  break;
-                }
-              }
-              vm.selectedMoon = vm.selectedPlanet.moon_list[moon_ind];
-            }
-            
-            vm.working = DataShareService.GetGlobal('working');
-            DataShareService.SetSystem(vm.selectedSystem);
-            AuthenticationService.SaveLocalstorage();
-          });
+          reloadSystem();
         }
         break;
         // Saltar
         case 2: {
 
+        }
+        break;
+        // Obtener recursos
+        case 3: {
+          reloadSystem();
         }
         break;
       }
@@ -185,6 +157,45 @@ console.log(vm.selectedSystem);
 
       vm.system_hide_jump_to = (vm.selectedSystem.id==explorer_system.id);
       vm.system_jump_to_time = '02:37';
+    }
+    
+    function reloadSystem(){
+      var current = {
+        system: vm.selectedSystem.id,
+        planet: (vm.selectedPlanet)?vm.selectedPlanet.id:null,
+        moon: (vm.selectedMoon)?vm.selectedMoon.id:null
+      };
+      APIService.GetSystem(current.system,function(response){
+        vm.selectedSystem = response.system;
+        
+        var planet_ind = -1;
+        var moon_ind   = -1;
+        var i;
+        
+        if (current.planet){
+          for (i=0;i<vm.selectedSystem.planet_list.length;i++){
+            if (vm.selectedSystem.planet_list[i].id==current.planet){
+              planet_ind = i;
+              break;
+            }
+          }
+          vm.selectedPlanet = vm.selectedSystem.planet_list[planet_ind];
+        }
+        
+        if (current.moon){
+          for (i=0;i<vm.selectedPlanet.moon_list.length;i++){
+            if (vm.selectedPlanet.moon_list[i].id==current.moon){
+              moon_ind = i;
+              break;
+            }
+          }
+          vm.selectedMoon = vm.selectedPlanet.moon_list[moon_ind];
+        }
+        
+        vm.working = DataShareService.GetGlobal('working');
+        DataShareService.SetSystem(vm.selectedSystem);
+        AuthenticationService.SaveLocalstorage();
+      });
     }
 
     function selectSystem(item){
@@ -434,6 +445,48 @@ console.log(vm.selectedSystem);
 
     function exploreMoon(){
       APIService.Explore(vm.selectedMoon.id, 'moon', function(response){
+
+        if (response.status=='working'){
+          $mdDialog.show(
+            $mdDialog.alert()
+              .clickOutsideToClose(true)
+              .title('Trabajando...')
+              .textContent('Actualmente estás realizando otro trabajo. Tendrás que esperar a que acabe para poder explorar esta luna.')
+              .ariaLabel('Trabajando...')
+              .ok('Entendido')
+              .targetEvent(ev)
+          );
+        }
+        else{
+          JobService.AddJob(response.job);
+          vm.working = true;
+        }
+      });
+    }
+    
+    function getResourcesPlanet(ev){
+      APIService.GetResources(vm.selectedPlanet.id, 'planet', function(response){
+        
+        if (response.status=='working'){
+          $mdDialog.show(
+            $mdDialog.alert()
+            .clickOutsideToClose(true)
+            .title('Trabajando...')
+            .textContent('Actualmente estás realizando otro trabajo. Tendrás que esperar a que acabe para poder explorar este planeta.')
+            .ariaLabel('Trabajando...')
+            .ok('Entendido')
+            .targetEvent(ev)
+          );
+        }
+        else{
+          JobService.AddJob(response.job);
+          vm.working = true;
+        }
+      });
+    }
+
+    function getResourcesMoon(){
+      APIService.GetResources(vm.selectedMoon.id, 'moon', function(response){
 
         if (response.status=='working'){
           $mdDialog.show(

@@ -393,7 +393,7 @@
     
     $job    = false;
 
-    if ($id===false || type===false || $auth===false){
+    if ($id===false || $type===false || $auth===false){
       $status = 'error';
     }
 
@@ -431,6 +431,83 @@
           $job = new G_Job();
           $job->set('id_explorer',$explorer->get('id'));
           $job->set('type',Job::EXPLORE);
+          $job->set('value','{"type":"'.$type.'","id":'.$id.',"name":"'.$name.'"}');
+          $job->set('start',time());
+          $job->set('duration',$explore_time);
+          $job->salvar();
+
+          $explorer->set('id_job',$job->get('id'));
+          $explorer->salvar();
+        }
+      }
+      else{
+        $status = 'error';
+      }
+    }
+
+    $t->setLayout(false);
+    $t->setJson(true);
+
+    $t->add('status',$status);
+    $t->addPartial('job','api/job',array('job'=>$job,'extra'=>'nourlencode'));
+
+    $t->process();
+  }
+  
+  /*
+    Función para obtener recursos de un planeta o una luna
+  */
+  function executeGetResources($req, $t){
+    /*
+      Código de la página
+    */
+    global $c, $s;
+
+    $status = 'ok';
+    $id     = Base::getParam('id',   $req['url_params'], false);
+    $type   = Base::getParam('type', $req['url_params'], false);
+    $auth   = Base::getParam('auth', $req['url_params'], false);
+    
+    $job    = false;
+
+    if ($id===false || $type===false || $auth===false){
+      $status = 'error';
+    }
+
+    if ($status=='ok'){
+      $explorer = new G_Explorer();
+      if ($explorer->buscar(array('auth'=>$auth))) {
+        
+        if ($explorer->get('id_job')){
+          $job = Job::checkJob($explorer->get('id_job'));
+          
+          if ($job->getStatus()==Job::STATUS_FINISHED){
+            $job->jobDone();
+            $explorer->set('id_job',null);
+            $explorer->salvar();
+          }
+          else{
+            $status = 'working';
+          }
+        }
+        
+        if ($status=='ok'){
+          $name   = '';
+          if ($type=='planet'){
+            $pl = new G_Planet();
+            $pl->buscar(array('id'=>$id));
+            $name = $pl->get('name');
+            $explore_time = $pl->get('explore_time');
+          }
+          if ($type=='moon'){
+            $mo = new G_Moon();
+            $mo->buscar(array('id'=>$id));
+            $name = $mo->get('name');
+            $explore_time = $mo->get('explore_time');
+          }
+          $job = new G_Job();
+          $job->set('id_explorer',$explorer->get('id'));
+          $job->set('type',Job::RESOURCES);
           $job->set('value','{"type":"'.$type.'","id":'.$id.',"name":"'.$name.'"}');
           $job->set('start',time());
           $job->set('duration',$explore_time);

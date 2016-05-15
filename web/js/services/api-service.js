@@ -13,6 +13,7 @@
     service.GetNotifications  = GetNotifications;
     service.GetPeopleInSystem = GetPeopleInSystem;
     service.Explore           = Explore;
+    service.GetResources      = GetResources;
 
     return service;
  
@@ -39,6 +40,13 @@
 
     function Explore(id, type, callback){
       $http.post(api_url + 'explore', {id: id, type: type, auth: DataShareService.GetUser().auth})
+        .success(function (response){
+          callback && callback(response);
+        });
+    }
+    
+    function GetResources(id, type, callback){
+      $http.post(api_url + 'get_resources', {id: id, type: type, auth: DataShareService.GetUser().auth})
         .success(function (response){
           callback && callback(response);
         });

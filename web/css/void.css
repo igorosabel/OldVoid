@@ -104,6 +104,23 @@ html, body{
   cursor: default !important;
 }
 
+.system_resources{
+  float: left;
+  overflow: hidden;
+  width: 40%;
+}
+
+.system_resources_line{
+  clear: both;
+  line-height: 20px;
+  overflow: hidden;
+}
+
+.system_resources_line img{
+  vertical-align: middle;
+  width: 20px;
+}
+
 .npc_avatar{
   background-color: #ddd;
   border: 1px solid #ccc;

@@ -64,6 +64,14 @@
         "action": "explore",
         "comment": "Función para explorar un planeta o una luna",
         "login": "dont"
+      },
+      {
+        "id": "get_resources",
+        "url": "/api/get_resources",
+        "module": "api",
+        "action": "getResources",
+        "comment": "Función para obtener recursos de un planeta o una luna",
+        "login": "dont"
       }
   ]
 }

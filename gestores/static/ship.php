@@ -1,5 +1,41 @@
 <?php
 class Ship{
+  const MODULE_STORAGE = 'storage';
+  
+  public static function loadGuns($ship){
+    $bd = new G_BBDD();
+    $ret = array();
+    
+    $sql = "SELECT * FROM `gun` WHERE `id_ship` = ".$ship->get('id');
+    $bd->consulta($sql);
+    
+    while ($res=$bd->sig()){
+      $gun = new G_Gun();
+      $gun->actualizar($res);
+      
+      array_push($ret,$gun);
+    }
+    
+    return $ret;
+  }
+  
+  public static function loadModules($ship){
+    $bd = new G_BBDD();
+    $ret = array();
+    
+    $sql = "SELECT * FROM `module` WHERE `id_ship` = ".$ship->get('id');
+    $bd->consulta($sql);
+    
+    while ($res=$bd->sig()){
+      $module = new G_Module();
+      $module->actualizar($res);
+      
+      array_push($ret,$module);
+    }
+    
+    return $ret;
+  }
+  
   public static function generateShip($explorer){
     global $c;
 

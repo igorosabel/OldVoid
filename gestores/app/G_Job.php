@@ -30,6 +30,9 @@ class G_Job extends G_Base{
     if ($this->get('type')==Job::EXPLORE){
       $this->jobDoneExplore();
     }
+    if ($this->get('type')==Job::RESOURCES){
+      $this->jobDoneResources();
+    }
   }
 
   public function jobDoneExplore(){
@@ -62,5 +65,86 @@ class G_Job extends G_Base{
     }
 
     $explored->salvar();
+  }
+  
+  public function jobDoneResources(){
+    // Busco el explorador
+    $explorer = new G_Explorer();
+    $explorer->buscar(array('id'=>$this->get('id_explorer')));
+    
+    // Busco la nave del explorador
+    $ship = new G_Ship();
+    $ship->buscar(array('id'=>$explorer->get('current_ship')));
+
+    // Cargo sus módulos
+    $modules = Ship::loadModules($ship);
+    $storage_module = null;
+
+    // Busco el módulo de almacenamiento
+    foreach ($modules as $module){
+      if ($module->get('enables')==Ship::MODULE_STORAGE){
+        $storage_module = $module;
+      }
+    }
+
+    $free_space = $storage_module->get('storage_capacity');
+    $explorer_resources = array();
+
+    // Calculo espacio libre en el módulo
+    if (!is_null($storage_module->get('storage'))){
+      $module_data = json_decode($storage_module->get('storage'),true);
+      foreach ($module_data as $key=>$value){
+        // Espacio total menos lo que ya lleva
+        $free_space -= $value;
+        $explorer_resources[$key] = $value;
+      }
+    }
+
+    // Cojo datos del trabajo
+    $data = json_decode($this->get('value'),true);
+    
+    // Cojo el planeta o la luna
+    if ($data['type']=='planet'){
+      $obj = new G_Planet();
+      $obj->buscar(array('id'=>$data['id']));
+    }
+    if ($data['type']=='moon'){
+      $obj = new G_Moon();
+      $obj->buscar(array('id'=>$data['id']));
+    }
+
+    // Cargo recursos del planeta o luna
+    $obj->setResources(System::loadResources($obj,$data['type']));
+    
+    $obj_resources = $obj->getResources();
+    $total_resources = 0;
+
+    // El jugador obtiene un 10% de cada recurso que hay en el planeta
+    for ($i=0;$i<count($obj_resources);$i++){
+      $resource_id    = $obj_resources[$i]->get('id_resource_type');
+      $resource_value = floor((int)$obj_resources[$i]->get('value') * 0.1);
+
+      // Añado recursos mientras tenga sitio
+      if ($free_space>$resource_value){
+        $free_space -= $resource_value;
+        $new_value = (int)$obj_resources[$i]->get('value') - $resource_value;
+
+        $obj_resources[$i]->set('value', $new_value);
+        if (!array_key_exists('resource_'.$resource_id, $explorer_resources)){
+          $explorer_resources['resource_'.$resource_id] = $resource_value;
+        }
+        else{
+          $explorer_resources['resource_'.$resource_id] += $resource_value;
+        }
+      }
+    }
+
+    // Guardo el resto de recursos que quedan
+    foreach ($obj_resources as $res){
+      $res->salvar();
+    }
+    
+    $storage_module->set('storage',json_encode($explorer_resources));
+    $storage_module->salvar();
   }
 }

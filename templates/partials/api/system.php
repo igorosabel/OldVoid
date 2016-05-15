@@ -26,6 +26,15 @@
       "distance": <?php echo $planet->get('distance') ?>,
       "explored": <?php echo ($planet->getExplored())?'true':'false' ?>,
       "explore_time": <?php echo $planet->get('explore_time') ?>,
+      "resources": [
+<?php foreach ($planet->getResources() as $j => $resource): ?>
+        {
+          "id": <?php echo $resource->get('id_resource_type') ?>,
+          "name": "<?php echo urlencode(General::getResourceName($resource->get('id_resource_type'))) ?>",
+          "value": <?php echo $resource->get('value') ?>
+        }<?php if ($j<count($planet->getResources())-1): ?>,<?php endif ?>
+<?php endforeach ?>
+      ],
       "npc": <?php if (!$planet->get('npc')): ?>false<?php else: ?>
         {
           "id": <? echo $planet->getNPC()->get('id') ?>,
@@ -53,7 +62,16 @@
           "has_life": <?php echo ($moon->get('has_life')==1)?'true':'false' ?>,
           "distance": <?php echo $moon->get('distance') ?>,
           "explored": <?php echo ($moon->getExplored())?'true':'false' ?>,
-          "explore_time": <?php echo $planet->get('explore_time') ?>,
+          "explore_time": <?php echo $moon->get('explore_time') ?>,
+          "resources": [
+<?php foreach ($moon->getResources() as $j => $resource): ?>
+            {
+              "id": <?php echo $resource->get('id_resource_type') ?>,
+              "name": "<?php echo urlencode(General::getResourceName($resource->get('id_resource_type'))) ?>",
+              "value": <?php echo $resource->get('value') ?>
+            }<?php if ($j<count($moon->getResources())-1): ?>,<?php endif ?>
+<?php endforeach ?>
+          ],
           "npc": <?php if (!$moon->get('npc')): ?>false<?php else: ?>
             {
               "id": <? echo $moon->getNPC()->get('id') ?>,

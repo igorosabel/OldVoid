@@ -5,6 +5,7 @@ class Job{
   */
   const EXPLORE         = 1;
   const JUMP            = 2;
+  const RESOURCES       = 3;
   
   const STATUS_WORKING  = 1;
   const STATUS_FINISHED = 2;
@@ -46,6 +47,9 @@ class Job{
       }
       case self::JUMP:{
         return "Navegación";
+      }
+      case self::RESOURCES:{
+        return "Obtener recursos";
       }
     }
     return "";
