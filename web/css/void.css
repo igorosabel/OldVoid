@@ -90,6 +90,25 @@ html, body{
   margin: 0 auto;
 }
 
+.system span{
+  background-color: red;
+  bottom: -25px;
+  display: none;
+  left: 50%;
+  margin-left: -60px;
+  position: absolute;
+  text-align: center;
+  width: 120px;
+}
+
+.system>div:hover span{
+  display: block;
+}
+
+.system>div.planet_zoomed:hover span{
+  display: none;
+}
+
 .planet_zoomed{
   animation: none !important;
   width: 200px;

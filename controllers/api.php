@@ -57,6 +57,7 @@
         $system['name']          = $sys->get('name');
         $system['id_discoverer'] = $sys->get('id_discoverer');
         $system['type']          = $sys->get('sun_type');
+        $system['type_name']     = System::getSystemTypeName($sys->get('sun_type'));
         $system['color']         = System::getSystemColor($sys->get('sun_type'));
         $system['radius']        = $sys->get('sun_radius');
         $system['planets']       = $sys->get('num_planets');

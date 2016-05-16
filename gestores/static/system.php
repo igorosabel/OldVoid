@@ -13,6 +13,25 @@ class System{
     
     return $ret;
   }
+  
+  public static function getSystemTypeName($type){
+    $type_data = split("-", $type);
+    $system = Base::getCache('system');
+    
+    foreach ($system['mkk_types'] as $stype){
+      if ($stype['type']==$type_data[0]){
+        return $stype['name'];
+      }
+    }
+    
+    return '';
+  }
+  
+  public static function getPlanetTypeName($type){
+    $planet_types = Base::getCache('planet');
+    
+    return $planet_types['planet_types']['type_'.$type]['type'];
+  }
 
   public static function getExplorersInSystem($explorer,$id_system){
     $bd = new G_BBDD();

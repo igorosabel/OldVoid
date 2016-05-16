@@ -7,7 +7,9 @@
       <div class="system">
         <div id="sun"></div>
         <div id="sun_name">{{vm.system_name}}</div>
-        <div ng-repeat="item in vm.system_list" id="{{item.type}}{{item.id}}" ng-click="vm.selectSystem(item)"></div>
+        <div ng-repeat="item in vm.system_list" id="{{item.type}}{{item.id}}" ng-click="vm.selectSystem(item)">
+          <span>{{item.name | urldecode}}
+        </div>
         <div ng-repeat="item in vm.system_list" id="{{item.type}}{{item.id}}_walk"></div>
       </div>
     </md-card-content>
@@ -30,7 +32,7 @@
             <span>
               {{vm.info_box.type}} <a href class="system_info_box_info"></a>
             </span>
-            <span class="system_info_box_desc">{{vm.info_box.type_desc}}</span>
+            <span class="system_info_box_desc">{{vm.info_box.type_name}}</span>
           </div>
           <div class="system_info_box_line">
             <label>Num. planetas:</label>
@@ -55,13 +57,13 @@
           <div class="system_info_box_line">
             <label>Tipo:</label>
             <span>
-              {{vm.info_box.type}} <a href class="system_info_box_info"></a>
+              {{vm.info_box.type_name}} <a href class="system_info_box_info"></a>
             </span>
           </div>
           <div class="system_info_box_line">
             <label>Radio:</label>
             <span>
-              {{vm.info_box.radius}}
+              {{vm.info_box.radius | formatnumber}} km
             </span>
           </div>
           <div class="system_info_box_line">
@@ -85,6 +87,7 @@
           <div class="system_info_box_line">
             <label>Recursos:</label>
             <span ng-hide="vm.selectedPlanet.explored">Sin explorar</span>
+            <span ng-show="vm.selectedPlanet.explored && !vm.selectedPlanet.resources.length">Sin recursos</span>
             <div class="system_resources" ng-show="vm.selectedPlanet.resources">
               <div class="system_resources_line" ng-repeat="resource in vm.selectedPlanet.resources" title="{{resource.name | urldecode}}">
                 <img ng-src="/img/resources/resource_{{resource.id}}.png" />
@@ -97,7 +100,7 @@
           <div class="system_info_box_line">
             <label>Radio:</label>
             <span>
-              {{vm.info_box.radius}}
+              {{vm.info_box.radius | formatnumber}} km
             </span>
           </div>
           <div class="system_info_box_line">
@@ -115,6 +118,7 @@
           <div class="system_info_box_line">
             <label>Recursos:</label>
             <span ng-hide="vm.selectedMoon.explored">Sin explorar</span>
+            <span ng-show="vm.selectedMoon.explored && !vm.selectedMoon.resources.length">Sin recursos</span>
             <div class="system_resources" ng-show="vm.selectedMoon.resources">
               <div class="system_resources_line" ng-repeat="resource in vm.selectedMoon.resources" title="{{resource.name | urldecode}}">
                 <img ng-src="/img/resources/resource_{{resource.id}}.png" />
@@ -183,7 +187,7 @@
           </div>
         </md-button>
         
-        <md-button class="md-raised md-warn system_jump_to" ng-show="vm.selectedPlanet.resources" ng-click="vm.getResourcesPlanet($event)" ng-disabled="vm.working">
+        <md-button class="md-raised md-warn system_jump_to" ng-show="vm.selectedPlanet.explored && vm.selectedPlanet.resources.length" ng-click="vm.getResourcesPlanet($event)" ng-disabled="vm.working">
           <div layout="row">
             <md-icon md-svg-icon="img/system/pick.svg"></md-icon>
             <p flex>Obtener recursos</p>
@@ -219,7 +223,7 @@
           </div>
         </md-button>
         
-        <md-button class="md-raised md-warn system_jump_to" ng-show="vm.selectedMoon.resources" ng-click="vm.getResourcesMoon($event)" ng-disabled="vm.working">
+        <md-button class="md-raised md-warn system_jump_to" ng-show="vm.selectedMoon.explored && vm.selectedMoon.resources.length" ng-click="vm.getResourcesMoon($event)" ng-disabled="vm.working">
           <div layout="row">
             <md-icon md-svg-icon="img/system/pick.svg"></md-icon>
             <p flex>Obtener recursos</p>

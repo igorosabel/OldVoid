@@ -49,6 +49,11 @@ function configApp() {
         var s = Math.floor(num - (m * 60) );
         return ((m<10)?'0'+m:m)+':'+((s<10)?'0'+s:s);
       };
+    })
+    .filter('formatnumber', function () {
+      return function (num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      };
     });
 }
 

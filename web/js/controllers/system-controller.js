@@ -149,7 +149,7 @@ console.log(vm.selectedSystem);
       loadInfoBox('system',{
         name: vm.selectedSystem.name,
         type: vm.selectedSystem.type,
-        type_desc: 'Enana',
+        type_name: urldecode(vm.selectedSystem.type_name),
         planets: vm.selectedSystem.planets,
         discoverer: vm.selectedSystem.discoverer,
         npcs: vm.selectedSystem.npc
@@ -291,6 +291,7 @@ console.log(vm.selectedSystem);
         loadInfoBox('planet',{
           name: planet.name,
           type: planet.type,
+          type_name: urldecode(planet.type_name),
           radius: planet.radius,
           survival: planet.survival,
           has_life: (planet.has_life?'Si':'No'),
@@ -335,6 +336,7 @@ console.log(vm.selectedSystem);
         loadInfoBox('planet',{
           name: vm.selectedPlanet.name,
           type: vm.selectedPlanet.type,
+          type_name: urldecode(vm.selectedPlanet.type_name),
           radius: vm.selectedPlanet.radius,
           survival: vm.selectedPlanet.survival,
           has_life: (vm.selectedPlanet.has_life?'Si':'No'),
@@ -382,18 +384,19 @@ console.log(vm.selectedSystem);
       if (vm.info_box.view=='system'){
         vm.info_box.name       = obj.name;
         vm.info_box.type       = obj.type;
-        vm.info_box.type_desc  = obj.type_desc;
+        vm.info_box.type_name  = obj.type_name;
         vm.info_box.planets    = obj.planets;
         vm.info_box.discoverer = obj.discoverer;
         vm.info_box.npcs       = obj.npcs;
       }
       if (vm.info_box.view=='planet'){
-        vm.info_box.name     = obj.name;
-        vm.info_box.type     = obj.type;
-        vm.info_box.radius   = obj.radius;
-        vm.info_box.survival = obj.survival;
-        vm.info_box.has_life = obj.has_life;
-        vm.info_box.moons    = obj.moons;
+        vm.info_box.name      = obj.name;
+        vm.info_box.type      = obj.type;
+        vm.info_box.type_name = obj.type_name;
+        vm.info_box.radius    = obj.radius;
+        vm.info_box.survival  = obj.survival;
+        vm.info_box.has_life  = obj.has_life;
+        vm.info_box.moons     = obj.moons;
       }
       if (vm.info_box.view=='moon'){
         vm.info_box.name     = obj.name;

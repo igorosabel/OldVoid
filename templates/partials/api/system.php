@@ -8,6 +8,7 @@
   "npc": <?php echo $s['npc'] ?>,
   "explorers": <?php echo $s['explorers'] ?>,
   "type": "<?php echo urlencode($s['type']) ?>",
+  "type_name": "<?php echo urlencode($s['type_name']) ?>",
   "color": "<?php echo urlencode($s['color']) ?>",
   "radius": <?php echo $s['radius'] ?>,
   "planet_list": [
@@ -17,8 +18,8 @@
       "name": "<?php echo urlencode($planet->get('name')) ?>",
       "id_owner": <?php echo $planet->get('id_owner') ?>,
       "owner": "",
-      "id_type": <?php echo $planet->get('id_type') ?>,
-      "type": "",
+      "type": <?php echo $planet->get('id_type') ?>,
+      "type_name": "<?php echo urlencode(System::getPlanetTypeName($planet->get('id_type'))) ?>",
       "radius": <?php echo $planet->get('radius') ?>,
       "rotation": <?php echo $planet->get('rotation') ?>,
       "survival": <?php echo $planet->get('survival') ?>,
