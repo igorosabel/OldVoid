@@ -33,9 +33,12 @@ class G_Job extends G_Base{
     if ($this->get('type')==Job::RESOURCES){
       $this->jobDoneResources();
     }
+    if ($this->get('type')==Job::JUMP){
+      $this->jobDoneJump();
+    }
   }
 
-  public function jobDoneExplore(){
+  private function jobDoneExplore(){
     $data = json_decode($this->get('value'),true);
     $explored = new G_Explored();
     $explored->set('id_explorer',$this->get('id_explorer'));
@@ -67,7 +70,7 @@ class G_Job extends G_Base{
     $explored->salvar();
   }
   
-  public function jobDoneResources(){
+  private function jobDoneResources(){
     // Busco el explorador
     $explorer = new G_Explorer();
     $explorer->buscar(array('id'=>$this->get('id_explorer')));
@@ -146,5 +149,16 @@ class G_Job extends G_Base{
     
     $storage_module->set('storage',json_encode($explorer_resources));
     $storage_module->salvar();
+  }
+
+  private function jobDoneJump(){
+    // Busco el explorador
+    $explorer = new G_Explorer();
+    $explorer->buscar(array('id'=>$this->get('id_explorer')));
+
+    // Cojo datos del trabajo
+    $data = json_decode($this->get('value'),true);
+    $explorer->set('last_save_point',$data['id']);
+    $explorer->salvar();
   }
 }

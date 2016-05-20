@@ -1,6 +1,6 @@
-<div class="full_height" layout="row" ng-app="VoidApp">
-  <div layout="column" class="relative full_height" layout-fill role="main">
-    <div class="full_height" id="views" ng-view></div>
+<div layout="row" ng-app="VoidApp" layout-fill>
+  <div layout="column" class="relative" layout-fill role="main">
+    <div id="views" style="height: 100%;" ng-view></div>
   </div>
 </div>
 

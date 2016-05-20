@@ -44,6 +44,21 @@ html, body{
   text-align: center;
 }
 
+.system_info_box_close_ico{
+  display: inline-block;
+  float: right;
+  height: 30px;
+  width: 30px;
+}
+
+.system_info_box_close{
+  background: transparent url("/img/system/up.svg") no-repeat scroll center center;
+}
+
+.system_info_box_open{
+  background: transparent url("/img/system/down.svg") no-repeat scroll center center;
+}
+
 .system_info_box_line{
   clear: both;
   overflow: hidden;
@@ -84,8 +99,8 @@ html, body{
 }
 
 .system{
-  width: 500px;
-  height: 500px;
+  width: 100%;
+  height: 800px;
   position: relative;
   margin: 0 auto;
 }
@@ -138,6 +153,16 @@ html, body{
 .system_resources_line img{
   vertical-align: middle;
   width: 20px;
+}
+
+.system_navigate_link{
+  color: #666;
+  text-decoration: none;
+}
+
+.system_navigate_link:hover{
+  color: #000;
+  text-decoration: underline;
 }
 
 .npc_avatar{

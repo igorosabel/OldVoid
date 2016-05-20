@@ -26,6 +26,22 @@ class System{
     
     return '';
   }
+
+  public static function getSystemDiscoverer($id_explorer){
+    $bd = new G_BBDD();
+    $sql = "SELECT * FROM `explorer` WHERE `id` = ".$id_explorer;
+    $bd->consulta($sql);
+
+    if ($res=$bd->sig()){
+      $explorer = new G_Explorer();
+      $explorer->actualizar($res);
+
+      return $explorer->get('name');
+    }
+    else{
+      return '';
+    }
+  }
   
   public static function getPlanetTypeName($type){
     $planet_types = Base::getCache('planet');
@@ -214,6 +230,7 @@ class System{
   
   public static function goToSystem($explorer,$from,$id_system=null){
     global $c;
+    $ret = null;
 
     if (is_null($id_system)){
       $system_connections = self::getSystemConnections($explorer,$from);
@@ -249,17 +266,19 @@ class System{
           $esc->salvar();
         }
       }
-      $dist = self::goToSystem($explorer,$from,$new_system_id);
+      $ret = self::goToSystem($explorer,$from,$new_system_id);
     }
     else{
-      $sd = new G_SystemDistance();
+      /*$sd = new G_SystemDistance();
       $sd->buscar(array(
         'id_system_1' => $from->get('id'),
         'id_system_2' => $id_system
       ));
-      $dist = $sd->get('distance');
+      $dist = $sd->get('distance');*/
+      $ret = new G_System();
+      $ret->buscar(array('id'=>$id_system));
     }
-    return $dist;
+    return $ret;
   }
 
   public static function getSystems(){
@@ -291,7 +310,7 @@ class System{
   }
 
   public static function getSystemConnections($explorer,$from){
-    $sql = "SELECT * FROM `system_distance` WHERE `id_system_1` = '".$from->get('id')."' AND `distance` = 1";
+    $sql = "SELECT * FROM `system_distance` WHERE (`id_system_1` = ".$from->get('id')." OR `id_system_2` = ".$from->get('id').") AND `distance` = 1";
     $bd = new G_BBDD();
     $bd->consulta($sql);
 
@@ -331,12 +350,14 @@ class System{
     $sun_type_code = $sun_type['type'].'-'.$system_types['spectral_types']['type_'.$sun_spectral_type]['type'];
     $sun_name      = Base::getRandomCharacters(array('num'=>$c->getSystemNameChars(),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getSystemNameNums(),'numbers'=>true));
     $num_planets   = rand($sun_type['min_planets'],$sun_type['max_planets']);
+    $sun_radius    = rand($sun_type['min_radius'],$sun_type['max_radius']);
 
     $s->set('id_discoverer',$explorer->get('id'));
     $s->set('original_name',$sun_name);
     $s->set('name',$sun_name);
     $s->set('num_planets',$num_planets);
     $s->set('sun_type',$sun_type_code);
+    $s->set('sun_radius',$sun_radius);
 
     //echo "SYSTEM\n";
     //echo "-------------------------------------------------------------------------------------\n";

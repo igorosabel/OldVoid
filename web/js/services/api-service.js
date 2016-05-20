@@ -14,6 +14,7 @@
     service.GetPeopleInSystem = GetPeopleInSystem;
     service.Explore           = Explore;
     service.GetResources      = GetResources;
+    service.GoToSystem        = GoToSystem;
 
     return service;
  
@@ -47,6 +48,13 @@
     
     function GetResources(id, type, callback){
       $http.post(api_url + 'get_resources', {id: id, type: type, auth: DataShareService.GetUser().auth})
+        .success(function (response){
+          callback && callback(response);
+        });
+    }
+
+    function GoToSystem(id, time, callback){
+      $http.post(api_url + 'go_to_system', {id: id, time: time, auth: DataShareService.GetUser().auth})
         .success(function (response){
           callback && callback(response);
         });

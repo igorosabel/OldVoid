@@ -56,6 +56,7 @@
         $system['id']            = $sys->get('id');
         $system['name']          = $sys->get('name');
         $system['id_discoverer'] = $sys->get('id_discoverer');
+        $system['discoverer']    = System::getSystemDiscoverer($sys->get('id_discoverer'));
         $system['type']          = $sys->get('sun_type');
         $system['type_name']     = System::getSystemTypeName($sys->get('sun_type'));
         $system['color']         = System::getSystemColor($sys->get('sun_type'));
@@ -66,13 +67,6 @@
         
         $system['planet_list']   = System::loadPlanets($ex,$sys);
         $system['connections']   = System::loadSystemConnections($ex,$sys);
-        
-        $disc = new G_Explorer();
-        $discoverer = '';
-        if ($disc->buscar(array('id'=>$sys->get('id_discoverer')))){
-          $discoverer = $disc->get('name');
-        }
-        $system['discoverer']    = $discoverer;
 
         $ship_strength    = $ship->get('hull_current_strength');
         $ship_fuel        = $ship->get('engine_fuel_actual');
@@ -183,6 +177,7 @@
       $system['id']            = $sys->get('id');
       $system['name']          = $sys->get('name');
       $system['id_discoverer'] = $sys->get('id_discoverer');
+      $system['discoverer']    = System::getSystemDiscoverer($sys->get('id_discoverer'));
       $system['type']          = $sys->get('sun_type');
       $system['color']         = System::getSystemColor($sys->get('sun_type'));
       $system['radius']        = $sys->get('sun_radius');
@@ -193,12 +188,6 @@
       $system['planet_list']   = System::loadPlanets($ex,$sys);
       $system['connections']   = System::loadSystemConnections($ex,$sys);
 
-      $disc = new G_Explorer();
-      $discoverer = '';
-      if ($disc->buscar(array('id'=>$sys->get('id_discoverer')))){
-        $discoverer = $disc->get('name');
-      }
-      $system['discoverer'] = $discoverer;
       $ship_strength    = $ship->get('hull_current_strength');
       $ship_fuel        = $ship->get('engine_fuel_actual');
     }
@@ -237,10 +226,11 @@
       'id' => 0,
       'name' => '',
       'type' => '',
+      'radius' => 0,
       'id_discoverer' => 0,
       'discoverer' => '',
       'planets' => 0,
-      'explorers ' => 0,
+      'explorers' => 0,
       'npc' => 0,
       'planet_list' => array()
     );
@@ -274,7 +264,7 @@
             $system['id'] = $id;
             $system['name'] = $sys->get('name');
             $system['id_discoverer'] = $sys->get('id_discoverer');
-            $system['discoverer'] = '';
+            $system['discoverer'] = System::getSystemDiscoverer($sys->get('id_discoverer'));
             $system['type'] = $sys->get('sun_type');
             $system['color'] = System::getSystemColor($sys->get('sun_type'));
             $system['radius'] = $sys->get('sun_radius');
@@ -512,6 +502,74 @@
           $job->set('value','{"type":"'.$type.'","id":'.$id.',"name":"'.$name.'"}');
           $job->set('start',time());
           $job->set('duration',$explore_time);
+          $job->salvar();
+
+          $explorer->set('id_job',$job->get('id'));
+          $explorer->salvar();
+        }
+      }
+      else{
+        $status = 'error';
+      }
+    }
+
+    $t->setLayout(false);
+    $t->setJson(true);
+
+    $t->add('status',$status);
+    $t->addPartial('job','api/job',array('job'=>$job,'extra'=>'nourlencode'));
+
+    $t->process();
+  }
+
+  /*
+    Función para viajar a otro sistema
+  */
+  function executeGoToSystem($req, $t){
+    /*
+      Código de la página
+    */
+    global $c, $s;
+
+    $status = 'ok';
+    $id     = Base::getParam('id',   $req['url_params'], null);
+    $time   = Base::getParam('time', $req['url_params'], false);
+    $auth   = Base::getParam('auth', $req['url_params'], false);
+
+    $job    = false;
+
+    if ($time===false || $auth===false){
+      $status = 'error';
+    }
+
+    if ($status=='ok'){
+      $explorer = new G_Explorer();
+      if ($explorer->buscar(array('auth'=>$auth))) {
+
+        if ($explorer->get('id_job')){
+          $job = Job::checkJob($explorer->get('id_job'));
+
+          if ($job->getStatus()==Job::STATUS_FINISHED){
+            $job->jobDone();
+            $explorer->set('id_job',null);
+            $explorer->salvar();
+          }
+          else{
+            $status = 'working';
+          }
+        }
+
+        if ($status=='ok'){
+          $from = new G_System();
+          $from->buscar(array('id'=>$explorer->get('last_save_point')));
+          $system = System::goToSystem($explorer,$from,$id);
+
+          $job = new G_Job();
+          $job->set('id_explorer',$explorer->get('id'));
+          $job->set('type',Job::JUMP);
+          $job->set('value','{"id":'.$system->get('id').',"name":"'.($id?$system->get('name'):'Desconocido').'"}');
+          $job->set('start',time());
+          $job->set('duration',$time);
           $job->salvar();
 
           $explorer->set('id_job',$job->get('id'));

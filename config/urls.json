@@ -72,6 +72,14 @@
         "action": "getResources",
         "comment": "Función para obtener recursos de un planeta o una luna",
         "login": "dont"
+      },
+      {
+        "id": "go_to_system",
+        "url": "/api/go_to_system",
+        "module": "api",
+        "action": "goToSystem",
+        "comment": "Función para viajar a otro sistema",
+        "login": "dont"
       }
   ]
 }

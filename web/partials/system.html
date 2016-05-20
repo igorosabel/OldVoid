@@ -3,12 +3,12 @@
     <md-card-title>
       <md-card-title-text><span class="md-headline">Sistema</span></md-card-title-text>
     </md-card-title>
-    <md-card-content layout="row" layout-xs="column">
+    <md-card-content layout="row" layout-xs="column" style="overflow:hidden;">
       <div class="system">
         <div id="sun"></div>
         <div id="sun_name">{{vm.system_name}}</div>
         <div ng-repeat="item in vm.system_list" id="{{item.type}}{{item.id}}" ng-click="vm.selectSystem(item)">
-          <span>{{item.name | urldecode}}
+          <span>{{item.name | urldecode}}</span>
         </div>
         <div ng-repeat="item in vm.system_list" id="{{item.type}}{{item.id}}_walk"></div>
       </div>
@@ -25,8 +25,12 @@
   <md-card flex-xs="90" flex-gt-md="30">
     <md-card-content>
       <div class="system_info_box">
-        <div class="system_info_box_header">{{vm.info_box.name}}</div>
-        <div ng-if="vm.info_box.view=='system'">
+        <div class="system_info_box_header">
+          {{vm.info_box.name}}
+          <a href class="system_info_box_close_ico" ng-class="{system_info_box_close: vm.info_box.show_main, system_info_box_open: !vm.info_box.show_main}" ng-click="vm.toggleInfoBox('main')"></a>
+        </div>
+        <!-- Infobox System -->
+        <div ng-if="vm.info_box.view=='system' && vm.info_box.show_main">
           <div class="system_info_box_line">
             <label>Tipo de estrella:</label>
             <span>
@@ -53,7 +57,8 @@
             </span>
           </div>
         </div>
-        <div ng-if="vm.info_box.view=='planet'">
+        <!-- Infobox Planet -->
+        <div ng-if="vm.info_box.view=='planet' && vm.info_box.show_main">
           <div class="system_info_box_line">
             <label>Tipo:</label>
             <span>
@@ -88,7 +93,7 @@
             <label>Recursos:</label>
             <span ng-hide="vm.selectedPlanet.explored">Sin explorar</span>
             <span ng-show="vm.selectedPlanet.explored && !vm.selectedPlanet.resources.length">Sin recursos</span>
-            <div class="system_resources" ng-show="vm.selectedPlanet.resources">
+            <div class="system_resources" ng-show="vm.selectedPlanet.explored && vm.selectedPlanet.resources">
               <div class="system_resources_line" ng-repeat="resource in vm.selectedPlanet.resources" title="{{resource.name | urldecode}}">
                 <img ng-src="/img/resources/resource_{{resource.id}}.png" />
                 {{resource.value}}
@@ -96,7 +101,8 @@
             </div>
           </div>
         </div>
-        <div ng-if="vm.info_box.view=='moon'">
+        <!-- Infobox Moon -->
+        <div ng-if="vm.info_box.view=='moon' && vm.info_box.show_main">
           <div class="system_info_box_line">
             <label>Radio:</label>
             <span>
@@ -119,7 +125,7 @@
             <label>Recursos:</label>
             <span ng-hide="vm.selectedMoon.explored">Sin explorar</span>
             <span ng-show="vm.selectedMoon.explored && !vm.selectedMoon.resources.length">Sin recursos</span>
-            <div class="system_resources" ng-show="vm.selectedMoon.resources">
+            <div class="system_resources" ng-show="vm.selectedMoon.explored && vm.selectedMoon.resources">
               <div class="system_resources_line" ng-repeat="resource in vm.selectedMoon.resources" title="{{resource.name | urldecode}}">
                 <img ng-src="/img/resources/resource_{{resource.id}}.png" />
                 {{resource.value}}
@@ -129,6 +135,20 @@
         </div>
       </div>
 
+      <!-- Sub InfoBox -->
+      <div class="system_info_box" ng-if="vm.info_box.has_sub && vm.system_list.length">
+        <div class="system_info_box_header">
+          {{vm.info_box.sub_name}}
+          <a href class="system_info_box_close_ico" ng-class="{system_info_box_close: vm.info_box.show_sub, system_info_box_open: !vm.info_box.show_sub}" ng-click="vm.toggleInfoBox('sub')"></a>
+        </div>
+        <md-list>
+          <md-list-item ng-repeat="item in vm.system_list" ng-click="vm.selectSystem(item)">
+            <p>{{item.name}}</p>
+          </md-list-item>
+        </md-list>
+      </div>
+
+      <!-- Actions System -->
       <div ng-if="vm.info_box.view=='system'">
         <md-button class="md-raised md-accent system_jump_to" ng-hide="!vm.system_id">
           <div layout="row">
@@ -147,12 +167,15 @@
           <md-list-item ng-repeat="item in vm.sidebar_list" class="md-2-line">
             <img ng-src="img/system/{{item.icon}}.svg" class="md-avatar" alt="{{item.name}}" />
             <div class="md-list-item-text">
-              <p>{{item.name}}</p>
+              <p>
+                <a ng-if="item.icon!='unknown'" class="system_navigate_link" href ng-click="vm.seeSystem(item.id)">{{item.name}}</a>
+                <span ng-if="item.icon=='unknown'">{{item.name}}</span>
+              </p>
             </div>
-            <md-button class="md-raised md-secondary">
+            <md-button class="md-raised md-secondary" ng-click="vm.goToSystem(item.id,item.time)" ng-disabled="vm.working">
               <div layout="row">
                 <md-icon md-svg-icon="img/system/jump_to.svg"></md-icon>
-                <p flex>{{item.time}}</p>
+                <p flex>{{item.time | showtime}}</p>
               </div>
             </md-button>
             <md-divider ></md-divider>
@@ -160,6 +183,7 @@
         </md-list>
       </div>
 
+      <!-- Actions Planet -->
       <div ng-if="vm.info_box.view=='planet'">
         <h3 class="center">
           Acciones
@@ -196,6 +220,7 @@
         </md-button>
       </div>
 
+      <!-- Actions Moon -->
       <div ng-if="vm.info_box.view=='moon'">
         <h3 class="center">
           Acciones
@@ -258,7 +283,6 @@
   z-index: 2;
 }
 </script>
-
 <script type="text/x-template" id="planet_style">
   @keyframes planetRotate{{id}}{
     from{
@@ -270,7 +294,6 @@
   }
 
   #planet{{id}}_walk{
-    display: {{visible}};
     position: absolute;
     width: {{distance}}px;
     height: {{distance}}px;
@@ -283,7 +306,6 @@
 
 
   #planet{{id}}{
-    display: {{visible}};
     position: absolute;
     width: {{width}}px;
     height: {{width}}px;
@@ -300,7 +322,6 @@
     cursor: pointer;
   }
 </script>
-
 <script type="text/x-template" id="moon_style">
   @keyframes moonRotate{{id}}{
     from{
@@ -312,7 +333,6 @@
   }
 
   #moon{{id}}_walk{
-    display: {{visible}};
     position: absolute;
     width: {{distance}}px;
     height: {{distance}}px;
@@ -325,7 +345,6 @@
 
 
   #moon{{id}}{
-    display: {{visible}};
     position: absolute;
     width: {{width}}px;
     height: {{width}}px;

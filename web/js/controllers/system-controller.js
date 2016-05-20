@@ -27,6 +27,7 @@
     vm.system_style   = '';
     vm.info_box = {
       view:       'system',
+      show_main:  true,
       name:       '',
       type:       '',
       desc:       '',
@@ -37,9 +38,13 @@
       survival:   0,
       has_life:   'No',
       moons:      0,
-      resources:  []
+      resources:  [],
+      has_sub:    true,
+      show_sub:   true,
+      sub_name:   ''
     };
 
+    vm.toggleInfoBox      = toggleInfoBox;
     vm.selectSystem       = selectSystem;
     vm.selectPlanet       = selectPlanet;
     vm.selectMoon         = selectMoon;
@@ -47,6 +52,7 @@
     vm.exploreMoon        = exploreMoon;
     vm.getResourcesPlanet = getResourcesPlanet;
     vm.getResourcesMoon   = getResourcesMoon;
+    vm.goToSystem         = goToSystem;
     
     // Datos
     var explorer_system = DataShareService.GetSystem();
@@ -65,27 +71,6 @@
       }
     }
 console.log(vm.selectedSystem);
-    // Sistemas vecinos
-    for (var i=0;i<vm.selectedSystem.connections.length;i++){
-      if (vm.selectedSystem.connections[i]===false){
-        vm.sidebar_list.push({
-          id: (i+1),
-          icon: 'unknown',
-          name: 'Desconocido',
-          time: '04:45',
-          disabled: false
-        });
-      }
-      else{
-        vm.sidebar_list.push({
-          id: (i+1),
-          icon: 'system',
-          name: urldecode(vm.selectedSystem.connections[i].name),
-          time: '04:45',
-          disabled: false
-        });
-      }
-    }
 
     // Eventos de trabajo terminado: exploración, navegación...
     $rootScope.$on('job_finish', function(event, e){
@@ -97,7 +82,7 @@ console.log(vm.selectedSystem);
         break;
         // Saltar
         case 2: {
-
+          jumpComplete(e);
         }
         break;
         // Obtener recursos
@@ -111,11 +96,12 @@ console.log(vm.selectedSystem);
     function loadSystem(){
       // Sistema
       vm.system_list = [];
-      vm.system_style = template('sun_style',{
-        width: Math.floor(vm.selectedSystem.radius / 1000),
-        width_half: Math.floor( Math.floor(vm.selectedSystem.radius / 1000) / 2 ),
+      var sun_obj = {
+        type: 'sun',
+        radius: vm.selectedSystem.radius,
         color: urldecode(vm.selectedSystem.color)
-      });
+      };
+      vm.system_style = '';
       for (var i=0;i<vm.selectedSystem.planet_list.length;i++){
         // Añado el planeta
         vm.system_list.push({
@@ -124,25 +110,10 @@ console.log(vm.selectedSystem);
           type: 'planet',
           distance: vm.selectedSystem.planet_list[i].distance,
           radius: vm.selectedSystem.planet_list[i].radius,
-          rotation: vm.selectedSystem.planet_list[i].rotation,
-          visible: {item: true, walk: true}
+          rotation: vm.selectedSystem.planet_list[i].rotation
         });
-
-        // Añado sus lunas
-        for (var j=0;j<vm.selectedSystem.planet_list[i].moon_list.length;j++){
-          vm.system_list.push({
-            id: vm.selectedSystem.planet_list[i].moon_list[j].id,
-            name: urldecode(vm.selectedSystem.planet_list[i].moon_list[j].name),
-            type: 'moon',
-            planet_id: vm.selectedSystem.planet_list[i].id,
-            distance: vm.selectedSystem.planet_list[i].moon_list[j].distance,
-            radius: vm.selectedSystem.planet_list[i].moon_list[j].radius,
-            rotation: vm.selectedSystem.planet_list[i].moon_list[j].rotation,
-            visible: {item: false, walk: false}
-          });
-        }
       }
-      vm.system_style += calculateCSS(vm.system_list);
+      vm.system_style = calculateCSS(sun_obj,vm.system_list);
       document.getElementById('system_style').innerHTML = vm.system_style;
       
       // Sidebar
@@ -157,11 +128,17 @@ console.log(vm.selectedSystem);
 
       vm.system_hide_jump_to = (vm.selectedSystem.id==explorer_system.id);
       vm.system_jump_to_time = '02:37';
+      loadConnections();
     }
     
-    function reloadSystem(){
+    function reloadSystem(jump){
+      // Comprobación por si se trata de reload tras saltar
+      if (typeof jump == 'undefined'){
+        jump = false;
+      }
+      var user = DataShareService.GetUser();
       var current = {
-        system: vm.selectedSystem.id,
+        system: user.last_save_point,
         planet: (vm.selectedPlanet)?vm.selectedPlanet.id:null,
         moon: (vm.selectedMoon)?vm.selectedMoon.id:null
       };
@@ -191,11 +168,54 @@ console.log(vm.selectedSystem);
           }
           vm.selectedMoon = vm.selectedPlanet.moon_list[moon_ind];
         }
+
+        if (jump){
+          explorer_system = DataShareService.GetSystem();
+          vm.system_view = 'system';
+          loadSystem();
+        }
         
         vm.working = DataShareService.GetGlobal('working');
         DataShareService.SetSystem(vm.selectedSystem);
         AuthenticationService.SaveLocalstorage();
       });
+    }
+
+    function loadConnections() {
+      vm.sidebar_list = [];
+      for (var i = 0; i < vm.selectedSystem.connections.length; i++) {
+        if (!vm.selectedSystem.connections[i].id) {
+          vm.sidebar_list.push({
+            id: null,
+            icon: 'unknown',
+            name: 'Desconocido',
+            time: vm.selectedSystem.connections[i].time,
+            disabled: false
+          });
+        }
+        else {
+          vm.sidebar_list.push({
+            id: vm.selectedSystem.connections[i].id,
+            icon: 'system',
+            name: urldecode(vm.selectedSystem.connections[i].name),
+            time: vm.selectedSystem.connections[i].time,
+            disabled: false
+          });
+        }
+      }
+    }
+
+    function jumpComplete(job){
+      var user = DataShareService.GetUser();
+      user.last_save_point = job.value.id;
+      DataShareService.SetUser(user);
+      AuthenticationService.SaveLocalstorage();
+
+      reloadSystem(true);
+    }
+
+    function toggleInfoBox(id){
+      vm.info_box['show_'+id] = !vm.info_box['show_'+id];
     }
 
     function selectSystem(item){
@@ -208,7 +228,7 @@ console.log(vm.selectedSystem);
     }
 
     function selectPlanet(p){
-      var p_obj, planet, i, ind;
+      var p_obj, planet, moon, i, ind;
 
       if (p && vm.selectedPlanet){
         return false;
@@ -216,33 +236,28 @@ console.log(vm.selectedSystem);
 
       // Vista de planeta, la quito para volver a sistema
       if (vm.selectedPlanet){
-        p_obj = document.getElementById('planet'+ vm.selectedPlanet.id);
-        show('sun');
-
-        // Busco el planeta en el sistema
-        for (i=0; i<vm.selectedSystem.planet_list.length; i++) {
+        // Sistema
+        vm.system_list = [];
+        var sun_obj = {
+          type: 'sun',
+          radius: vm.selectedSystem.radius,
+          color: urldecode(vm.selectedSystem.color)
+        };
+        vm.system_style = '';
+        for (i=0;i<vm.selectedSystem.planet_list.length;i++){
           planet = vm.selectedSystem.planet_list[i];
-          // Si es el indicado me guardo su indice
-          if (planet.id == vm.selectedPlanet.id) {
-            ind = i;
-          }
-          else {
-            // Si no es el elegido lo muestro
-            show('planet' + planet.id);
-          }
-          // Muestro el recorrido
-          show('planet' + planet.id + '_walk');
+          // Añado el planeta
+          vm.system_list.push({
+            id: planet.id,
+            name: urldecode(planet.name),
+            type: 'planet',
+            distance: planet.distance,
+            radius: planet.radius,
+            rotation: planet.rotation
+          });
         }
-
-        // Al planeta elegido le quito zoom
-        p_obj.classList.remove('planet_zoomed');
-        vm.system_name = vm.selectedSystem.name;
-
-        // Muestro sus lunas
-        for (i=0; i<vm.selectedSystem.planet_list[ind].moon_list.length; i++) {
-          hide('moon' + vm.selectedSystem.planet_list[ind].moon_list[i].id);
-          hide('moon' + vm.selectedSystem.planet_list[ind].moon_list[i].id + '_walk');
-        }
+        vm.system_style = calculateCSS(sun_obj,vm.system_list);
+        document.getElementById('system_style').innerHTML = vm.system_style;
 
         vm.system_view = 'system';
         vm.selectedPlanet = null;
@@ -256,35 +271,42 @@ console.log(vm.selectedSystem);
         });
       }
       // Vista de sistema, pongo vista de planeta
-      else {
-        p_obj = document.getElementById('planet'+ p.id);
-        hide('sun');
-
+      else{
         // Busco el planeta en el sistema
         for (i=0; i<vm.selectedSystem.planet_list.length; i++) {
           planet = vm.selectedSystem.planet_list[i];
           // Si es el indicado me guardo su indice
           if (planet.id == p.id) {
             ind = i;
+            break;
           }
-          else {
-            // Si no es el elegido lo escondo
-            hide('planet' + planet.id);
-          }
-          // Escondo el recorrido
-          hide('planet' + planet.id + '_walk');
         }
         planet = vm.selectedSystem.planet_list[ind];
 
-        // Al planeta elegido le hago zoom
-        p_obj.classList.add('planet_zoomed');
-        vm.system_name = p.name;
-
-        // Muestro sus lunas
-        for (i=0; i<planet.moon_list.length; i++) {
-          show('moon' + planet.moon_list[i].id);
-          show('moon' + planet.moon_list[i].id + '_walk');
+        vm.system_list = [];
+        var planet_obj = {
+          type: 'planet',
+          radius: planet.radius,
+          color: '#888'
+        };
+        vm.system_style = '';
+        for (i=0;i<planet.moon_list.length;i++){
+          moon = planet.moon_list[i];
+          // Añado la luna
+          vm.system_list.push({
+            id: moon.id,
+            name: urldecode(moon.name),
+            type: 'moon',
+            distance: moon.distance,
+            radius: moon.radius,
+            rotation: moon.rotation
+          });
         }
+        vm.system_style = calculateCSS(planet_obj,vm.system_list);
+        document.getElementById('system_style').innerHTML = vm.system_style;
+
+        // Al planeta elegido le hago zoom
+        vm.system_name = planet.name;
 
         vm.system_view = 'planet';
         vm.selectedPlanet = planet;
@@ -309,64 +331,69 @@ console.log(vm.selectedSystem);
 
       // Vista de luna, la quito para volver a planeta
       if (vm.selectedMoon){
-        m_obj = document.getElementById('moon'+ vm.selectedMoon.id);
-
-        // Busco la luna en el planeta
-        for (i=0; i<vm.selectedPlanet.moon_list.length; i++) {
-          moon = vm.selectedPlanet.moon_list[i];
-          // Si es la indicada me guardo su indice
-          if (moon.id == vm.selectedMoon.id) {
-            ind = i;
-          }
-          else {
-            // Si no es la elegida la muestro
-            show('moon' + moon.id);
-          }
-          // Muestro el recorrido
-          show('moon' + moon.id + '_walk');
+        planet = vm.selectedPlanet;
+        vm.system_list = [];
+        var planet_obj = {
+          type: 'planet',
+          radius: planet.radius,
+          color: '#888'
+        };
+        vm.system_style = '';
+        for (i=0;i<planet.moon_list.length;i++){
+          moon = planet.moon_list[i];
+          // Añado la luna
+          vm.system_list.push({
+            id: moon.id,
+            name: urldecode(moon.name),
+            type: 'moon',
+            distance: moon.distance,
+            radius: moon.radius,
+            rotation: moon.rotation
+          });
         }
+        vm.system_style = calculateCSS(planet_obj,vm.system_list);
+        document.getElementById('system_style').innerHTML = vm.system_style;
 
-        // A la luna elegida le quito zoom
-        m_obj.classList.remove('planet_zoomed');
-        show('planet'+ vm.selectedPlanet.id);
-        vm.system_name = vm.selectedPlanet.name;
+        // Al planeta elegido le hago zoom
+        vm.system_name = planet.name;
 
         vm.system_view = 'planet';
-        vm.selectedMoon = null;
+        vm.selectedPlanet = planet;
         loadInfoBox('planet',{
-          name: vm.selectedPlanet.name,
-          type: vm.selectedPlanet.type,
-          type_name: urldecode(vm.selectedPlanet.type_name),
-          radius: vm.selectedPlanet.radius,
-          survival: vm.selectedPlanet.survival,
-          has_life: (vm.selectedPlanet.has_life?'Si':'No'),
-          moons: vm.selectedPlanet.moon_list.length
+          name: planet.name,
+          type: planet.type,
+          type_name: urldecode(planet.type_name),
+          radius: planet.radius,
+          survival: planet.survival,
+          has_life: (planet.has_life?'Si':'No'),
+          moons: planet.moon_list.length
         });
       }
       // Vista de planeta, pongo vista de luna
       else {
-        m_obj = document.getElementById('moon'+ m.id);
-        hide('planet'+ vm.selectedPlanet.id);
-
         // Busco la luna en el planeta
         for (i=0; i<vm.selectedPlanet.moon_list.length; i++) {
           moon = vm.selectedPlanet.moon_list[i];
           // Si es el indicado me guardo su indice
           if (moon.id == m.id) {
             ind = i;
+            break;
           }
-          else {
-            // Si no es el elegido lo escondo
-            hide('moon' + moon.id);
-          }
-          // Escondo el recorrido
-          hide('moon' + moon.id + '_walk');
         }
         moon = vm.selectedPlanet.moon_list[ind];
 
-        // A la luna elegida le hago zoom
-        m_obj.classList.add('planet_zoomed');
-        vm.system_name = m.name;
+        vm.system_list = [];
+        var moon_obj = {
+          type: 'moon',
+          radius: moon.radius,
+          color: '#fff'
+        };
+        vm.system_style = '';
+
+        vm.system_style = calculateCSS(moon_obj,vm.system_list);
+        document.getElementById('system_style').innerHTML = vm.system_style;
+
+        vm.system_name = moon.name;
 
         vm.system_view = 'moon';
         vm.selectedMoon = moon;
@@ -388,6 +415,8 @@ console.log(vm.selectedSystem);
         vm.info_box.planets    = obj.planets;
         vm.info_box.discoverer = obj.discoverer;
         vm.info_box.npcs       = obj.npcs;
+        vm.info_box.has_sub    = true;
+        vm.info_box.sub_name   = 'Planetas';
       }
       if (vm.info_box.view=='planet'){
         vm.info_box.name      = obj.name;
@@ -397,32 +426,138 @@ console.log(vm.selectedSystem);
         vm.info_box.survival  = obj.survival;
         vm.info_box.has_life  = obj.has_life;
         vm.info_box.moons     = obj.moons;
+        vm.info_box.has_sub   = true;
+        vm.info_box.sub_name  = 'Lunas';
       }
       if (vm.info_box.view=='moon'){
         vm.info_box.name     = obj.name;
         vm.info_box.radius   = obj.radius;
         vm.info_box.survival = obj.survival;
         vm.info_box.has_life = obj.has_life;
+        vm.info_box.has_sub  = false;
       }
     }
 
-    function calculateCSS(list){
-      var css = '';
-      var item;
-      for (var i=0;i<list.length;i++){
-        item = list[i];
-        css += template(item.type+'_style',{
-          id: item.id,
-          distance: (180 + (50 * item.distance)),
-          distance_half: Math.floor( (180 + (50 * item.distance)) / 2 ),
-          rotate_time: item.rotation,
-          width: (10 * (item.radius / 10000)),
-          width_half: Math.floor( (10 * (item.radius / 10000)) /2 ),
-          visible: (item.type=='planet')?'block':'none'
+    function calculateCSS(main,list){
+      var css          = '';
+      var css_distance = '';
+      var css_radius   = '';
+      var main_radius  = -1;
+      var item         = null;
+      var i            = null;
+      var css_vars     = {};
+      
+      if (main.type=='sun'){
+        main_radius = (main.radius * (700 * 0.2)) / 150000;
+        console.log('main.radius: '+main.radius+' - main_radius: '+main_radius);
+
+        css_vars = getCssVars(list);
+        css = template('sun_style',{
+          width: main_radius,
+          width_half: (main_radius / 2),
+          color: main.color
+        });
+        
+        for (i=0;i<list.length;i++){
+          item = list[i];
+          css_distance = (item.distance * css_vars.distance_step);
+          css_radius = (item.radius / css_vars.list_km_px);
+          console.log(item);
+          console.log('css_distance: '+css_distance+' - css_radius: '+css_radius);
+          css += template('planet_style',{
+            id: item.id,
+            distance: css_distance,
+            distance_half: Math.floor( css_distance / 2 ),
+            rotate_time: item.rotation,
+            width: css_radius,
+            width_half: Math.floor( css_radius / 2 )
+          });
+        }
+      }
+      if (main.type=='planet'){
+        main_radius = (main.radius * (700 * 0.2)) / 100000;
+        console.log('main.radius: '+main.radius+' - main_radius: '+main_radius);
+
+        css_vars = getCssVars(list);
+        css = template('sun_style',{
+          width: main_radius,
+          width_half: (main_radius / 2),
+          color: '#888'
+        });
+
+        for (i=0;i<list.length;i++){
+          item = list[i];
+          css_distance = (item.distance * css_vars.distance_step);
+          css_radius = (item.radius / css_vars.list_km_px);
+          console.log(item);
+          console.log('css_distance: '+css_distance+' - css_radius: '+css_radius);
+          css += template('moon_style',{
+            id: item.id,
+            distance: css_distance,
+            distance_half: Math.floor( css_distance / 2 ),
+            rotate_time: item.rotation,
+            width: css_radius,
+            width_half: Math.floor( css_radius / 2 )
+          });
+        }
+      }
+      if (main.type=='moon'){
+        main_radius = (main.radius * (700 * 0.2)) / 66666;
+        console.log('main.radius: '+main.radius+' - main_radius: '+main_radius);
+
+        css = template('sun_style',{
+          width: main_radius,
+          width_half: (main_radius / 2),
+          color: '#fff'
         });
       }
 
       return css;
+    }
+
+    function getCssVars(list){
+      var i, item, item_next;
+      var ret = {
+        max_distance: -1,
+        max_list_km: -1,
+        distance_step: -1,
+        max_separation: -1,
+        max_radius_px: -1,
+        list_km_px: -1
+      };
+
+      // Busco max distance y max_planet_km
+      for (i=0;i<list.length;i++){
+        item = list[i];
+
+        if (item.distance>ret.max_distance){
+          ret.max_distance = item.distance;
+        }
+        if (item.radius>ret.max_list_km){
+          ret.max_list_km = item.radius;
+        }
+      }
+
+      ret.distance_step  = (700 * 0.4) / ret.max_distance;
+      console.log('max_distance: '+ret.max_distance+' - max_list_km: '+ret.max_list_km+' - distance_step: '+ret.distance_step);
+      ret.max_separation = -1;
+
+      // busco max_separation
+      for(i=0;i<list.length;i++){
+        if (list[i+1]){
+          item      = list[i];
+          item_next = list[i+1];
+
+          if (ret.max_separation < (item_next.distance-item.distance)){
+            ret.max_separation = (item_next.distance-item.distance);
+          }
+        }
+      }
+
+      ret.max_radius_px = (ret.max_separation * ret.distance_step) / 2;
+      ret.list_km_px = ret.max_list_km / ret.max_radius_px;
+
+      return ret;
     }
 
     function explorePlanet(ev){
@@ -490,6 +625,27 @@ console.log(vm.selectedSystem);
 
     function getResourcesMoon(){
       APIService.GetResources(vm.selectedMoon.id, 'moon', function(response){
+
+        if (response.status=='working'){
+          $mdDialog.show(
+            $mdDialog.alert()
+              .clickOutsideToClose(true)
+              .title('Trabajando...')
+              .textContent('Actualmente estás realizando otro trabajo. Tendrás que esperar a que acabe para poder explorar esta luna.')
+              .ariaLabel('Trabajando...')
+              .ok('Entendido')
+              .targetEvent(ev)
+          );
+        }
+        else{
+          JobService.AddJob(response.job);
+          vm.working = true;
+        }
+      });
+    }
+
+    function goToSystem(id,time){
+      APIService.GoToSystem(id, time, function(response){
 
         if (response.status=='working'){
           $mdDialog.show(

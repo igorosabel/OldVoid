@@ -12,7 +12,7 @@
   "color": "<?php echo urlencode($s['color']) ?>",
   "radius": <?php echo $s['radius'] ?>,
   "planet_list": [
-<?php foreach ($s['planet_list'] as $i => $planet): ?>
+<?php foreach ($s['planet_list'] as $planet_ind => $planet): ?>
     {
       "id": <?php echo $planet->get('id') ?>,
       "name": "<?php echo urlencode($planet->get('name')) ?>",
@@ -28,12 +28,12 @@
       "explored": <?php echo ($planet->getExplored())?'true':'false' ?>,
       "explore_time": <?php echo $planet->get('explore_time') ?>,
       "resources": [
-<?php foreach ($planet->getResources() as $j => $resource): ?>
+<?php foreach ($planet->getResources() as $resource_ind => $resource): ?>
         {
           "id": <?php echo $resource->get('id_resource_type') ?>,
           "name": "<?php echo urlencode(General::getResourceName($resource->get('id_resource_type'))) ?>",
           "value": <?php echo $resource->get('value') ?>
-        }<?php if ($j<count($planet->getResources())-1): ?>,<?php endif ?>
+        }<?php if ($resource_ind<count($planet->getResources())-1): ?>,<?php endif ?>
 <?php endforeach ?>
       ],
       "npc": <?php if (!$planet->get('npc')): ?>false<?php else: ?>
@@ -51,7 +51,7 @@
         }
       <?php endif ?>,
       "moon_list": [
-<?php foreach ($planet->getMoons() as $j => $moon): ?>
+<?php foreach ($planet->getMoons() as $moon_ind => $moon): ?>
         {
           "id": <?php echo $moon->get('id') ?>,
           "name": "<?php echo urlencode($moon->get('name')) ?>",
@@ -65,12 +65,12 @@
           "explored": <?php echo ($moon->getExplored())?'true':'false' ?>,
           "explore_time": <?php echo $moon->get('explore_time') ?>,
           "resources": [
-<?php foreach ($moon->getResources() as $j => $resource): ?>
+<?php foreach ($moon->getResources() as $resource_ind => $resource): ?>
             {
               "id": <?php echo $resource->get('id_resource_type') ?>,
               "name": "<?php echo urlencode(General::getResourceName($resource->get('id_resource_type'))) ?>",
               "value": <?php echo $resource->get('value') ?>
-            }<?php if ($j<count($moon->getResources())-1): ?>,<?php endif ?>
+            }<?php if ($resource_ind<count($moon->getResources())-1): ?>,<?php endif ?>
 <?php endforeach ?>
           ],
           "npc": <?php if (!$moon->get('npc')): ?>false<?php else: ?>
@@ -88,19 +88,26 @@
               "resources": <?php echo $moon->getNPC()->get('resources_actual') ?>
             }
           <?php endif ?>
-        }<?php if ($j<count($planet->getMoons())-1): ?>,<?php endif ?>
+        }<?php if ($moon_ind<count($planet->getMoons())-1): ?>,<?php endif ?>
 <?php endforeach ?>
       ]
-    }<?php if ($i<count($s['planet_list'])-1): ?>,<?php endif ?>
+    }<?php if ($planet_ind<count($s['planet_list'])-1): ?>,<?php endif ?>
 <?php endforeach ?>
   ],
   "connections": [
 <?php foreach ($s['connections'] as $key => $conn): ?>
-    <?php if ($conn===false): ?>false<?php else: ?>
+    <?php if ($conn===false): ?>
+      {
+        "id": null,
+        "name": null,
+        "time": <?php echo rand(30,300) ?>
+      }
+    <?php else: ?>
     <?php $conn->loadSystem2() ?>
       {
         "id": <?php echo $conn->getSystem2()->get('id') ?>,
-        "name": "<?php echo urlencode($conn->getSystem2()->get('name')) ?>"
+        "name": "<?php echo urlencode($conn->getSystem2()->get('name')) ?>",
+        "time": <?php echo rand(30,300) ?>
       }
     <?php endif ?>
     <?php if ($key!='connection_3'): ?>,<?php endif ?>

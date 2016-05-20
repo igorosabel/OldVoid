@@ -68,7 +68,7 @@
     <md-card flex="100">
       <md-card-content>
         <md-list>
-          <md-list-item ng-hide="vm.people_in_system.length">
+          <md-list-item ng-if="!vm.people_in_system.length || (vm.people_in_system.length==1 && vm.people_in_system[0].id==vm.user_id)">
             <p>Sistema deshabitado</p>
           </md-list-item>
           <md-list-item class="md-2-line" ng-repeat="item in vm.people_in_system" ng-if="(item.type=='npc') || (item.type=='explorer' && item.id!=vm.user_id)">
