@@ -1,7 +1,21 @@
 <?php
 class Ship{
-  const MODULE_STORAGE = 'storage';
-  
+  const MODULE_SMALL = 0;
+  const MODULE_BIG   = 1;
+  const MODULE_STORAGE      = 'storage';
+  const MODULE_STORAGE_NAME = 'Almacenamiento';
+
+  public static function loadShip($explorer){
+    $ship = new G_Ship();
+    if ($ship->buscar(array('id'=>$explorer->get('current_ship')))){
+      $ship->setGuns(self::loadGuns($ship));
+      $ship->setModulesSmall(self::loadModules($ship,self::MODULE_SMALL));
+      $ship->setModulesBig(self::loadModules($ship,self::MODULE_BIG));
+    }
+
+    return $ship;
+  }
+
   public static function loadGuns($ship){
     $bd = new G_BBDD();
     $ret = array();
@@ -19,11 +33,14 @@ class Ship{
     return $ret;
   }
   
-  public static function loadModules($ship){
+  public static function loadModules($ship,$size=null){
     $bd = new G_BBDD();
     $ret = array();
     
     $sql = "SELECT * FROM `module` WHERE `id_ship` = ".$ship->get('id');
+    if (!is_null($size)){
+      $sql .= " AND `size` = ".$size;
+    }
     $bd->consulta($sql);
     
     while ($res=$bd->sig()){
@@ -34,6 +51,63 @@ class Ship{
     }
     
     return $ret;
+  }
+
+  public static function getHullTypeName($id){
+    $hulls = Base::getCache('hull');
+    if (array_key_exists('hull_'.$id,$hulls['hull_types'])){
+      return $hulls['hull_types']['hull_'.$id]['name'];
+    }
+    return '';
+  }
+
+  public static function getShieldTypeName($id){
+    $shields = Base::getCache('shield');
+    if (array_key_exists('shield_'.$id,$shields['shield_types'])){
+      return $shields['shield_types']['shield_'.$id]['name'];
+    }
+    return '';
+  }
+
+  public static function getEngineTypeName($id){
+    $engines = Base::getCache('engine');
+    if (array_key_exists('engine_'.$id,$engines['engine_types'])){
+      return $engines['engine_types']['engine_'.$id]['name'];
+    }
+    return '';
+  }
+
+  public static function getGeneratorTypeName($id){
+    $generators = Base::getCache('generator');
+    if (array_key_exists('generator_'.$id,$generators['generator_types'])){
+      return $generators['generator_types']['generator_'.$id]['name'];
+    }
+    return '';
+  }
+
+  public static function getGunTypeName($id){
+    $guns = Base::getCache('gun');
+    if (array_key_exists('gun_'.$id,$guns['gun_types'])){
+      return $guns['gun_types']['gun_'.$id]['name'];
+    }
+    return '';
+  }
+
+  public static function getModuleTypeName($id){
+    $modules = Base::getCache('module');
+    if (array_key_exists('module_'.$id,$modules['module_types'])){
+      return $modules['module_types']['module_'.$id]['name'];
+    }
+    return '';
+  }
+
+  public static function getModuleEnableName($id){
+    switch($id){
+      case self::MODULE_STORAGE: {
+        return self::MODULE_STORAGE_NAME;
+      }
+    }
+    return '';
   }
   
   public static function generateShip($explorer){

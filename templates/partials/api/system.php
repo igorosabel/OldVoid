@@ -103,10 +103,20 @@
         "time": <?php echo rand(30,300) ?>
       }
     <?php else: ?>
-    <?php $conn->loadSystem2() ?>
+<?php
+      $connection = null;
+      if ($conn->get('id_system_2')!=$s['id']){
+        $conn->loadSystem2();
+        $connection = $conn->getSystem2();
+      }
+      else{
+        $conn->loadSystem1();
+        $connection = $conn->getSystem1();
+      }
+?>
       {
-        "id": <?php echo $conn->getSystem2()->get('id') ?>,
-        "name": "<?php echo urlencode($conn->getSystem2()->get('name')) ?>",
+        "id": <?php echo $connection->get('id')  ?>,
+        "name": "<?php echo urlencode( $connection->get('name') ) ?>",
         "time": <?php echo rand(30,300) ?>
       }
     <?php endif ?>

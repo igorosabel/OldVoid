@@ -1,0 +1,272 @@
+<md-content ui-view class="full_height" flex layout="row" layout-xs="column" layout-align="center stretch">
+  <md-card flex-xs="90" flex-gt-md="80">
+    <md-card-content layout="row" layout-xs="column" class="ship_container">
+
+      <md-list flex="25" class="ship_container">
+        <md-list-item ng-disabled="vm.menu_option=='loading'" ng-repeat="item in vm.menu_list" ng-click="vm.selectMenuOption(item.id)" ng-class="{ship_menu_selected: vm.menu_option==item.id}">
+          <md-icon md-svg-icon="/img/ship/{{item.id}}.svg"></md-icon>
+          <p>{{item.name}}</p>
+        </md-list-item>
+      </md-list>
+      
+      <md-content flex="75" class="ship_content">
+        <!-- Main -->
+        <md-content ng-show="vm.menu_option=='loading'" class="ship_content">
+          Cargando...
+        </md-content>
+
+        <!-- Main -->
+        <md-content ng-show="vm.menu_option=='main'" class="ship_content">
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <h2 flex>{{vm.ship.name}}</h2>
+              <md-button aria-label="Cambiar nombre">
+                <md-icon md-svg-icon="/img/ship/edit.svg"></md-icon>
+              </md-button>
+            </div>
+          </md-toolbar>
+          
+          <md-list>
+            <md-subheader class="md-no-sticky ship_content">Casco</md-subheader>
+            <md-list-item layout="row">
+              <p flex="30">Integridad del casco:</p>
+              <p flex="20">{{vm.hull.hull_current_strength}}%</p>
+              <p flex="30">Combustible:</p>
+              <p flex="20">100%</p>
+            </md-list-item>
+            <md-list-item layout="row">
+              <p flex="30">Tipo de casco:</p>
+              <p flex="20">{{vm.ship.hull_type_name | urldecode}}</p>
+              <p flex="30">Fuerza del casco:</p>
+              <p flex="20">{{vm.ship.hull_current_strength}} / {{vm.ship.hull_strength}}</p>
+            </md-list-item>
+            <md-list-item layout="row">
+              <p flex="30">Masa del casco:</p>
+              <p flex="20">{{vm.ship.hull_mass}}</p>
+              <p flex="30">Huecos para armas:</p>
+              <p flex="20">{{vm.ship.gun_ports}}</p>
+            </md-list-item>
+            <md-list-item layout="row">
+              <p flex="30">Huecos para módulos pequeños:</p>
+              <p flex="20">{{vm.ship.small_module_ports}}</p>
+              <p flex="30">Huecos para módulos grandes:</p>
+              <p flex="20">{{vm.ship.big_module_ports}}</p>
+            </md-list-item>
+            
+            <md-subheader class="md-no-sticky ship_content">Escudo</md-subheader>
+            <md-list-item layout="row">
+              <p flex="30">Tipo de escudo:</p>
+              <p flex="20">{{vm.ship.shield_type_name | urldecode}}</p>
+              <p flex="30">Integridad del escudo:</p>
+              <p flex="20">{{vm.ship.shield_current_strength}} / {{vm.ship.shield_strength}}</p>
+            </md-list-item>
+            <md-list-item layout="row">
+              <p flex="30">Consumo de energía:</p>
+              <p flex="20">{{vm.ship.shield_energy}}</p>
+            </md-list-item>
+            
+            <md-subheader class="md-no-sticky ship_content">Motor</md-subheader>
+            <md-list-item layout="row">
+              <p flex="30">Tipo de motor:</p>
+              <p flex="20">{{vm.ship.engine_type_name | urldecode}}</p>
+              <p flex="30">Potencia del motor:</p>
+              <p flex="20">{{vm.ship.engine_power}}</p>
+            </md-list-item>
+            <md-list-item layout="row">
+              <p flex="30">Consumo de energía:</p>
+              <p flex="20">{{vm.ship.engine_energy}}</p>
+              <p flex="30">Impulso del motor:</p>
+              <p flex="20">{{vm.ship.engine_impulse}} UA</p>
+            </md-list-item>
+            
+            <md-subheader class="md-no-sticky ship_content">Generador</md-subheader>
+            <md-list-item layout="row">
+              <p flex="30">Tipo de generador:</p>
+              <p flex="20">{{vm.ship.generator_type_name | urldecode}}</p>
+              <p flex="30">Potencia del generador:</p>
+              <p flex="20">{{vm.ship.generator_power}}</p>
+            </md-list-item>
+            
+          </md-list>
+        </md-content>
+
+        <!-- Armas -->
+        <md-content ng-show="vm.menu_option=='guns'" class="ship_content">
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <h2 flex>Armas {{vm.ship.guns.length}} / {{vm.ship.gun_ports}}</h2>
+              <md-button>
+                <md-icon md-svg-icon="/img/ship/list.svg"></md-icon>
+                Lista
+              </md-button>
+            </div>
+          </md-toolbar>
+          
+          <div layout="column">
+
+            <md-card ng-repeat="n in vm.range(0,vm.ship.gun_ports-1)" flex-xs="90" flex-gt-md="80">
+              <md-card-content ng-if="vm.ship.guns[n]">
+                <div layout="row">
+                  <p flex="70">{{vm.ship.guns[n].gun_type_name | urldecode}}</p>
+                  <p flex="10">
+                    <md-icon md-svg-icon="/img/ship/power.svg"></md-icon>
+                    {{vm.ship.guns[n].energy}}
+                  </p>
+                  <p flex="20" class="center">
+                    <md-button class="md-raised" aria-label="Cambiar arma">
+                      <md-icon md-svg-icon="/img/ship/swap.svg"></md-icon>
+                    </md-button>
+                  </p>
+                </div>
+                <md-divider ></md-divider>
+                <div layout="row">
+                  <p flex="30">Fuerza:</p>
+                  <p flex="20">{{vm.ship.guns[n].strength}}</p>
+                  <p flex="30">Puntería:</p>
+                  <p flex="20">{{vm.ship.guns[n].accuracy}}%</p>
+                </div>
+                <div layout="row">
+                  <p flex="30">Tiempo de recarga:</p>
+                  <p flex="20">{{vm.ship.guns[n].recharge_time}}</p>
+                  <p flex="30">Ignora escudos:</p>
+                  <p flex="20">{{vm.ship.guns[n].ignores_shields | yesno}}</p>
+                </div>
+                <div layout="row">
+                  <p flex="30">Consumo de energía:</p>
+                  <p flex="20">{{vm.ship.guns[n].energy}}</p>
+                </div>
+              </md-card-content>
+              <md-card-content ng-if="!vm.ship.guns[n]">
+                <p>
+                  <md-icon md-svg-icon="/img/ship/swap.svg"></md-icon>
+                  Hueco libre, seleccionar arma
+                </p>
+              </md-card-content>
+            </md-card>
+
+          </div>
+        </md-content>
+
+        <!-- Módulos -->
+        <md-content ng-show="vm.menu_option=='modules'" class="ship_content">
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <h2 flex>Módulos</h2>
+              <md-button aria-label="Cambiar módulo">
+                <md-icon md-svg-icon="/img/ship/list.svg"></md-icon>
+                Lista
+              </md-button>
+            </div>
+          </md-toolbar>
+
+          <div layout="column">
+
+            <h3 class="modules_title" ng-if="vm.ship.small_module_ports">Pequeños</h3>
+
+            <md-card ng-if="vm.ship.small_module_ports" ng-repeat="n in vm.range(0,vm.ship.small_module_ports-1)" flex-xs="90" flex-gt-md="80">
+              <md-card-content ng-if="vm.ship.modules_small[n]">
+                <div layout="row">
+                  <p flex="70">{{vm.ship.modules_small[n].module_type_name | urldecode}}</p>
+                  <p flex="10">
+                    <md-icon md-svg-icon="/img/ship/power.svg"></md-icon>
+                    {{vm.ship.modules_small[n].energy}}
+                  </p>
+                  <p flex="20" class="center">
+                    <md-button class="md-raised" aria-label="Cambiar módulo">
+                      <md-icon md-svg-icon="/img/ship/swap.svg"></md-icon>
+                    </md-button>
+                  </p>
+                </div>
+                <md-divider ></md-divider>
+                <div layout="row">
+                  <p flex="30">Masa:</p>
+                  <p flex="20">{{vm.ship.modules_small[n].mass}}</p>
+                  <p flex="30">Consumo de energía:</p>
+                  <p flex="20">{{vm.ship.modules_small[n].energy}}%</p>
+                </div>
+                <div layout="row">
+                  <p flex="30" ng-if="vm.ship.modules_small[n].crew">Alojamiento:</p>
+                  <p flex="20" ng-if="vm.ship.modules_small[n].crew">{{vm.ship.modules_small[n].crew}}</p>
+                  <p flex="30" ng-if="vm.ship.modules_small[n].storage_capacity">Almacenamiento:</p>
+                  <p flex="20" ng-if="vm.ship.modules_small[n].storage_capacity">{{vm.ship.modules_small[n].storage_capacity}}</p>
+                </div>
+                <div ng-if="vm.ship.modules_small[n].enables">
+                  <md-divider></md-divider>
+                  <p>Permite:</p>
+                  <div class="module_enable" ng-repeat="enable in vm.ship.modules_small[n].enables">
+                    <md-icon md-svg-icon="/img/ship/enable_{{enable.id}}.svg"></md-icon>
+                    {{enable.enable_name | urldecode}}
+                  </div>
+                  <!--div ng-repeat-->
+                </div>
+              </md-card-content>
+              <md-card-content ng-if="!vm.ship.modules_small[n]">
+                <p>
+                  <md-icon md-svg-icon="/img/ship/swap.svg"></md-icon>
+                  Hueco libre, seleccionar modulo
+                </p>
+              </md-card-content>
+            </md-card>
+
+            <h3 class="modules_title" ng-if="vm.ship.big_module_ports">Grandes</h3>
+
+            <md-card ng-if="vm.ship.big_module_ports" ng-repeat="n in vm.range(0,vm.ship.big_module_ports-1)" flex-xs="90" flex-gt-md="80">
+              <md-card-content ng-if="vm.ship.modules_big[n]">
+                <div layout="row">
+                  <p flex="70">{{vm.ship.modules_big[n].module_type_name | urldecode}}</p>
+                  <p flex="10">
+                    <md-icon md-svg-icon="/img/ship/power.svg"></md-icon>
+                    {{vm.ship.modules_big[n].energy}}
+                  </p>
+                  <p flex="20" class="center">
+                    <md-button class="md-raised" aria-label="Cambiar módulo">
+                      <md-icon md-svg-icon="/img/ship/swap.svg"></md-icon>
+                    </md-button>
+                  </p>
+                </div>
+                <md-divider ></md-divider>
+                <div layout="row">
+                  <p flex="30">Masa:</p>
+                  <p flex="20">{{vm.ship.modules_big[n].mass}}</p>
+                  <p flex="30">Consumo de energía:</p>
+                  <p flex="20">{{vm.ship.modules_big[n].energy}}%</p>
+                </div>
+                <div layout="row">
+                  <p flex="30" ng-if="vm.ship.modules_big[n].crew">Alojamiento:</p>
+                  <p flex="20" ng-if="vm.ship.modules_big[n].crew">{{vm.ship.modules_big[n].crew}}</p>
+                  <p flex="30" ng-if="vm.ship.modules_big[n].storage_capacity">Almacenamiento:</p>
+                  <p flex="20" ng-if="vm.ship.modules_big[n].storage_capacity">{{vm.ship.modules_big[n].storage_capacity}}</p>
+                </div>
+                <div ng-if="vm.ship.modules_big[n].enables">
+                  <md-divider></md-divider>
+                  <p>Permite:</p>
+                  <div class="module_enable" ng-repeat="enable in vm.ship.modules_big[n].enables">
+                    <md-icon md-svg-icon="/img/ship/enable_{{enable.id}}.svg"></md-icon>
+                    {{enable.enable_name | urldecode}}
+                  </div>
+                </div>
+              </md-card-content>
+              <md-card-content ng-if="!vm.ship.modules_big[n]">
+                <p>
+                  <md-icon md-svg-icon="/img/ship/swap.svg"></md-icon>
+                  Hueco libre, seleccionar modulo
+                </p>
+              </md-card-content>
+            </md-card>
+
+          </div>
+        </md-content>
+
+        <!-- Almacenamiento -->
+        <md-content ng-show="vm.menu_option=='storage'" class="ship_content">
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <h2 flex>Almacenamiento</h2>
+            </div>
+          </md-toolbar>
+        </md-content>
+      </md-content>
+
+    </md-card-content>
+  </md-card>
+</md-content>

@@ -259,8 +259,11 @@ console.log(vm.selectedSystem);
         vm.system_style = calculateCSS(sun_obj,vm.system_list);
         document.getElementById('system_style').innerHTML = vm.system_style;
 
-        vm.system_view = 'system';
+        vm.system_name = vm.selectedSystem.name;
+
+        vm.system_view    = 'system';
         vm.selectedPlanet = null;
+        vm.selectedMoon   = null;
         loadInfoBox('system',{
           name: vm.selectedSystem.name,
           type: vm.selectedSystem.type,
@@ -305,11 +308,11 @@ console.log(vm.selectedSystem);
         vm.system_style = calculateCSS(planet_obj,vm.system_list);
         document.getElementById('system_style').innerHTML = vm.system_style;
 
-        // Al planeta elegido le hago zoom
         vm.system_name = planet.name;
 
-        vm.system_view = 'planet';
+        vm.system_view    = 'planet';
         vm.selectedPlanet = planet;
+        vm.selectedMoon   = null;
         loadInfoBox('planet',{
           name: planet.name,
           type: planet.type,
@@ -354,11 +357,11 @@ console.log(vm.selectedSystem);
         vm.system_style = calculateCSS(planet_obj,vm.system_list);
         document.getElementById('system_style').innerHTML = vm.system_style;
 
-        // Al planeta elegido le hago zoom
         vm.system_name = planet.name;
 
-        vm.system_view = 'planet';
+        vm.system_view    = 'planet';
         vm.selectedPlanet = planet;
+        vm.selectedMoon   = null;
         loadInfoBox('planet',{
           name: planet.name,
           type: planet.type,
@@ -395,7 +398,7 @@ console.log(vm.selectedSystem);
 
         vm.system_name = moon.name;
 
-        vm.system_view = 'moon';
+        vm.system_view  = 'moon';
         vm.selectedMoon = moon;
         loadInfoBox('moon',{
           name: moon.name,
@@ -520,8 +523,8 @@ console.log(vm.selectedSystem);
       var ret = {
         max_distance: -1,
         max_list_km: -1,
-        distance_step: -1,
-        max_separation: -1,
+        distance_step: 1,
+        max_separation: 1,
         max_radius_px: -1,
         list_km_px: -1
       };
@@ -538,9 +541,8 @@ console.log(vm.selectedSystem);
         }
       }
 
-      ret.distance_step  = (700 * 0.4) / ret.max_distance;
+      ret.distance_step  = ( (700 * 0.4) / ret.max_distance );
       console.log('max_distance: '+ret.max_distance+' - max_list_km: '+ret.max_list_km+' - distance_step: '+ret.distance_step);
-      ret.max_separation = -1;
 
       // busco max_separation
       for(i=0;i<list.length;i++){

@@ -1,4 +1,16 @@
 /*
+ * Función para crear un rango de números
+ */
+function range(min, max, step){
+  step = step || 1;
+  var input = [];
+  for (var i = min; i <= max; i += step) {
+    input.push(i);
+  }
+  return input;
+}
+
+/*
  * Función para mostrar un objeto
  */
 function show(id){

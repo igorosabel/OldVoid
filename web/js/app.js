@@ -54,6 +54,11 @@ function configApp() {
       return function (num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       };
+    })
+    .filter('yesno', function () {
+      return function (num) {
+        return num?'Si':'No';
+      };
     });
 }
 

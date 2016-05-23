@@ -175,3 +175,36 @@ html, body{
   overflow: hidden;
   width: 150px;
 }
+
+/* SHIP */
+.ship_container{
+  padding: 0;
+}
+
+.ship_menu_selected{
+  background-color: #eee;
+}
+
+.ship_content{
+  background-color: #fff;
+}
+
+.ship_title{
+  margin: 0;
+}
+
+.ship_name_edit{
+  min-width: 0;
+  width: 30px;
+}
+
+.module_enable{
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  display: inline-block;
+  padding: 10px;
+}
+
+.modules_title{
+  padding-left: 10px;
+}

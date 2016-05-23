@@ -589,3 +589,39 @@
 
     $t->process();
   }
+
+  /*
+    Función para obtener los datos de la nave actual
+  */
+  function executeGetShip($req, $t){
+    /*
+      Código de la página
+    */
+    global $c, $s;
+
+    $status = 'ok';
+    $auth   = Base::getParam('auth', $req['url_params'], false);
+    $ship   = false;
+
+    if ($auth===false){
+      $status = 'error';
+    }
+
+    if ($status=='ok'){
+      $explorer = new G_Explorer();
+      if ($explorer->buscar(array('auth'=>$auth))) {
+        $ship = Ship::loadShip($explorer);
+      }
+      else{
+        $status = 'error';
+      }
+    }
+
+    $t->setLayout(false);
+    $t->setJson(true);
+
+    $t->add('status',$status);
+    $t->addPartial('ship','api/ship',array('ship'=>$ship,'extra'=>'nourlencode'));
+
+    $t->process();
+  }

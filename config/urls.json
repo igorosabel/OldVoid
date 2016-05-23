@@ -80,6 +80,14 @@
         "action": "goToSystem",
         "comment": "Función para viajar a otro sistema",
         "login": "dont"
+      },
+      {
+        "id": "get_ship",
+        "url": "/api/get_ship",
+        "module": "api",
+        "action": "getShip",
+        "comment": "Función para obtener los datos de la nave actual",
+        "login": "dont"
       }
   ]
 }

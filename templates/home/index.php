@@ -20,9 +20,11 @@
 <script src="js/controllers/main-controller.js"></script>
 <script src="js/controllers/panel-controller.js"></script>
 <script src="js/controllers/system-controller.js"></script>
+<script src="js/controllers/ship-controller.js"></script>
 <script src="js/services/authentication-service.js"></script>
 <script src="js/services/data-share-service.js"></script>
 <script src="js/services/api-service.js"></script>
 <script src="js/services/job-service.js"></script>
 <script src="js/directives/panel-directive.js"></script>
 <script src="js/directives/system-directive.js"></script>
+<script src="js/directives/ship-directive.js"></script>

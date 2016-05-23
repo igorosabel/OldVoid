@@ -1,0 +1,4 @@
+{
+  "status": "{{STATUS}}",
+  "ship": {{SHIP}}
+}
