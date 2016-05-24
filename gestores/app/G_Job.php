@@ -92,14 +92,16 @@ class G_Job extends G_Base{
 
     $free_space = $storage_module->get('storage_capacity');
     $explorer_resources = array();
+    $explorer_resources_ind = array();
 
     // Calculo espacio libre en el módulo
     if (!is_null($storage_module->get('storage'))){
       $module_data = json_decode($storage_module->get('storage'),true);
-      foreach ($module_data as $key=>$value){
+      foreach ($module_data as $ind=>$module_obj){
         // Espacio total menos lo que ya lleva
-        $free_space -= $value;
-        $explorer_resources[$key] = $value;
+        $free_space -= $module_obj['value'];
+        $explorer_resources[$module_obj['resource_id']] = $module_obj['value'];
+        $explorer_resources_ind['resource_'.$module_obj['resource_id']] = $ind;
       }
     }
 
@@ -133,11 +135,13 @@ class G_Job extends G_Base{
         $new_value = (int)$obj_resources[$i]->get('value') - $resource_value;
 
         $obj_resources[$i]->set('value', $new_value);
-        if (!array_key_exists('resource_'.$resource_id, $explorer_resources)){
-          $explorer_resources['resource_'.$resource_id] = $resource_value;
+        if (!array_key_exists('resource_'.$resource_id, $explorer_resources_ind)){
+          array_push($explorer_resources,array('resource_id'=>$resource_id,'value'=>$resource_value));
+          $key = end(array_keys($explorer_resources));
+          $explorer_resources_ind['resource_'.$resource_id] = $key;
         }
         else{
-          $explorer_resources['resource_'.$resource_id] += $resource_value;
+          $explorer_resources[$explorer_resources_ind['resource_'.$resource_id]] += $resource_value;
         }
       }
     }

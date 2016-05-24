@@ -159,17 +159,16 @@
             </div>
           </md-toolbar>
 
-          <div layout="column">
+          <div layout="column" ng-repeat="module_type in vm.module_types">
+            <h3 class="modules_title" ng-if="vm.ship[module_type.id+'_module_ports']">{{module_type.name}}</h3>
 
-            <h3 class="modules_title" ng-if="vm.ship.small_module_ports">Pequeños</h3>
-
-            <md-card ng-if="vm.ship.small_module_ports" ng-repeat="n in vm.range(0,vm.ship.small_module_ports-1)" flex-xs="90" flex-gt-md="80">
+            <md-card ng-if="vm.ship[module_type.id+'_module_ports']" ng-repeat="n in vm.range(0,vm.ship[module_type.id+'_module_ports']-1)" flex-xs="90" flex-gt-md="80">
               <md-card-content ng-if="vm.ship.modules_small[n]">
                 <div layout="row">
-                  <p flex="70">{{vm.ship.modules_small[n].module_type_name | urldecode}}</p>
+                  <p flex="70">{{vm.ship['modules_'+module_type.id][n].module_type_name | urldecode}}</p>
                   <p flex="10">
                     <md-icon md-svg-icon="/img/ship/power.svg"></md-icon>
-                    {{vm.ship.modules_small[n].energy}}
+                    {{vm.ship['modules_'+module_type.id][n].energy}}
                   </p>
                   <p flex="20" class="center">
                     <md-button class="md-raised" aria-label="Cambiar módulo">
@@ -180,81 +179,35 @@
                 <md-divider ></md-divider>
                 <div layout="row">
                   <p flex="30">Masa:</p>
-                  <p flex="20">{{vm.ship.modules_small[n].mass}}</p>
+                  <p flex="20">{{vm.ship['modules_'+module_type.id][n].mass}}</p>
                   <p flex="30">Consumo de energía:</p>
-                  <p flex="20">{{vm.ship.modules_small[n].energy}}%</p>
+                  <p flex="20">{{vm.ship['modules_'+module_type.id][n].energy}}%</p>
                 </div>
                 <div layout="row">
-                  <p flex="30" ng-if="vm.ship.modules_small[n].crew">Alojamiento:</p>
-                  <p flex="20" ng-if="vm.ship.modules_small[n].crew">{{vm.ship.modules_small[n].crew}}</p>
-                  <p flex="30" ng-if="vm.ship.modules_small[n].storage_capacity">Almacenamiento:</p>
-                  <p flex="20" ng-if="vm.ship.modules_small[n].storage_capacity">{{vm.ship.modules_small[n].storage_capacity}}</p>
+                  <p flex="30" ng-if="vm.ship['modules_'+module_type.id][n].crew">Alojamiento:</p>
+                  <p flex="20" ng-if="vm.ship['modules_'+module_type.id][n].crew">{{vm.ship['modules_'+module_type.id][n].crew}}</p>
+                  <p flex="30" ng-if="vm.ship['modules_'+module_type.id][n].storage_capacity">Almacenamiento:</p>
+                  <p flex="20" ng-if="vm.ship['modules_'+module_type.id][n].storage_capacity">{{vm.ship['modules_'+module_type.id][n].storage_capacity}}</p>
                 </div>
-                <div ng-if="vm.ship.modules_small[n].enables">
+                <div ng-if="vm.ship['modules_'+module_type.id][n].enables">
                   <md-divider></md-divider>
                   <p>Permite:</p>
-                  <div class="module_enable" ng-repeat="enable in vm.ship.modules_small[n].enables">
+                  <div class="module_enable" ng-repeat="enable in vm.ship['modules_'+module_type.id][n].enables">
                     <md-icon md-svg-icon="/img/ship/enable_{{enable.id}}.svg"></md-icon>
                     {{enable.enable_name | urldecode}}
                   </div>
                   <!--div ng-repeat-->
                 </div>
               </md-card-content>
-              <md-card-content ng-if="!vm.ship.modules_small[n]">
+              <md-card-content ng-if="!vm.ship['modules_'+module_type.id][n]">
                 <p>
                   <md-icon md-svg-icon="/img/ship/swap.svg"></md-icon>
                   Hueco libre, seleccionar modulo
                 </p>
               </md-card-content>
             </md-card>
-
-            <h3 class="modules_title" ng-if="vm.ship.big_module_ports">Grandes</h3>
-
-            <md-card ng-if="vm.ship.big_module_ports" ng-repeat="n in vm.range(0,vm.ship.big_module_ports-1)" flex-xs="90" flex-gt-md="80">
-              <md-card-content ng-if="vm.ship.modules_big[n]">
-                <div layout="row">
-                  <p flex="70">{{vm.ship.modules_big[n].module_type_name | urldecode}}</p>
-                  <p flex="10">
-                    <md-icon md-svg-icon="/img/ship/power.svg"></md-icon>
-                    {{vm.ship.modules_big[n].energy}}
-                  </p>
-                  <p flex="20" class="center">
-                    <md-button class="md-raised" aria-label="Cambiar módulo">
-                      <md-icon md-svg-icon="/img/ship/swap.svg"></md-icon>
-                    </md-button>
-                  </p>
-                </div>
-                <md-divider ></md-divider>
-                <div layout="row">
-                  <p flex="30">Masa:</p>
-                  <p flex="20">{{vm.ship.modules_big[n].mass}}</p>
-                  <p flex="30">Consumo de energía:</p>
-                  <p flex="20">{{vm.ship.modules_big[n].energy}}%</p>
-                </div>
-                <div layout="row">
-                  <p flex="30" ng-if="vm.ship.modules_big[n].crew">Alojamiento:</p>
-                  <p flex="20" ng-if="vm.ship.modules_big[n].crew">{{vm.ship.modules_big[n].crew}}</p>
-                  <p flex="30" ng-if="vm.ship.modules_big[n].storage_capacity">Almacenamiento:</p>
-                  <p flex="20" ng-if="vm.ship.modules_big[n].storage_capacity">{{vm.ship.modules_big[n].storage_capacity}}</p>
-                </div>
-                <div ng-if="vm.ship.modules_big[n].enables">
-                  <md-divider></md-divider>
-                  <p>Permite:</p>
-                  <div class="module_enable" ng-repeat="enable in vm.ship.modules_big[n].enables">
-                    <md-icon md-svg-icon="/img/ship/enable_{{enable.id}}.svg"></md-icon>
-                    {{enable.enable_name | urldecode}}
-                  </div>
-                </div>
-              </md-card-content>
-              <md-card-content ng-if="!vm.ship.modules_big[n]">
-                <p>
-                  <md-icon md-svg-icon="/img/ship/swap.svg"></md-icon>
-                  Hueco libre, seleccionar modulo
-                </p>
-              </md-card-content>
-            </md-card>
-
           </div>
+
         </md-content>
 
         <!-- Almacenamiento -->
@@ -264,6 +217,26 @@
               <h2 flex>Almacenamiento</h2>
             </div>
           </md-toolbar>
+
+          <div layout="column">
+            <md-card ng-repeat="storage in vm.storage_list" flex-xs="90" flex-gt-md="80">
+              <md-card-content>
+                <div layout="row">
+                  <h3 class="modules_title" flex>{{storage.name | urldecode}}</h3>
+                  <p>Capacidad: {{storage.storage_occupied}} / {{storage.storage_capacity}}</p>
+                </div>
+                <md-divider></md-divider>
+                <md-list>
+                  <md-list-item ng-repeat="item in storage.storage">
+                    <img ng-src="/img/resources/resource_{{item.resource_id}}.png" class="md-avatar" alt="{{item.resource_name | urldecode}}" />
+                    <p>{{item.resource_name | urldecode}}</p>
+                    <p class="md-secondary">{{item.value}}</p>
+                    <md-divider></md-divider>
+                  </md-list-item>
+                </md-list>
+              </md-card-content>
+            </md-card>
+          </div>
         </md-content>
       </md-content>
 

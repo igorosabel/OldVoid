@@ -64,7 +64,18 @@
       "crew": <?php echo $module->get('crew') ?>,
       "mass": <?php echo $module->get('mass') ?>,
       "storage_capacity": <?php echo $module->get('storage_capacity') ?>,
-      "storage": "<?php echo urlencode($module->get('storage')) ?>",
+    "storage": <?php if ($module->get('storage')==''): ?>false<?php else: ?>
+      [
+      <?php $storage = json_decode($module->get('storage'),true); ?>
+      <?php foreach ($storage as $j=>$resource): ?>
+        {
+        "resource_id": <?php echo $resource['resource_id'] ?>,
+        "resource_name": "<?php echo urlencode(General::getResourceName($resource['resource_id'])) ?>",
+        "value": <?php echo $resource['value'] ?>
+        }<?php if ($j<count($storage)-1): ?>,<?php endif ?>
+      <?php endforeach ?>
+      ]
+    <?php endif ?>,
       "energy": <?php echo $module->get('energy') ?>,
       "credits": <?php echo $module->get('credits') ?>
     }<?php if ($i<count($s->getModulesSmall())-1): ?>,<?php endif ?>
@@ -91,7 +102,18 @@
     "crew": <?php echo $module->get('crew') ?>,
     "mass": <?php echo $module->get('mass') ?>,
     "storage_capacity": <?php echo $module->get('storage_capacity') ?>,
-    "storage": "<?php echo urlencode($module->get('storage')) ?>",
+    "storage": <?php if ($module->get('storage')==''): ?>false<?php else: ?>
+      [
+      <?php $storage = json_decode($module->get('storage'),true); ?>
+      <?php foreach ($storage as $j=>$resource): ?>
+        {
+        "resource_id": <?php echo $resource['resource_id'] ?>,
+        "resource_name": "<?php echo urlencode(General::getResourceName($resource['resource_id'])) ?>",
+        "value": <?php echo $resource['value'] ?>
+        }<?php if ($j<count($storage)-1): ?>,<?php endif ?>
+      <?php endforeach ?>
+      ]
+    <?php endif ?>,
     "energy": <?php echo $module->get('energy') ?>,
     "credits": <?php echo $module->get('credits') ?>
     }<?php if ($i<count($s->getModulesBig())-1): ?>,<?php endif ?>
