@@ -22,7 +22,6 @@
     vm.range            = range;
     vm.editShipName     = editShipName;
 
-console.log(vm.ship);
     loadMenuList();
     loadEnables();
 
@@ -91,6 +90,7 @@ console.log(vm.ship);
     function editShipName(ev){
       var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && vm.customFullscreen;
       $mdDialog.show({
+          locals: {name: vm.ship.name},
           controller: ShipNameChangeController,
           controllerAs: 'vm',
           templateUrl: 'partials/change_ship_name.html',
@@ -99,16 +99,24 @@ console.log(vm.ship);
           clickOutsideToClose:true,
           fullscreen: useFullScreen
         })
-        .then(function(answer) {
+        .then(function(name) {
           // respuesta
+          vm.ship.name = urlencode(name);
+          APIService.ChangeShipName(vm.ship.name,function(response){
+            if (response.status=='error'){
+              alert('¡Ocurrió un error al cambiar el nombre de tu nave!');
+            }
+          });
         }, function() {
           // cancelar
         });
     }
   }
 
-  function ShipNameChangeController($mdDialog) {
+  function ShipNameChangeController($mdDialog, name) {
     var vm = this;
+    vm.name = urldecode(name);
+
     vm.hide = function() {
       $mdDialog.hide();
     };
@@ -116,8 +124,7 @@ console.log(vm.ship);
       $mdDialog.cancel();
     };
     vm.save = function() {
-      alert('guardar');
-      //$mdDialog.hide(answer);
+      $mdDialog.hide(vm.name);
     };
   }
 })();

@@ -1,6 +1,6 @@
 {
-  "status": "{{STATUS}}",
+  "status": "{{status}}",
   "notifications": [
-{{NOTIFICATIONS}}
+{{notifications}}
   ]
 }

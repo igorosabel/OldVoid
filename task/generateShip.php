@@ -7,7 +7,7 @@
   include($c->getRutaConfig().'gestores.php');
 
   $explorer = new G_Explorer();
-  $explorer->buscar(array('id'=>1));
+  $explorer->find(array('id'=>1));
 
   $s = General::generateShip($explorer);
   echo "\nCREADA NAVE \"".$s->get('name')."\" ( ".$s->get('id')." )\n\n";

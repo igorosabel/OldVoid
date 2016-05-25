@@ -20,6 +20,6 @@
     */
     global $c, $s;
 
-    $t->add('api_url',$c->getUrlApi());
+    $t->add('api_url',$c->getApiUrl());
     $t->process();
   }

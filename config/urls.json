@@ -88,6 +88,14 @@
         "action": "getShip",
         "comment": "Función para obtener los datos de la nave actual",
         "login": "dont"
+      },
+      {
+        "id": "change_ship_name",
+        "url": "/api/change_ship_name",
+        "module": "api",
+        "action": "changeShipName",
+        "comment": "Función para cambiar el nombre de la nave actual",
+        "login": "dont"
       }
   ]
 }

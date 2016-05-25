@@ -1,4 +1,4 @@
 {
-  "status": "{{STATUS}}",
-  "job": {{JOB}}
+  "status": "{{status}}",
+  "job": {{job}}
 }

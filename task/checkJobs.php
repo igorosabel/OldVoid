@@ -18,7 +18,7 @@
     if ($job->getStatus()==Job::STATUS_FINISHED){
       // Le quito el trabajo pendiente al explorador
       $explorer->set('id_job',null);
-      $explorer->salvar();
+      $explorer->save();
 
       $job->jobDone();
     }

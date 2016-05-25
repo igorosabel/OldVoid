@@ -32,7 +32,7 @@
         $auth = General::generateAuth();
 
         $ex->set('auth',$auth);
-        $ex->salvar();
+        $ex->save();
         
         $id_user         = $ex->get('id');
         $name            = $ex->get('name');
@@ -101,7 +101,7 @@
       $ex->set('credits',$credits);
       $ex->set('auth',$auth);
       
-      $ex->salvar();
+      $ex->save();
       
       $id_user = $ex->get('id');
 
@@ -115,7 +115,7 @@
       $system = System::generateSystem($ex);
       $last_save_point = $system->get('id');
       $ex->set('last_save_point',$last_save_point);
-      $ex->salvar();
+      $ex->save();
       
       $ex->loadData();
 
@@ -171,7 +171,7 @@
 
     if ($status=='ok'){
       $explorer = new G_Explorer();
-      if ($explorer->buscar(array('auth'=>$auth))) {
+      if ($explorer->find(array('auth'=>$auth))) {
         // Compruebo si está haciendo un trabajo
         if ($explorer->get('id_job')){
           $job = Job::checkJob($explorer->get('id_job'));
@@ -180,7 +180,7 @@
           if ($job->getStatus()==Job::STATUS_FINISHED){
             $job->jobDone();
             $explorer->set('id_job',null);
-            $explorer->salvar();
+            $explorer->save();
           }
           else{
             $status = 'working';
@@ -189,21 +189,21 @@
 
         if ($status=='ok'){
           $sys = new G_System();
-          if ($sys->buscar(array('id' => $id))) {
+          if ($sys->find(array('id' => $id))) {
             $sys->loadNumExplorers();
-            $system['id'] = $id;
-            $system['name'] = $sys->get('name');
+            $system['id']            = $id;
+            $system['name']          = $sys->get('name');
             $system['id_discoverer'] = $sys->get('id_discoverer');
-            $system['discoverer'] = System::getSystemDiscoverer($sys->get('id_discoverer'));
-            $system['type'] = $sys->get('sun_type');
-            $system['color'] = System::getSystemColor($sys->get('sun_type'));
-            $system['radius'] = $sys->get('sun_radius');
-            $system['planets'] = $sys->get('num_planets');
-            $system['explorers'] = $sys->getNumExplorers();
-            $system['npc'] = $sys->get('num_npc');
+            $system['discoverer']    = System::getSystemDiscoverer($sys->get('id_discoverer'));
+            $system['type']          = $sys->get('sun_type');
+            $system['color']         = System::getSystemColor($sys->get('sun_type'));
+            $system['radius']        = $sys->get('sun_radius');
+            $system['planets']       = $sys->get('num_planets');
+            $system['explorers']     = $sys->getNumExplorers();
+            $system['npc']           = $sys->get('num_npc');
 
-            $system['planet_list'] = System::loadPlanets($explorer, $sys);
-            $system['connections'] = System::loadSystemConnections($explorer, $sys);
+            $system['planet_list']   = System::loadPlanets($explorer, $sys);
+            $system['connections']   = System::loadSystemConnections($explorer, $sys);
           } else {
             $status = 'error';
           }
@@ -243,7 +243,7 @@
 
     if ($status=='ok'){
       $explorer = new G_Explorer();
-      if ($explorer->buscar(array('auth'=>$auth))){
+      if ($explorer->find(array('auth'=>$auth))){
         $notifications = General::getNotifications($explorer);
       }
       else{
@@ -281,7 +281,7 @@
 
     if ($status=='ok'){
       $explorer = new G_Explorer();
-      if ($explorer->buscar(array('auth'=>$auth))) {
+      if ($explorer->find(array('auth'=>$auth))) {
         $people_in_system = System::getPeopleInSystem($id);
       }
       else{
@@ -320,7 +320,7 @@
 
     if ($status=='ok'){
       $explorer = new G_Explorer();
-      if ($explorer->buscar(array('auth'=>$auth))) {
+      if ($explorer->find(array('auth'=>$auth))) {
         
         if ($explorer->get('id_job')){
           $job = Job::checkJob($explorer->get('id_job'));
@@ -328,7 +328,7 @@
           if ($job->getStatus()==Job::STATUS_FINISHED){
             $job->jobDone();
             $explorer->set('id_job',null);
-            $explorer->salvar();
+            $explorer->save();
           }
           else{
             $status = 'working';
@@ -339,13 +339,13 @@
           $name   = '';
           if ($type=='planet'){
             $pl = new G_Planet();
-            $pl->buscar(array('id'=>$id));
+            $pl->find(array('id'=>$id));
             $name = $pl->get('name');
             $explore_time = $pl->get('explore_time');
           }
           if ($type=='moon'){
             $mo = new G_Moon();
-            $mo->buscar(array('id'=>$id));
+            $mo->find(array('id'=>$id));
             $name = $mo->get('name');
             $explore_time = $mo->get('explore_time');
           }
@@ -355,10 +355,10 @@
           $job->set('value','{"type":"'.$type.'","id":'.$id.',"name":"'.$name.'"}');
           $job->set('start',time());
           $job->set('duration',$explore_time);
-          $job->salvar();
+          $job->save();
 
           $explorer->set('id_job',$job->get('id'));
-          $explorer->salvar();
+          $explorer->save();
         }
       }
       else{
@@ -397,7 +397,7 @@
 
     if ($status=='ok'){
       $explorer = new G_Explorer();
-      if ($explorer->buscar(array('auth'=>$auth))) {
+      if ($explorer->find(array('auth'=>$auth))) {
         
         if ($explorer->get('id_job')){
           $job = Job::checkJob($explorer->get('id_job'));
@@ -405,7 +405,7 @@
           if ($job->getStatus()==Job::STATUS_FINISHED){
             $job->jobDone();
             $explorer->set('id_job',null);
-            $explorer->salvar();
+            $explorer->save();
           }
           else{
             $status = 'working';
@@ -416,13 +416,13 @@
           $name   = '';
           if ($type=='planet'){
             $pl = new G_Planet();
-            $pl->buscar(array('id'=>$id));
+            $pl->find(array('id'=>$id));
             $name = $pl->get('name');
             $explore_time = $pl->get('explore_time');
           }
           if ($type=='moon'){
             $mo = new G_Moon();
-            $mo->buscar(array('id'=>$id));
+            $mo->find(array('id'=>$id));
             $name = $mo->get('name');
             $explore_time = $mo->get('explore_time');
           }
@@ -432,10 +432,10 @@
           $job->set('value','{"type":"'.$type.'","id":'.$id.',"name":"'.$name.'"}');
           $job->set('start',time());
           $job->set('duration',$explore_time);
-          $job->salvar();
+          $job->save();
 
           $explorer->set('id_job',$job->get('id'));
-          $explorer->salvar();
+          $explorer->save();
         }
       }
       else{
@@ -474,7 +474,7 @@
 
     if ($status=='ok'){
       $explorer = new G_Explorer();
-      if ($explorer->buscar(array('auth'=>$auth))) {
+      if ($explorer->find(array('auth'=>$auth))) {
 
         if ($explorer->get('id_job')){
           $job = Job::checkJob($explorer->get('id_job'));
@@ -482,7 +482,7 @@
           if ($job->getStatus()==Job::STATUS_FINISHED){
             $job->jobDone();
             $explorer->set('id_job',null);
-            $explorer->salvar();
+            $explorer->save();
           }
           else{
             $status = 'working';
@@ -491,7 +491,7 @@
 
         if ($status=='ok'){
           $from = new G_System();
-          $from->buscar(array('id'=>$explorer->get('last_save_point')));
+          $from->find(array('id'=>$explorer->get('last_save_point')));
           $system = System::goToSystem($explorer,$from,$id);
 
           $job = new G_Job();
@@ -500,10 +500,10 @@
           $job->set('value','{"id":'.$system->get('id').',"name":"'.($id?$system->get('name'):'Desconocido').'"}');
           $job->set('start',time());
           $job->set('duration',$time);
-          $job->salvar();
+          $job->save();
 
           $explorer->set('id_job',$job->get('id'));
-          $explorer->salvar();
+          $explorer->save();
         }
       }
       else{
@@ -539,7 +539,7 @@
 
     if ($status=='ok'){
       $explorer = new G_Explorer();
-      if ($explorer->buscar(array('auth'=>$auth))) {
+      if ($explorer->find(array('auth'=>$auth))) {
         $ship = Ship::loadShip($explorer);
       }
       else{
@@ -552,6 +552,45 @@
 
     $t->add('status',$status);
     $t->addPartial('ship','api/ship',array('ship'=>$ship,'extra'=>'nourlencode'));
+
+    $t->process();
+  }
+
+  /*
+    Función para obtener los datos de la nave actual
+  */
+  function executeChangeShipName($req, $t){
+    /*
+      Código de la página
+    */
+    global $c, $s;
+
+    $status = 'ok';
+    $name   = Base::getParam('name', $req['url_params'], false);
+    $auth   = Base::getParam('auth', $req['url_params'], false);
+
+    if ($name===false || $auth===false){
+      $status = 'error';
+    }
+
+    if ($status=='ok'){
+      $explorer = new G_Explorer();
+      if ($explorer->find(array('auth'=>$auth))) {
+        $ship = new G_Ship();
+        $ship->find(array('id'=>$explorer->get('current_ship')));
+
+        $ship->set('name',urldecode($name));
+        $ship->save();
+      }
+      else{
+        $status = 'error';
+      }
+    }
+
+    $t->setLayout(false);
+    $t->setJson(true);
+
+    $t->add('status',$status);
 
     $t->process();
   }

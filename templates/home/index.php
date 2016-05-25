@@ -5,7 +5,7 @@
 </div>
 
 <script>
-  var api_url = '{{API_URL}}';
+  var api_url = '{{api_url}}';
 </script>
 <script src="js/lib/common.js"></script>
 <script src="js/lib/angular.min.js"></script>

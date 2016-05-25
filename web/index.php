@@ -8,7 +8,7 @@
   header('Access-Control-Allow-Methods: GET, POST');
 
   include('../config/config.php');
-  include($c->getRutaConfig().'gestores.php');
+  include($c->getConfigDir().'model.php');
 
   // Inicio sesion
   $s = new G_Session();
@@ -47,10 +47,10 @@
     $t = new G_Template();
     $t->setModule($res['module']);
     $t->setAction($res['action']);
-    $t->setLayout( file_get_contents($c->getRutaTemplates().'layout/'.$res['layout'].'.php') );
+    $t->setLayout( file_get_contents($c->getTemplatesDir().'layout/'.$res['layout'].'.php') );
 
-    $l->setPagina($res['id']);
-    $l->setGestor('Generico');
+    $l->setSection($res['id']);
+    $l->setModel('Generico');
 
     // Tiene algun mensaje flash?
     if ($s->getParam('flash') != ''){
@@ -58,7 +58,7 @@
     }
 
     $func = 'execute'.ucfirst($res['action']);
-    $module = $c->getRutaControllers().$res['module'].'.php';
+    $module = $c->getControllersDir().$res['module'].'.php';
     if (file_exists($module)){
       include($module);
 

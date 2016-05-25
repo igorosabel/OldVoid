@@ -1,6 +1,6 @@
 {
-  "status": "{{STATUS}}",
+  "status": "{{status}}",
   "people_in_system": [
-{{PEOPLE_IN_SYSTEM}}
+{{people_in_system}}
   ]
 }

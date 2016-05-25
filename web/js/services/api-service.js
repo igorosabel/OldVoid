@@ -16,6 +16,7 @@
     service.GetResources      = GetResources;
     service.GoToSystem        = GoToSystem;
     service.GetShip           = GetShip;
+    service.ChangeShipName    = ChangeShipName;
 
     return service;
  
@@ -63,6 +64,13 @@
 
     function GetShip(callback){
       $http.post(api_url + 'get_ship', {auth: DataShareService.GetUser().auth})
+        .success(function (response){
+          callback && callback(response);
+        });
+    }
+
+    function ChangeShipName(name,callback){
+      $http.post(api_url + 'change_ship_name', {name: name, auth: DataShareService.GetUser().auth})
         .success(function (response){
           callback && callback(response);
         });

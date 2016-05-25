@@ -19,7 +19,7 @@
         <md-content ng-show="vm.menu_option=='main'" class="ship_content">
           <md-toolbar>
             <div class="md-toolbar-tools">
-              <h2 flex>{{vm.ship.name}}</h2>
+              <h2 flex>{{vm.ship.name | urldecode}}</h2>
               <md-button aria-label="Cambiar nombre" ng-click="vm.editShipName($event)">
                 <md-icon md-svg-icon="/img/ship/edit.svg"></md-icon>
               </md-button>

@@ -1,13 +1,12 @@
 <?php
-  /* Datos generales */
   date_default_timezone_set('Europe/Madrid');
 
-  $ruta_base = realpath(dirname(__FILE__));
-  $ruta_base = str_ireplace("config","",$ruta_base);
+  $basedir = realpath(dirname(__FILE__));
+  $basedir = str_ireplace("config","",$basedir);
 
-  include($ruta_base."gestores/base/G_Config.php");
+  include($basedir."model/base/G_Config.php");
   $c = new G_Config();
-  $c->setRutaBase($ruta_base);
+  $c->setBaseDir($basedir);
 
   /* Datos de la Base De Datos */
   $c->setDbHost('localhost');
@@ -16,10 +15,10 @@
   $c->setDbName('void');
   
   /* Activa/desactiva el modo debug que guarda en log las consultas SQL e información variada */
-  $c->setModoDebug(false);
+  $c->setDebugMode(false);
 
   /* URL del sitio */
-  $c->setUrlBase('https://void.osumi.es/');
+  $c->setBaseUrl('https://void.osumi.es/');
   
   /* Email del administrador al que se notificarán varios eventos */
   $c->setAdminEmail('inigo.gorosabel@gmail.com');

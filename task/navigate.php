@@ -7,9 +7,9 @@
   include($c->getRutaConfig().'gestores.php');
 
   $explorer = new G_Explorer();
-  $explorer->buscar(array('id'=>1));
+  $explorer->find(array('id'=>1));
 
   $from = new G_System();
-  $from->buscar(array('id'=>1));
+  $from->find(array('id'=>1));
 
   General::goToSystem($explorer,$from,null);
