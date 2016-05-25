@@ -1,0 +1,44 @@
+<div class="full_height content" layout="column" flex>
+  <md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+      <h2>
+        <span>Void</span>
+      </h2>
+    </div>
+  </md-toolbar>
+
+  <md-content ui-view class="full_height" flex layout="row" layout-align="center center">
+    <md-card flex-xs="90" flex-gt-md="60">
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Cargando...</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <md-list>
+          <md-list-item>
+            <md-icon md-svg-icon="img/common/explorer.svg"></md-icon>
+            <p>Explorador</p>
+            <p class="md-secondary">
+              <img src="img/common/check.svg" alt="Explorador">
+            </p>
+          </md-list-item>
+          <md-list-item>
+            <md-icon md-svg-icon="img/header/ship.svg"></md-icon>
+            <p>Nave</p>
+            <p class="md-secondary">
+              <img ng-src="{{vm.status.ship}}" alt="Nave">
+            </p>
+          </md-list-item>
+          <md-list-item>
+            <md-icon md-svg-icon="img/header/system.svg"></md-icon>
+            <p>Sistema</p>
+            <p class="md-secondary">
+              <img ng-src="{{vm.status.system}}" alt="Sistema">
+            </p>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+    </md-card>
+  </md-content>
+</div>

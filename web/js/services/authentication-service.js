@@ -45,39 +45,25 @@
         name: urldecode(data.name),
         email: urldecode(data.email),
         credits: data.credits,
-        auth: data.auth
+        auth: data.auth,
+        current_ship: data.current_ship,
+        last_save_point: data.last_save_point
       });
-      DataShareService.SetShip({
-        current: data.ship.current,
-        strength: data.ship.strength,
-        fuel: data.ship.fuel
-      });
-      DataShareService.SetSystem(data.system);
     }
     
     function ClearCredentials(){
       DataShareService.ResetUser();
-      DataShareService.ResetShip();
-      DataShareService.ResetSystem();
       localStorage.removeItem('void_user_data');
-      localStorage.removeItem('void_ship_data');
-      localStorage.removeItem('void_system_data');
     }
     
     function SaveLocalstorage(){
-      localStorage.setItem('void_user_data',  JSON.stringify(DataShareService.GetUser()));
-      localStorage.setItem('void_ship_data',  JSON.stringify(DataShareService.GetShip()));
-      localStorage.setItem('void_system_data',JSON.stringify(DataShareService.GetSystem()));
+      localStorage.setItem('void_user_data', JSON.stringify(DataShareService.GetUser()));
     }
     
     function LoadLocalStorage(){
-      var void_user_data   = localStorage.getItem('void_user_data');
-      var void_ship_data   = localStorage.getItem('void_ship_data');
-      var void_system_data = localStorage.getItem('void_system_data');
-      if (void_user_data && void_ship_data && void_system_data){
-        DataShareService.SetUser(  JSON.parse(void_user_data));
-        DataShareService.SetShip(  JSON.parse(void_ship_data));
-        DataShareService.SetSystem(JSON.parse(void_system_data));
+      var void_user_data = localStorage.getItem('void_user_data');
+      if (void_user_data){
+        DataShareService.SetUser(JSON.parse(void_user_data));
         return true;
       }
       return false;

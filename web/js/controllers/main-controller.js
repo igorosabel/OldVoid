@@ -13,6 +13,11 @@
       $location.path('/');
       return false;
     }
+    var start_load = DataShareService.GetGlobal('loaded');
+    if (!start_load){
+      $location.path('/loading');
+      return false;
+    }
 
     var vm = this;
 

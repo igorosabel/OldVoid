@@ -8,6 +8,7 @@
   "hull_type_name": "<?php echo urlencode(Ship::getHullTypeName($s->get('hull_id_type'))) ?>",
   "hull_strength": <?php echo $s->get('hull_strength') ?>,
   "hull_current_strength": <?php echo $s->get('hull_current_strength') ?>,
+  "hull_strength_percent": <?php echo floor(($s->get('hull_current_strength')*100) / $s->get('hull_strength')) ?>,
   "hull_mass": <?php echo $s->get('hull_mass') ?>,
   "gun_ports": <?php echo $s->get('gun_ports') ?>,
   "big_module_ports": <?php echo $s->get('big_module_ports') ?>,

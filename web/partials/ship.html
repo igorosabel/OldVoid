@@ -10,7 +10,7 @@
       </md-list>
       
       <md-content flex="75" class="ship_content">
-        <!-- Main -->
+        <!-- Cargando... -->
         <md-content ng-show="vm.menu_option=='loading'" class="ship_content">
           Cargando...
         </md-content>
@@ -20,7 +20,7 @@
           <md-toolbar>
             <div class="md-toolbar-tools">
               <h2 flex>{{vm.ship.name}}</h2>
-              <md-button aria-label="Cambiar nombre">
+              <md-button aria-label="Cambiar nombre" ng-click="vm.editShipName($event)">
                 <md-icon md-svg-icon="/img/ship/edit.svg"></md-icon>
               </md-button>
             </div>
@@ -30,7 +30,7 @@
             <md-subheader class="md-no-sticky ship_content">Casco</md-subheader>
             <md-list-item layout="row">
               <p flex="30">Integridad del casco:</p>
-              <p flex="20">{{vm.hull.hull_current_strength}}%</p>
+              <p flex="20">{{vm.ship.hull_strength_percent}}%</p>
               <p flex="30">Combustible:</p>
               <p flex="20">100%</p>
             </md-list-item>

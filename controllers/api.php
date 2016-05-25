@@ -12,25 +12,12 @@
     $email  = Base::getParam('email', $req['url_params'], false);
     $pass   = Base::getParam('pass',  $req['url_params'], false);
     
-    $id_user          = 0;
-    $name             = '';
-    $auth             = '';
-    $credits          = 0;
-    $current_ship     = 0;
-    $ship_strength    = 0;
-    $ship_fuel        = 0;
-    $system = array(
-      'id' => 0,
-      'name' => '',
-      'type' => '',
-      'id_discoverer' => 0,
-      'discoverer' => '',
-      'planets' => 0,
-      'explorers ' => 0,
-      'npc' => 0,
-      'planet_list' => array(),
-      'connections' => array()
-    );
+    $id_user         = 0;
+    $name            = '';
+    $auth            = '';
+    $credits         = 0;
+    $current_ship    = 0;
+    $last_save_point = 0;
 
     if ($email===false || $pass===false){
       $status = 'error';
@@ -46,35 +33,12 @@
 
         $ex->set('auth',$auth);
         $ex->salvar();
-
-        $ex->loadData();
-
-        $ship = $ex->getShip();
-        $sys = $ex->getSystem();
-        $sys->loadNumExplorers($ex);
         
-        $system['id']            = $sys->get('id');
-        $system['name']          = $sys->get('name');
-        $system['id_discoverer'] = $sys->get('id_discoverer');
-        $system['discoverer']    = System::getSystemDiscoverer($sys->get('id_discoverer'));
-        $system['type']          = $sys->get('sun_type');
-        $system['type_name']     = System::getSystemTypeName($sys->get('sun_type'));
-        $system['color']         = System::getSystemColor($sys->get('sun_type'));
-        $system['radius']        = $sys->get('sun_radius');
-        $system['planets']       = $sys->get('num_planets');
-        $system['explorers']     = $sys->getNumExplorers();
-        $system['npc']           = $sys->get('num_npc');
-        
-        $system['planet_list']   = System::loadPlanets($ex,$sys);
-        $system['connections']   = System::loadSystemConnections($ex,$sys);
-
-        $ship_strength    = $ship->get('hull_current_strength');
-        $ship_fuel        = $ship->get('engine_fuel_actual');
-        
-        $id_user          = $ex->get('id');
-        $name             = $ex->get('name');
-        $credits          = $ex->get('credits');
-        $current_ship     = $ex->get('current_ship');
+        $id_user         = $ex->get('id');
+        $name            = $ex->get('name');
+        $credits         = $ex->get('credits');
+        $current_ship    = $ex->get('current_ship');
+        $last_save_point = $ex->get('last_save_point');
       }
       else{
         $status = 'error';
@@ -91,9 +55,7 @@
     $t->add('credits',$credits);
     $t->add('email',$email);
     $t->add('current_ship',$current_ship);
-    $t->add('ship_strength',$ship_strength);
-    $t->add('ship_fuel',$ship_fuel);
-    $t->addPartial('system','api/system',array('system'=>$system,'extra'=>'nourlencode'));
+    $t->add('last_save_point',$last_save_point);
 
     $t->process();
   }
@@ -115,21 +77,8 @@
     $id_user          = 0;
     $auth             = '';
     $credits          = 0;
+    $current_ship     = 0;
     $last_save_point  = 0;
-    $ship_strength    = 0;
-    $ship_fuel        = 0;
-    $system = array(
-      'id' => 0,
-      'name' => '',
-      'type' => '',
-      'id_discoverer' => 0,
-      'discoverer' => '',
-      'planets' => 0,
-      'explorers ' => 0,
-      'npc' => 0,
-      'planet_list' => array(),
-      'connections' => array()
-    );
 
     if ($name===false || $email===false || $pass===false){
       $status = 'error';
@@ -173,23 +122,6 @@
       $ship = $ex->getShip();
       $sys = $ex->getSystem();
       $sys->loadNumExplorers($ex);
-
-      $system['id']            = $sys->get('id');
-      $system['name']          = $sys->get('name');
-      $system['id_discoverer'] = $sys->get('id_discoverer');
-      $system['discoverer']    = System::getSystemDiscoverer($sys->get('id_discoverer'));
-      $system['type']          = $sys->get('sun_type');
-      $system['color']         = System::getSystemColor($sys->get('sun_type'));
-      $system['radius']        = $sys->get('sun_radius');
-      $system['planets']       = $sys->get('num_planets');
-      $system['explorers']     = $sys->getNumExplorers();
-      $system['npc']           = $sys->get('num_npc');
-
-      $system['planet_list']   = System::loadPlanets($ex,$sys);
-      $system['connections']   = System::loadSystemConnections($ex,$sys);
-
-      $ship_strength    = $ship->get('hull_current_strength');
-      $ship_fuel        = $ship->get('engine_fuel_actual');
     }
 
     $t->setLayout(false);
@@ -201,10 +133,8 @@
     $t->add('email',$email);
     $t->add('credits',$credits);
     $t->add('current_ship',$current_ship);
+    $t->add('last_save_point',$last_save_point);
     $t->add('auth',$auth);
-    $t->add('ship_strength',$ship_strength);
-    $t->add('ship_fuel',$ship_fuel);
-    $t->addPartial('system','api/system',array('system'=>$system,'extra'=>'nourlencode'));
 
     $t->process();
   }

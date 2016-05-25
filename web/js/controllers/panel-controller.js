@@ -9,6 +9,11 @@
   function PanelController(DataShareService, APIService){
     console.log('PanelController');
 
+    var start_load = DataShareService.GetGlobal('loaded');
+    if (!start_load){
+      return false;
+    }
+
     var vm = this;
 
     var user   = DataShareService.GetUser();

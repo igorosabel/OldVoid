@@ -5,10 +5,6 @@
   "email": "{{EMAIL}}",
   "credits": {{CREDITS}},
   "auth": "{{AUTH}}",
-  "ship": {
-  	"current": {{CURRENT_SHIP}},
-  	"strength": {{SHIP_STRENGTH}},
-  	"fuel": {{SHIP_FUEL}}
-  },
-  "system": {{SYSTEM}}
+	"current_sip": {{CURRENT_SHIP}},
+  "last_save_point": {{LAST_SAVE_POINT}}
 }

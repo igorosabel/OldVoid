@@ -17,6 +17,7 @@
 <script src="js/app.js"></script>
 <script src="js/controllers/login-controller.js"></script>
 <script src="js/controllers/register-controller.js"></script>
+<script src="js/controllers/loading-controller.js"></script>
 <script src="js/controllers/main-controller.js"></script>
 <script src="js/controllers/panel-controller.js"></script>
 <script src="js/controllers/system-controller.js"></script>

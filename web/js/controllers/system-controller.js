@@ -9,6 +9,11 @@
   function SystemController($rootScope, $mdDialog, DataShareService, APIService, JobService, AuthenticationService){
     console.log('SystemController');
 
+    var start_load = DataShareService.GetGlobal('loaded');
+    if (!start_load){
+      return false;
+    }
+
     var vm = this;
     
     vm.system_tab = DataShareService.GetGlobal('system_tab');

@@ -43,7 +43,7 @@
         if (response.status=='ok') {
           AuthenticationService.SetCredentials(response);
           AuthenticationService.SaveLocalstorage();
-          $location.path('/main');
+          $location.path('/loading');
         }
       });
     }

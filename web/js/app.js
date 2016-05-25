@@ -19,6 +19,11 @@ function configApp() {
           controller: 'RegisterController',
           controllerAs: 'vm'
         })
+        .when('/loading', {
+          templateUrl: 'partials/loading.html',
+          controller: 'LoadingController',
+          controllerAs: 'vm'
+        })
         .when('/main', {
           templateUrl: 'partials/main.html',
           controller: 'MainController',

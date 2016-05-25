@@ -5,21 +5,26 @@
     .module('VoidApp')
     .controller('ShipController', ShipController);
 
-  ShipController.$inject = ['DataShareService', 'APIService'];
-  function ShipController(DataShareService, APIService){
+  ShipController.$inject = ['DataShareService', 'APIService', '$mdDialog', '$mdMedia'];
+  function ShipController(DataShareService, APIService, $mdDialog, $mdMedia){
     console.log('ShipController');
 
     var vm = this;
 
     vm.menu_option  = 'loading';
-    vm.ship         = {};
+    vm.ship         = DataShareService.GetShip();
     vm.menu_list    = [];
     vm.storage_list = [];
     vm.module_types = [{id:'small',name:'Pequeños'},{id:'big',name:'Grandes'}];
+    vm.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
     
     vm.selectMenuOption = selectMenuOption;
     vm.range            = range;
+    vm.editShipName     = editShipName;
+
+console.log(vm.ship);
     loadMenuList();
+    loadEnables();
 
     function loadMenuList(){
       vm.menu_list.push({
@@ -40,9 +45,7 @@
       vm.menu_option = id;
     }
 
-    APIService.GetShip(function(response){
-      vm.ship = response.ship;
-
+    function loadEnables() {
       // Cargo "habilidades" de los módulos
       var module_type_ind, module_type, module_ind, module, enables_ind, enables, storage_occupied, resource_ind;
       var loaded = {
@@ -50,8 +53,8 @@
       };
       for (module_type_ind in vm.module_types) {
         module_type = vm.module_types[module_type_ind];
-        for (module_ind in vm.ship['modules_'+module_type.id]) {
-          module = vm.ship['modules_'+module_type.id][module_ind];
+        for (module_ind in vm.ship['modules_' + module_type.id]) {
+          module = vm.ship['modules_' + module_type.id][module_ind];
           if (module.enables) {
             for (enables_ind in module.enables) {
               enables = module.enables[enables_ind];
@@ -81,8 +84,40 @@
           }
         }
       }
-console.log(vm.storage_list);
+      console.log(vm.storage_list);
       vm.menu_option = 'main';
-    });
+    }
+
+    function editShipName(ev){
+      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && vm.customFullscreen;
+      $mdDialog.show({
+          controller: ShipNameChangeController,
+          controllerAs: 'vm',
+          templateUrl: 'partials/change_ship_name.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true,
+          fullscreen: useFullScreen
+        })
+        .then(function(answer) {
+          // respuesta
+        }, function() {
+          // cancelar
+        });
+    }
+  }
+
+  function ShipNameChangeController($mdDialog) {
+    var vm = this;
+    vm.hide = function() {
+      $mdDialog.hide();
+    };
+    vm.cancel = function() {
+      $mdDialog.cancel();
+    };
+    vm.save = function() {
+      alert('guardar');
+      //$mdDialog.hide(answer);
+    };
   }
 })();
