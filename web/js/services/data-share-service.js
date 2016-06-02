@@ -9,12 +9,15 @@
     var service = {};
 
     service.globals     = {};
+    service.auth        = '';
     service.user        = {};
     service.ship        = {};
     service.System      = {};
 
     service.SetGlobal   = SetGlobal;
     service.GetGlobal   = GetGlobal;
+    service.SetAuth     = SetAuth;
+    service.GetAuth     = GetAuth;
     service.ResetUser   = ResetUser;
     service.SetUser     = SetUser;
     service.GetUser     = GetUser;
@@ -32,6 +35,13 @@
     }
     function GetGlobal(key){
       return (service.globals[key]) ? service.globals[key] : null;
+    }
+
+    function SetAuth(auth){
+      service.auth = auth;
+    }
+    function GetAuth(){
+      return service.auth;
     }
 
     function ResetUser(){

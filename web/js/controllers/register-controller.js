@@ -41,8 +41,7 @@
       }
       AuthenticationService.RegisterExplorer(vm.name, vm.email, vm.pass, function (response){
         if (response.status=='ok') {
-          AuthenticationService.SetCredentials(response);
-          AuthenticationService.SaveLocalstorage();
+          DataShareService.SetAuth(response.auth);
           $location.path('/loading');
         }
       });

@@ -3,7 +3,7 @@
   .module('VoidApp')
   .directive('ship', function() {
     return {
-      restrict: 'A',
+      restrict: 'E',
       templateUrl: 'partials/ship.html',
       scope: true,
       transclude : false,

@@ -11,13 +11,7 @@
     $status = 'ok';
     $email  = Base::getParam('email', $req['url_params'], false);
     $pass   = Base::getParam('pass',  $req['url_params'], false);
-    
-    $id_user         = 0;
-    $name            = '';
-    $auth            = '';
-    $credits         = 0;
-    $current_ship    = 0;
-    $last_save_point = 0;
+    $auth   = '';
 
     if ($email===false || $pass===false){
       $status = 'error';
@@ -33,12 +27,6 @@
 
         $ex->set('auth',$auth);
         $ex->save();
-        
-        $id_user         = $ex->get('id');
-        $name            = $ex->get('name');
-        $credits         = $ex->get('credits');
-        $current_ship    = $ex->get('current_ship');
-        $last_save_point = $ex->get('last_save_point');
       }
       else{
         $status = 'error';
@@ -49,13 +37,7 @@
     $t->setJson(true);
 
     $t->add('status',$status);
-    $t->add('id_user',$id_user);
-    $t->add('name',$name);
     $t->add('auth',$auth);
-    $t->add('credits',$credits);
-    $t->add('email',$email);
-    $t->add('current_ship',$current_ship);
-    $t->add('last_save_point',$last_save_point);
 
     $t->process();
   }
@@ -74,7 +56,6 @@
     $email  = Base::getParam('email', $req['url_params'], false);
     $pass   = Base::getParam('pass',  $req['url_params'], false);
     
-    $id_user          = 0;
     $auth             = '';
     $credits          = 0;
     $current_ship     = 0;
@@ -102,8 +83,6 @@
       $ex->set('auth',$auth);
       
       $ex->save();
-      
-      $id_user = $ex->get('id');
 
       // Creo una nueva nave Scout
       $ship = Ship::generateShip($ex);
@@ -118,23 +97,58 @@
       $ex->save();
       
       $ex->loadData();
-
-      $ship = $ex->getShip();
-      $sys = $ex->getSystem();
-      $sys->loadNumExplorers($ex);
     }
 
     $t->setLayout(false);
     $t->setJson(true);
 
     $t->add('status',$status);
-    $t->add('id_user',$id_user);
+    $t->add('auth',$auth);
+
+    $t->process();
+  }
+
+  /*
+    Función para validar un auth y obtener los datos de un explorador
+  */
+  function executeCheckExplorer($req, $t){
+    /*
+      Código de la página
+    */
+    global $c, $s;
+
+    $status          = 'ok';
+    $auth            = Base::getParam('auth', $req['url_params'], false);
+    $name            = '';
+    $credits         = 0;
+    $current_ship    = 0;
+    $last_save_point = 0;
+
+    if ($auth===false){
+      $status = 'error';
+    }
+
+    if ($status=='ok'){
+      $explorer = new G_Explorer();
+      if ($explorer->find(array('auth'=>$auth))){
+        $name            = $explorer->get('name');
+        $credits         = $explorer->get('credits');
+        $current_ship    = $explorer->get('current_ship');
+        $last_save_point = $explorer->get('last_save_point');
+      }
+      else{
+        $status = 'error';
+      }
+    }
+
+    $t->setLayout(false);
+    $t->setJson(true);
+
+    $t->add('status',$status);
     $t->add('name',$name);
-    $t->add('email',$email);
     $t->add('credits',$credits);
     $t->add('current_ship',$current_ship);
     $t->add('last_save_point',$last_save_point);
-    $t->add('auth',$auth);
 
     $t->process();
   }
@@ -196,6 +210,7 @@
             $system['id_discoverer'] = $sys->get('id_discoverer');
             $system['discoverer']    = System::getSystemDiscoverer($sys->get('id_discoverer'));
             $system['type']          = $sys->get('sun_type');
+            $system['type_name']     = System::getSystemTypeName($sys->get('sun_type'));
             $system['color']         = System::getSystemColor($sys->get('sun_type'));
             $system['radius']        = $sys->get('sun_radius');
             $system['planets']       = $sys->get('num_planets');
@@ -398,7 +413,6 @@
     if ($status=='ok'){
       $explorer = new G_Explorer();
       if ($explorer->find(array('auth'=>$auth))) {
-        
         if ($explorer->get('id_job')){
           $job = Job::checkJob($explorer->get('id_job'));
           

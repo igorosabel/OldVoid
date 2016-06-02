@@ -11,7 +11,7 @@
     {{js}}
   </head>
   
-  <body>
+  <body ng-app="VoidApp" layout="column">
     {{body}}
   </body>
 </html>

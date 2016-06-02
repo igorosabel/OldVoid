@@ -53,12 +53,12 @@ class G_DB {
 		}else{
 			$this->res=$result;
 			if( strpos(strtoupper($q),'INSERT') !== false){
-				$get_last_id = mysqli_query('SELECT LAST_INSERT_ID() AS `lid`',$this->link);
+				$get_last_id = mysqli_query($this->link,'SELECT LAST_INSERT_ID() AS `last_id`');
 				$this->last_id = mysqli_fetch_array($get_last_id);
-				$this->last_id = $this->last_id['lid'];
+				$this->last_id = $this->last_id['last_id'];
 			}
 			if( strpos(strtoupper($q),'SQL_CALC_FOUND_ROWS') !== false){
-				$num_found = mysqli_query('SELECT FOUND_ROWS() AS `num`',$this->link);
+				$num_found = mysqli_query($this->link,'SELECT FOUND_ROWS() AS `num`');
 				$this->found_rows = mysqli_fetch_array($num_found);
 				$this->found_rows = $this->found_rows['num'];
 			}

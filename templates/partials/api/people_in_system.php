@@ -6,7 +6,7 @@
     "where": "<?php echo urlencode($npc['where']) ?>"
   }<?php if ($i<count($values['people_in_system']['npc'])-1): ?>,<?php endif ?>
 <?php endforeach ?>
-<?php if (count($values['people_in_system']['npc'])>0): ?>,<?php endif ?>
+<?php if (count($values['people_in_system']['explorer'])>0): ?>,<?php endif ?>
 <?php foreach ($values['people_in_system']['explorer'] as $i=>$ex): ?>
   {
     "type": "explorer",

@@ -15,13 +15,28 @@
     }
 
     var vm      = this;
-    vm.explorer = DataShareService.GetUser();
     vm.status   = {
+      explorer: 'img/common/loading.svg',
       ship: 'img/common/loading.svg',
       system: 'img/common/loading.svg'
     };
 
-    loadShip();
+    checkExplorer();
+
+    function checkExplorer(){
+      APIService.CheckExplorer(function (response) {
+        if (response.status=='ok'){
+          AuthenticationService.SetCredentials(response.explorer);
+          AuthenticationService.SaveLocalstorage();
+          vm.status.explorer = 'img/common/check.svg';
+          loadShip();
+        }
+        else{
+          AuthenticationService.ClearCredentials();
+          $location.path('/');
+        }
+      });
+    }
 
     function loadShip() {
       APIService.GetShip(function (response) {
@@ -32,7 +47,7 @@
     }
 
     function loadSystem(){
-      APIService.GetSystem(vm.explorer.last_save_point,function(response){
+      APIService.GetSystem(DataShareService.GetUser().last_save_point,function(response){
         DataShareService.SetSystem(response.system);
         vm.status.system = 'img/common/check.svg';
 

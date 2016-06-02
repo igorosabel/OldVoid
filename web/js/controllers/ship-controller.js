@@ -21,6 +21,8 @@
     vm.selectMenuOption = selectMenuOption;
     vm.range            = range;
     vm.editShipName     = editShipName;
+    vm.removeGun        = removeGun;
+    vm.addGun           = addGun;
 
     loadMenuList();
     loadEnables();
@@ -126,5 +128,25 @@
     vm.save = function() {
       $mdDialog.hide(vm.name);
     };
+  }
+
+  function removeGun(ev,ind){
+    var gun = vm.ship.guns[ind];
+    var confirm = $mdDialog.confirm()
+      .title('Desequipar arma')
+      .textContent('¿Estás seguro de querer desequipar este '+urldecode(gun.gun_type_name)+'?')
+      .ariaLabel('Desequipar arma')
+      .targetEvent(ev)
+      .ok('Continuar')
+      .cancel('Cancelar');
+    $mdDialog.show(confirm).then(function() {
+      alert('quitar');
+    }, function() {
+      //Cancelar
+    });
+  }
+
+  function addGun(n){
+
   }
 })();

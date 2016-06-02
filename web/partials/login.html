@@ -1,36 +1,34 @@
-<div class="full_height content" layout="column" flex>
-  <md-toolbar layout="row">
-    <div class="md-toolbar-tools">
-      <h2>
-        <span>Void</span>
-      </h2>
-    </div>
-  </md-toolbar>
+<md-toolbar ng-class="{'md-tall': vm.$mdMedia('gt-xs')}" md-scroll-shrink>
+  <div class="md-toolbar-tools">
+    <h2>
+      <span>Void</span>
+    </h2>
+  </div>
+</md-toolbar>
 
-  <form class="full_height" ng-submit="vm.login()">
-    <md-content ui-view class="full_height" flex layout="row" layout-align="center center">
-      <md-card flex-xs="90" flex-gt-md="60">
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Iniciar sesión</span>
-          </md-card-title-text>
-        </md-card-title>
-        <md-card-content>
-          <md-input-container class="md-block">
-            <label>Email</label>
-            <input ng-model="vm.email" type="email" />
-          </md-input-container>
-          <md-input-container class="md-block">
-            <label>Contraseña</label>
-            <input ng-model="vm.pass" type="password" />
-          </md-input-container>
-        </md-card-content>
-        <md-card-actions layout="row" layout-align="end center">
-            <md-button href="#/register">Regístrate</md-button>
-            <span flex></span>
-            <md-button type="submit">Continuar</md-button>
-          </md-card-actions>
-      </md-card>
-    </md-content>
-  </form>
-</div>
+<form ng-submit="vm.login()">
+  <md-content flex layout="row" layout-align="center center">
+    <md-card flex-xs="90" flex-gt-md="50">
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Iniciar sesión</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <md-input-container class="md-block">
+          <label>Email</label>
+          <input ng-model="vm.email" type="email" />
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Contraseña</label>
+          <input ng-model="vm.pass" type="password" />
+        </md-input-container>
+      </md-card-content>
+      <md-card-actions layout="row" layout-align="end center">
+          <md-button href="#/register">Regístrate</md-button>
+          <span flex></span>
+          <md-button type="submit">Continuar</md-button>
+        </md-card-actions>
+    </md-card>
+  </md-content>
+</form>

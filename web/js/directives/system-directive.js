@@ -3,7 +3,7 @@
   .module('VoidApp')
   .directive('system', function() {
     return {
-      restrict: 'A',
+      restrict: 'E',
       templateUrl: 'partials/system.html',
       scope: true,
       transclude : false,

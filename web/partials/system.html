@@ -1,5 +1,5 @@
-<md-content ui-view class="full_height" flex layout="row" layout-xs="column" layout-align="center stretch">
-  <md-card flex-xs="90" flex-gt-md="70">
+<div layout="row" layout-xs="column">
+  <md-card flex-gt-md="70">
     <md-card-title>
       <md-card-title-text><span class="md-headline">Sistema</span></md-card-title-text>
     </md-card-title>
@@ -22,12 +22,12 @@
     </md-card-actions>
   </md-card>
 
-  <md-card flex-xs="90" flex-gt-md="30">
+  <md-card flex-gt-md="30">
     <md-card-content>
       <div class="system_info_box">
-        <div class="system_info_box_header">
+        <div class="system_info_box_header" ng-click="vm.toggleInfoBox('main')">
           {{vm.info_box.name}}
-          <a href class="system_info_box_close_ico" ng-class="{system_info_box_close: vm.info_box.show_main, system_info_box_open: !vm.info_box.show_main}" ng-click="vm.toggleInfoBox('main')"></a>
+          <span class="system_info_box_close_ico" ng-class="{system_info_box_close: vm.info_box.show_main, system_info_box_open: !vm.info_box.show_main}"></span>
         </div>
         <!-- Infobox System -->
         <div ng-if="vm.info_box.view=='system' && vm.info_box.show_main">
@@ -134,20 +134,20 @@
           </div>
         </div>
       </div>
-
+  
       <!-- Sub InfoBox -->
       <div class="system_info_box" ng-if="vm.info_box.has_sub && vm.system_list.length">
-        <div class="system_info_box_header">
+        <div class="system_info_box_header" ng-click="vm.toggleInfoBox('sub')">
           {{vm.info_box.sub_name}}
-          <a href class="system_info_box_close_ico" ng-class="{system_info_box_close: vm.info_box.show_sub, system_info_box_open: !vm.info_box.show_sub}" ng-click="vm.toggleInfoBox('sub')"></a>
+          <span class="system_info_box_close_ico" ng-class="{system_info_box_close: vm.info_box.show_sub, system_info_box_open: !vm.info_box.show_sub}"></span>
         </div>
-        <md-list>
+        <md-list ng-if="vm.info_box.show_sub">
           <md-list-item ng-repeat="item in vm.system_list" ng-click="vm.selectSystem(item)">
             <p>{{item.name}}</p>
           </md-list-item>
         </md-list>
       </div>
-
+  
       <!-- Actions System -->
       <div ng-if="vm.info_box.view=='system'">
         <md-button class="md-raised md-accent system_jump_to" ng-hide="!vm.system_id">
@@ -157,12 +157,12 @@
             <p>{{vm.system_jump_to_time}}</p>
           </div>
         </md-button>
-
+  
         <h3 class="center">
           <md-icon md-svg-icon="img/system/connections.svg"></md-icon>
           Sistemas vecinos
         </h3>
-
+  
         <md-list>
           <md-list-item ng-repeat="item in vm.sidebar_list" class="md-2-line">
             <img ng-src="img/system/{{item.icon}}.svg" class="md-avatar" alt="{{item.name}}" />
@@ -182,13 +182,13 @@
           </md-list-item>
         </md-list>
       </div>
-
+  
       <!-- Actions Planet -->
       <div ng-if="vm.info_box.view=='planet'">
         <h3 class="center">
           Acciones
         </h3>
-
+  
         <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedPlanet.explored" ng-click="vm.explorePlanet($event)" ng-disabled="vm.working">
           <div layout="row">
             <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
@@ -196,7 +196,7 @@
             <p>{{vm.selectedPlanet.explore_time | showtime}}</p>
           </div>
         </md-button>
-
+  
         <md-button class="md-raised md-warn system_jump_to" ng-hide="!vm.selectedPlanet.explored || !vm.selectedPlanet.npc">
           <div layout="row">
             <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
@@ -219,13 +219,13 @@
           </div>
         </md-button>
       </div>
-
+  
       <!-- Actions Moon -->
       <div ng-if="vm.info_box.view=='moon'">
         <h3 class="center">
           Acciones
         </h3>
-
+  
         <md-button class="md-raised md-accent system_jump_to" ng-hide="vm.selectedMoon.explored" ng-click="vm.exploreMoon($event)" ng-disabled="vm.working">
           <div layout="row">
             <md-icon md-svg-icon="img/system/explore.svg"></md-icon>
@@ -256,10 +256,10 @@
           </div>
         </md-button>
       </div>
-
+  
     </md-card-content>
   </md-card>
-</md-content>
+</div>
 
 <script type="text/x-template" id="sun_style">
 #sun{

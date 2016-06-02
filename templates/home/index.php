@@ -1,8 +1,4 @@
-<div layout="row" ng-app="VoidApp" layout-fill>
-  <div layout="column" class="relative" layout-fill role="main">
-    <div id="views" style="height: 100%;" ng-view></div>
-  </div>
-</div>
+<div ng-view></div>
 
 <script>
   var api_url = '{{api_url}}';

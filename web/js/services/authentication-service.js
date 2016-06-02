@@ -28,7 +28,6 @@
     
     function Logout(){
       ClearCredentials();
-  
       $location.path('/');
     }
     
@@ -41,11 +40,8 @@
  
     function SetCredentials(data){
       DataShareService.SetUser({
-        id: data.id_user,
         name: urldecode(data.name),
-        email: urldecode(data.email),
         credits: data.credits,
-        auth: data.auth,
         current_ship: data.current_ship,
         last_save_point: data.last_save_point
       });
@@ -57,13 +53,19 @@
     }
     
     function SaveLocalstorage(){
-      localStorage.setItem('void_user_data', JSON.stringify(DataShareService.GetUser()));
+      var data = {
+        auth: DataShareService.GetAuth(),
+        user: DataShareService.GetUser()
+      };
+      localStorage.setItem('void_user_data', JSON.stringify(data));
     }
     
     function LoadLocalStorage(){
       var void_user_data = localStorage.getItem('void_user_data');
       if (void_user_data){
-        DataShareService.SetUser(JSON.parse(void_user_data));
+        var data = JSON.parse(void_user_data);
+        DataShareService.SetAuth(data.auth);
+        DataShareService.SetUser(data.user);
         return true;
       }
       return false;
