@@ -1,6 +1,7 @@
 {
   "status": "{{status}}",
   "explorer": {
+    "id": {{id}},
     "name": "{{name}}",
     "credits": {{credits}},
     "current_ship": {{current_ship}},

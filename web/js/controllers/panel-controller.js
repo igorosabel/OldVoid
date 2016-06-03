@@ -16,30 +16,17 @@
 
     var vm = this;
 
-    var user   = DataShareService.GetUser();
-    var ship   = DataShareService.GetShip();
-    var system = DataShareService.GetSystem();
+    vm.user   = DataShareService.GetUser();
+    vm.ship   = DataShareService.GetShip();
+    vm.system = DataShareService.GetSystem();
+    vm.notifications    = [];
+    vm.people_in_system = [];
 
-    vm.user_id = user.id;
-
-    vm.panel_info = {
-      system: system.name,
-      credits: user.credits,
-      system_type: system.type,
-      ship_strength: ship.strength,
-      num_planets: system.planets,
-      fuel: ship.fuel,
-      explorers: system.explorers,
-      npc: system.npc
-    };
-
-    vm.notifications = [];
     APIService.GetNotifications(function(response){
       vm.notifications = response.notifications;
     });
 
-    vm.people_in_system = [];
-    APIService.GetPeopleInSystem(system.id,function(response){
+    APIService.GetPeopleInSystem(vm.system.id,function(response){
       vm.people_in_system = response.people_in_system;
     });
   }

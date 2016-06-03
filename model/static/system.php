@@ -70,36 +70,51 @@ class System{
     $ret = array('npc'=>array(),'explorer'=>array());
 
     // NPC en planetas
-    $sql = "SELECT a.*, b.`name` AS `planet_name` FROM `npc` a, `planet` b WHERE a.`id` = b.`id_owner` AND b.`npc` = 1 AND b.`id_system` = ".$id;
+    $sql = "SELECT a.*, b.`id` AS `planet_id`, b.`name` AS `planet_name` FROM `npc` a, `planet` b WHERE a.`id` = b.`id_owner` AND b.`npc` = 1 AND b.`id_system` = ".$id;
 
     $db->query($sql);
     while ($res=$db->next()){
       $npc = new G_NPC();
       $npc->update($res);
 
-      array_push($ret['npc'],array('npc'=>$npc,'where'=>$res['planet_name']));
+      array_push($ret['npc'],array(
+                                    'npc'      => $npc,
+                                    'where_type' => 'planet',
+                                    'where_id' => $res['planet_id'],
+                                    'where'    => $res['planet_name']
+      ));
     }
 
     // NPC en lunas
-    $sql = "SELECT a.*, c.`name` AS `moon_name` FROM `npc` a, `planet` b, `moon` c WHERE a.`id` = c.`id_owner` AND c.`npc` = 1 AND c.`id_planet` = b.`id` AND b.`id_system` = ".$id;
+    $sql = "SELECT a.*, c.`id` AS `moon_id`, c.`name` AS `moon_name` FROM `npc` a, `planet` b, `moon` c WHERE a.`id` = c.`id_owner` AND c.`npc` = 1 AND c.`id_planet` = b.`id` AND b.`id_system` = ".$id;
 
     $db->query($sql);
     while ($res=$db->next()){
       $npc = new G_NPC();
       $npc->update($res);
 
-      array_push($ret['npc'],array('npc'=>$npc,'where'=>$res['moon_name']));
+      array_push($ret['npc'],array(
+                                    'npc' => $npc,
+                                    'where_type' => 'moon',
+                                    'where_id' => $res['moon_id'],
+                                    'where' => $res['moon_name']
+      ));
     }
 
     // Exploradores en el sistema
-    $sql = "SELECT a.*, b.`name` AS `system_name` FROM `explorer` a, `system` b WHERE a.`last_save_point` = b.`id` AND b.`id` = ".$id;
+    $sql = "SELECT a.*, b.`id` AS `system_id`, b.`name` AS `system_name` FROM `explorer` a, `system` b WHERE a.`last_save_point` = b.`id` AND b.`id` = ".$id;
 
     $db->next($sql);
     while ($res=$db->next()){
       $ex = new G_Explorer();
       $ex->update($res);
 
-      array_push($ret['explorer'],array('explorer'=>$ex,'where'=>$res['system_name']));
+      array_push($ret['explorer'],array(
+                                        'explorer' => $ex,
+                                        'where_type' => 'system',
+                                        'where_id' => $res['system_id'],
+                                        'where'    => $res['system_name']
+      ));
     }
 
     return $ret;

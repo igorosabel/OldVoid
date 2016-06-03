@@ -11,6 +11,7 @@
 <script src="js/lib/angular-messages.min.js"></script>
 <script src="js/lib/angular-material.min.js"></script>
 <script src="js/app.js"></script>
+<script src="js/filters/filters.js"></script>
 <script src="js/controllers/login-controller.js"></script>
 <script src="js/controllers/register-controller.js"></script>
 <script src="js/controllers/loading-controller.js"></script>

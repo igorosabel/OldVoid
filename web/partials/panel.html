@@ -4,41 +4,41 @@
       <div layout="row" layout-xs="column">
         <div flex layout="row">
           <div flex>Sistema:</div>
-          <div flex>{{vm.panel_info.system}}</div>
+          <div flex>{{vm.system.name}}</div>
         </div>
         <div flex layout="row">
           <div flex>Créditos:</div>
-          <div flex>{{vm.panel_info.credits}}</div>
+          <div flex>{{vm.user.credits}}</div>
         </div>
       </div>
       <div layout="row" layout-xs="column">
         <div flex layout="row">
           <div flex>Tipo de estrella:</div>
-          <div flex>{{vm.panel_info.system_type}}</div>
+          <div flex title="{{vm.system.type_name | urldecode}}">{{vm.system.type}}</div>
         </div>
         <div flex layout="row">
           <div flex>Integridad nave:</div>
-          <div flex>{{vm.panel_info.ship_strength}}</div>
+          <div flex>{{vm.ship.strength}}</div>
         </div>
       </div>
       <div layout="row" layout-xs="column">
         <div flex layout="row">
           <div flex>Num. planetas:</div>
-          <div flex>{{vm.panel_info.num_planets}}</div>
+          <div flex>{{vm.system.planets}}</div>
         </div>
         <div flex layout="row">
           <div flex>Combustible:</div>
-          <div flex>{{vm.panel_info.fuel}}</div>
+          <div flex>{{vm.ship.fuel}}</div>
         </div>
       </div>
       <div layout="row" layout-xs="column" class="panel_info_last">
         <div flex layout="row">
           <div flex>Exploradores:</div>
-          <div flex>{{vm.panel_info.explorers}}</div>
+          <div flex>{{vm.system.explorers}}</div>
         </div>
         <div flex layout="row">
           <div flex>Comerciantes:</div>
-          <div flex>{{vm.panel_info.npc}}</div>
+          <div flex>{{vm.system.npc}}</div>
         </div>
       </div>
     </md-card-content>
@@ -71,11 +71,11 @@
 <md-card ng-if="vm.people_in_system.length">
   <md-card-content>
     <md-list>
-      <md-list-item class="md-2-line" ng-repeat="item in vm.people_in_system" ng-if="(item.type=='npc') || (item.type=='explorer' && item.id!=vm.user_id)">
+      <md-list-item class="md-2-line" ng-repeat="item in vm.people_in_system" ng-if="(item.type=='npc') || (item.type=='explorer' && item.id!=vm.user.id)">
         <md-icon md-svg-icon="img/panel/{{item.type}}.svg" class="md-accent"></md-icon>
         <div class="md-list-item-text">
           <h3>{{item.name | urldecode}}</h3>
-          <p class="panel_explorers_where">{{item.where | urldecode}}</p>
+          <p class="panel_explorers_where">{{item.where | wherediscovered:vm.system}}</p>
           <div class="md-secondary" hide-xs>
             <md-button class="md-raised" ng-class="{panel_explorers_no_attack:item.type=='npc'}">
               <md-icon md-svg-icon="img/panel/attack.svg"></md-icon>
@@ -93,7 +93,7 @@
               <md-icon md-svg-icon="img/panel/npc_notes.svg"></md-icon>
               Notas del comerciante
             </md-button>
-          </divhide-xs>
+          </div>
           <md-menu class="md-secondary" hide-gt-sm>
             <md-button aria-label="Opciones" class="md-icon-button" ng-click="$mdOpenMenu($event)">
               <md-icon md-svg-icon="img/panel/options.svg"></md-icon>

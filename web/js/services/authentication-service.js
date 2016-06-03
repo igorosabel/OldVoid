@@ -40,6 +40,7 @@
  
     function SetCredentials(data){
       DataShareService.SetUser({
+        id: data.id,
         name: urldecode(data.name),
         credits: data.credits,
         current_ship: data.current_ship,

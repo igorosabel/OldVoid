@@ -119,6 +119,7 @@
 
     $status          = 'ok';
     $auth            = Base::getParam('auth', $req['url_params'], false);
+    $id              = 0;
     $name            = '';
     $credits         = 0;
     $current_ship    = 0;
@@ -131,6 +132,7 @@
     if ($status=='ok'){
       $explorer = new G_Explorer();
       if ($explorer->find(array('auth'=>$auth))){
+        $id              = $explorer->get('id');
         $name            = $explorer->get('name');
         $credits         = $explorer->get('credits');
         $current_ship    = $explorer->get('current_ship');
@@ -145,6 +147,7 @@
     $t->setJson(true);
 
     $t->add('status',$status);
+    $t->add('id',$id);
     $t->add('name',$name);
     $t->add('credits',$credits);
     $t->add('current_ship',$current_ship);

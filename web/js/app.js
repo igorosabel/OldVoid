@@ -41,29 +41,6 @@ function configApp() {
         })
         .otherwise({redirectTo: '/'});
       //$locationProvider.html5Mode(true);
-    })
-    .filter('urldecode', function () {
-      return function (str) {
-        str = urldecode(str);
-        return str;
-      };
-    })
-    .filter('showtime', function () {
-      return function (num) {
-        var m = Math.floor(num / 60);
-        var s = Math.floor(num - (m * 60) );
-        return ((m<10)?'0'+m:m)+':'+((s<10)?'0'+s:s);
-      };
-    })
-    .filter('formatnumber', function () {
-      return function (num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      };
-    })
-    .filter('yesno', function () {
-      return function (num) {
-        return num?'Si':'No';
-      };
     });
 }
 

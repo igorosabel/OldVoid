@@ -67,13 +67,18 @@
       "storage_capacity": <?php echo $module->get('storage_capacity') ?>,
     "storage": <?php if ($module->get('storage')==''): ?>false<?php else: ?>
       [
-      <?php $storage = json_decode($module->get('storage'),true); ?>
-      <?php foreach ($storage as $j=>$resource): ?>
+      <?php
+        $storage = json_decode($module->get('storage'),true);
+        $j = 0;
+      ?>
+      <?php foreach ($storage as $resource_id=>$resource_value): ?>
         {
-        "resource_id": <?php echo $resource['resource_id'] ?>,
-        "resource_name": "<?php echo urlencode(General::getResourceName($resource['resource_id'])) ?>",
-        "value": <?php echo $resource['value'] ?>
-        }<?php if ($j<count($storage)-1): ?>,<?php endif ?>
+        "resource_id": <?php echo $resource_id ?>,
+        "resource_name": "<?php echo urlencode(General::getResourceName($resource_id)) ?>",
+        "value": <?php echo $resource_value ?>
+        }
+        <?php $j++ ?>
+        <?php if ($j<count($storage)): ?>,<?php endif ?>
       <?php endforeach ?>
       ]
     <?php endif ?>,
