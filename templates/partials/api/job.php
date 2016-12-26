@@ -2,7 +2,7 @@
 {
   "id": <?php echo $values['job']->get('id') ?>,
   "type": <?php echo $values['job']->get('type') ?>,
-  "type_name": "<?php echo urlencode(Job::getJobName($values['job']->get('type'))) ?>",
+  "type_name": "<?php echo urlencode(stJob::getJobName($values['job']->get('type'))) ?>",
   "value": <?php echo $values['job']->get('value') ?>,
   "start": <?php echo $values['job']->get('start') ?>,
   "duration": <?php echo $values['job']->get('duration') ?>

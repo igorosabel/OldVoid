@@ -1,5 +1,5 @@
 <?php
-class Job{
+class stJob{
   /*
     Tipos de trabajos
   */
@@ -14,7 +14,7 @@ class Job{
   const STATUS_FINISHED = 2;
   
   public static function checkJob($id_job){
-    $job = new G_Job();
+    $job = new Job();
     $job->find(array('id'=>$id_job));
     if (time()>($job->get('start')+$job->get('duration'))){
       $job->setStatus(self::STATUS_FINISHED);
@@ -27,14 +27,14 @@ class Job{
   }
   
   public static function getUnfinishedJobs(){
-    $db = new G_DB();
+    $db = new ODB();
     $sql = "SELECT * FROM `explorer` WHERE `id_job` IS NOT NULL";
     
-    $db->consulta($sql);
+    $db->query($sql);
     $ret = array();
     
     while($res=$db->next()){
-      $explorer = new G_Explorer();
+      $explorer = new Explorer();
       $explorer->update($res);
       
       array_push($ret, $explorer);
@@ -55,6 +55,6 @@ class Job{
         return self::RESOURCES_NAME;
       }
     }
-    return "";
+    return '';
   }
 }

@@ -4,18 +4,18 @@
   $where = 'task_checkJobs';
   
   include(dirname(__FILE__).'/../config/config.php');
-  include($c->getRutaConfig().'gestores.php');
+  include($c->getDir('config').'model.php');
 
   // Cojo todos los exploradores con trabajos pendientes
-  $explorers = Job::getUnfinishedJobs();
+  $explorers = stJob::getUnfinishedJobs();
   
   // Recorro todos los trabajadores
   foreach ($explorers as $explorer){
     // Compruebo el trabajo pendiente del explorador
-    $job = Job::checkJob($explorer->get('id_job'));
+    $job = stJob::checkJob($explorer->get('id_job'));
 
     // Si el trabajo ya ha terminado
-    if ($job->getStatus()==Job::STATUS_FINISHED){
+    if ($job->getStatus()==stJob::STATUS_FINISHED){
       // Le quito el trabajo pendiente al explorador
       $explorer->set('id_job',null);
       $explorer->save();

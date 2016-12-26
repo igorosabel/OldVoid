@@ -3,17 +3,63 @@ class Base{
   /*
     Field types
   */
-  const PK      = 1;
-  const CREATED = 2;
-  const UPDATED = 3;
-  const NUM     = 4;
-  const TEXTO   = 5;
-  const FECHA   = 6;
-  const BOOL    = 7;
+  const PK       = 1;
+  const CREATED  = 2;
+  const UPDATED  = 3;
+  const NUM      = 4;
+  const TEXT     = 5;
+  const DATE     = 6;
+  const BOOL     = 7;
+  const LONGTEXT = 8;
+  const FLOAT    = 9;
+
+  public static function getModelList(){
+    global $c;
+    $ret = array();
+
+    if ($model = opendir($c->getDir('model_app'))) {
+      while (false !== ($entry = readdir($model))) {
+        if ($entry != "." && $entry != "..") {
+          $table = str_ireplace('.php','',$entry);
+          eval("$"."mod = new ".$table."();");
+          array_push($ret,$mod);
+        }
+      }
+      closedir($model);
+    }
+
+    sort($ret);
+    return $ret;
+  }
+  
+  public static function getResults($table,$field,$list){
+    $ret = array();
+    $db = new ODB();
+    $sql = "SELECT * FROM `".$table."` WHERE `".$field."` IN (".implode(',', $list).")";
+    $db->query($sql);
+    
+    while ($res=$db->next()){
+      array_push($ret, $res);
+    }
+    
+    return $ret;
+  }
+
+  public static function getRefData($ref){
+    $ret = array('model'=>'','table'=>'','field'=>'');
+
+    $ref_data = explode('.',$ref);
+    $ret['field'] = $ref_data[1];
+    $ref_obj = explode('(',$ref_data[0]);
+    $ret['model'] = $ref_obj[0];
+    $ret['table'] = str_ireplace(')','',$ref_obj[1]);
+
+    return $ret;
+  }
 
   public static function getCache($key){
     global $c;
-    $route = $c->getCacheDir().$key.".json";
+    $route = $c->getDir('cache').$key.".json";
     if (file_exists($route)){
       $data = file_get_contents($route);
       $json = json_decode($data,true);
@@ -23,11 +69,61 @@ class Base{
       return false;
     }
   }
+  
+  public static function checkCookie(){
+    global $s, $ck;
+    $ret = false;
+    
+    // Si pide login la pagina compruebo si ya tiene login en sesión, si no tiene compruebo la cookie
+    if (!$s->getParam('logged')){
+      $session_key = $ck->getCookie('session_key');
+      $id_user = $ck->getCookie('id_user');
+      if ($session_key && $id_user){
+        $u = new User();
+        if ($u->find(array('session_key'=>$session_key))){
+          if ($u->get('id') == $id_user){
+            $s->addParam('logged',true);
+            $s->addParam('id',$id_user);
+            
+            $ret = true;
+          }
+          else{
+            // Hay usuario por session key pero no es el id de usuario que esta guardado -> fuera!
+            $ret = false;
+          }
+        } // del if buscar usuario por session key
+        else{
+          // Hay session key pero no es de ningún usuario -> fuera!
+          $ret = false;
+        }
+      } // del if session key
+      else{
+        // Hay login y no hay session key -> fuera!
+        $ret = false;
+      }
+    }
+    else{
+      $ret = true;
+    }
+    
+    return $ret;
+  }
+  
+  public static function doLogout($mens=null){
+    global $s, $ck;
+  
+    $ck->cleanCookies();
+    $s->cleanSession();
+    if (!is_null($mens)){
+      $s->addParam('flash',$mens);
+    }
+    header( 'Location: '.OUrl::generateUrl('home') );
+  }
 
   public static function getRandomCharacters($options){
-    $num   = isset($options['num']) ? $options['num'] : 5;
-    $lower = isset($options['lower']) ? $options['lower'] : false;
-    $upper = isset($options['upper']) ? $options['upper'] : false;
+    $num     = isset($options['num'])     ? $options['num']     : 5;
+    $lower   = isset($options['lower'])   ? $options['lower']   : false;
+    $upper   = isset($options['upper'])   ? $options['upper']   : false;
     $numbers = isset($options['numbers']) ? $options['numbers'] : false;
     $special = isset($options['special']) ? $options['special'] : false;
 

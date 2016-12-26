@@ -5,18 +5,21 @@
   $basedir = realpath(dirname(__FILE__));
   $basedir = str_ireplace("config","",$basedir);
 
-  require($basedir."model/base/G_Config.php");
-  $c = new G_Config();
+  require($basedir."model/base/OConfig.php");
+  $c = new OConfig();
   $c->setBaseDir($basedir);
   
   /* Carga de módulos */
-  $c->loadDefaultFwModules();
+  $c->loadDefaultModules();
+  
+  /* Carga de paquetes */
+  //$c->loadPackages();
 
   /* Datos de la Base De Datos */
-  $c->setDbHost('localhost');
-  $c->setDbUser('void');
-  $c->setDbPass('2Rojg$20');
-  $c->setDbName('void');
+  $c->setDB('host','localhost');
+  $c->setDB('user','void');
+  $c->setDB('pass','2Rojg$20');
+  $c->setDB('name','void');
   
   /* Datos para cookies */
   $c->setCookiePrefix('void');

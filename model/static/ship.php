@@ -1,12 +1,12 @@
 <?php
-class Ship{
+class stShip{
   const MODULE_SMALL = 0;
   const MODULE_BIG   = 1;
   const MODULE_STORAGE      = 'storage';
   const MODULE_STORAGE_NAME = 'Almacenamiento';
 
   public static function loadShip($explorer){
-    $ship = new G_Ship();
+    $ship = new Ship();
     if ($ship->find(array('id'=>$explorer->get('current_ship')))){
       $ship->setGuns(         self::loadGuns($ship));
       $ship->setModulesSmall( self::loadModules($ship,self::MODULE_SMALL));
@@ -17,14 +17,14 @@ class Ship{
   }
 
   public static function loadGuns($ship){
-    $db = new G_DB();
+    $db = new ODB();
     $ret = array();
     
     $sql = "SELECT * FROM `gun` WHERE `id_ship` = ".$ship->get('id');
     $db->query($sql);
     
     while ($res=$db->next()){
-      $gun = new G_Gun();
+      $gun = new Gun();
       $gun->update($res);
       
       array_push($ret,$gun);
@@ -34,7 +34,7 @@ class Ship{
   }
   
   public static function loadModules($ship,$size=null){
-    $db = new G_DB();
+    $db = new ODB();
     $ret = array();
     
     $sql = "SELECT * FROM `module` WHERE `id_ship` = ".$ship->get('id');
@@ -44,7 +44,7 @@ class Ship{
     $db->query($sql);
     
     while ($res=$db->next()){
-      $module = new G_Module();
+      $module = new Module();
       $module->update($res);
       
       array_push($ret,$module);
@@ -114,7 +114,7 @@ class Ship{
     global $c;
 
     // Primero creo la nave, sin armas ni módulos
-    $ship = new G_Ship();
+    $ship = new Ship();
     $ship->set('id_owner',$explorer->get('id'));
 
     $ship_name = Base::getRandomCharacters(array('num'=>$c->getSystemNameChars(),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getSystemNameNums(),'numbers'=>true));
@@ -155,7 +155,7 @@ class Ship{
     $ship->save();
 
     // Creo un arma
-    $gun = new G_Gun();
+    $gun = new Gun();
 
     $gun_types = Base::getCache('gun');
     $gun_type  = $gun_types['gun_types']['gun_'.$c->getDefaultGun()];
@@ -175,7 +175,7 @@ class Ship{
     // Creo un módulo
     $default_modules = $c->getDefaultModules();
     foreach ($default_modules as $module_type){
-      $module = new G_Module();
+      $module = new Module();
   
       $module_types = Base::getCache('module');
       $module_type  = $module_types['module_types']['module_'.$module_type];
@@ -215,17 +215,17 @@ class Ship{
     $ret = 0;
 
     // Calculo precio de la nave (base + mejoras)
-    $hull_types = Base::getCache('hull');
-    $hull_type  = $hull_types['hull_types']['hull_'.$ship->get('hull_id_type')];
-    $hull_type_diff = floor( ( ($ship->get('hull_strength')*100) / $hull_type['strength'] ) / 100 );
-    $shield_types = Base::getCache('shield');
-    $shield_type  = $shield_types['shield_types']['shield_'.$ship->get('shield_id_type')];
-    $shield_type_diff = floor( ( ($ship->get('shield_strength')*100) / $shield_type['strength'] ) / 100 );
-    $engine_types = Base::getCache('engine');
-    $engine_type  = $engine_types['engine_types']['engine_'.$ship->get('engine_id_type')];
-    $engine_type_diff = floor( ( ($ship->get('engine_power')*100) / $engine_type['power'] ) / 100 );
-    $generator_types = Base::getCache('generator');
-    $generator_type  = $generator_types['generator_types']['generator_'.$ship->get('generator_id_type')];
+    $hull_types          = Base::getCache('hull');
+    $hull_type           = $hull_types['hull_types']['hull_'.$ship->get('hull_id_type')];
+    $hull_type_diff      = floor( ( ($ship->get('hull_strength')*100) / $hull_type['strength'] ) / 100 );
+    $shield_types        = Base::getCache('shield');
+    $shield_type         = $shield_types['shield_types']['shield_'.$ship->get('shield_id_type')];
+    $shield_type_diff    = floor( ( ($ship->get('shield_strength')*100) / $shield_type['strength'] ) / 100 );
+    $engine_types        = Base::getCache('engine');
+    $engine_type         = $engine_types['engine_types']['engine_'.$ship->get('engine_id_type')];
+    $engine_type_diff    = floor( ( ($ship->get('engine_power')*100) / $engine_type['power'] ) / 100 );
+    $generator_types     = Base::getCache('generator');
+    $generator_type      = $generator_types['generator_types']['generator_'.$ship->get('generator_id_type')];
     $generator_type_diff = floor( ( ($ship->get('generator_power')*100) / $generator_type['power'] ) / 100 );
 
     //echo "hull_type credits: ".$hull_type['credits']."\n";

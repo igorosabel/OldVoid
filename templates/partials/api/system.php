@@ -19,7 +19,7 @@
       "id_owner": <?php echo $planet->get('id_owner') ?>,
       "owner": "",
       "type": <?php echo $planet->get('id_type') ?>,
-      "type_name": "<?php echo urlencode(System::getPlanetTypeName($planet->get('id_type'))) ?>",
+      "type_name": "<?php echo urlencode(stSystem::getPlanetTypeName($planet->get('id_type'))) ?>",
       "radius": <?php echo $planet->get('radius') ?>,
       "rotation": <?php echo $planet->get('rotation') ?>,
       "survival": <?php echo $planet->get('survival') ?>,
@@ -31,7 +31,7 @@
 <?php foreach ($planet->getResources() as $resource_ind => $resource): ?>
         {
           "id": <?php echo $resource->get('id_resource_type') ?>,
-          "name": "<?php echo urlencode(General::getResourceName($resource->get('id_resource_type'))) ?>",
+          "name": "<?php echo urlencode(stGeneral::getResourceName($resource->get('id_resource_type'))) ?>",
           "value": <?php echo $resource->get('value') ?>
         }<?php if ($resource_ind<count($planet->getResources())-1): ?>,<?php endif ?>
 <?php endforeach ?>
@@ -68,7 +68,7 @@
 <?php foreach ($moon->getResources() as $resource_ind => $resource): ?>
             {
               "id": <?php echo $resource->get('id_resource_type') ?>,
-              "name": "<?php echo urlencode(General::getResourceName($resource->get('id_resource_type'))) ?>",
+              "name": "<?php echo urlencode(stGeneral::getResourceName($resource->get('id_resource_type'))) ?>",
               "value": <?php echo $resource->get('value') ?>
             }<?php if ($resource_ind<count($moon->getResources())-1): ?>,<?php endif ?>
 <?php endforeach ?>

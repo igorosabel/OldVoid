@@ -1,14 +1,14 @@
 <?php
-class NPC{
+class stNPC{
   public static function loadNPC($id){
-    $db = new G_DB();
+    $db = new ODB();
     $ret = false;
     
     $sql = "SELECT * FROM `npc` WHERE `id` = ".$id;
     $db->query($sql);
     
     if ($res=$db->next()){
-      $npc = new G_NPC();
+      $npc = new NPC();
       $npc->update($res);
       
       $ret = $npc;
@@ -34,7 +34,7 @@ class NPC{
   public static function generateNPC($save=true){
     global $c;
 
-    $npc = new G_NPC();
+    $npc = new NPC();
 
     $npc_list = Base::getCache('npc');
     $npc_name = $npc_list['character_list'][array_rand($npc_list['character_list'])];

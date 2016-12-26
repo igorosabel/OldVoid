@@ -1,5 +1,5 @@
 <?php
-class System{
+class stSystem{
   public static function getSystemColor($type){
     $type_data = explode("-", $type);
     $system = Base::getCache('system');
@@ -28,12 +28,12 @@ class System{
   }
 
   public static function getSystemDiscoverer($id_explorer){
-    $db = new G_DB();
+    $db = new ODB();
     $sql = "SELECT * FROM `explorer` WHERE `id` = ".$id_explorer;
     $db->query($sql);
 
     if ($res=$db->next()){
-      $explorer = new G_Explorer();
+      $explorer = new Explorer();
       $explorer->update($res);
 
       return $explorer->get('name');
@@ -49,7 +49,7 @@ class System{
   }
 
   public static function getExplorersInSystem($explorer,$id_system){
-    $db = new G_DB();
+    $db = new ODB();
     $sql = "SELECT COUNT(*) AS `num` FROM `explorer` WHERE `last_save_point` = ".$id_system;
     if (!is_null($explorer)) {
       $sql .= " AND `id` != ".$explorer->get('id');
@@ -65,7 +65,7 @@ class System{
   }
   
   public static function getPeopleInSystem($id){
-    $db = new G_DB();
+    $db = new ODB();
 
     $ret = array('npc'=>array(),'explorer'=>array());
 
@@ -74,7 +74,7 @@ class System{
 
     $db->query($sql);
     while ($res=$db->next()){
-      $npc = new G_NPC();
+      $npc = new NPC();
       $npc->update($res);
 
       array_push($ret['npc'],array(
@@ -90,7 +90,7 @@ class System{
 
     $db->query($sql);
     while ($res=$db->next()){
-      $npc = new G_NPC();
+      $npc = new NPC();
       $npc->update($res);
 
       array_push($ret['npc'],array(
@@ -106,7 +106,7 @@ class System{
 
     $db->next($sql);
     while ($res=$db->next()){
-      $ex = new G_Explorer();
+      $ex = new Explorer();
       $ex->update($res);
 
       array_push($ret['explorer'],array(
@@ -121,23 +121,23 @@ class System{
   }
   
   public static function loadPlanets($explorer,$system){
-    $db = new G_DB();
+    $db = new ODB();
     $ret = array();
     
     $sql = "SELECT * FROM `planet` WHERE `id_system` = ".$system->get('id')." ORDER BY `distance` ASC";
     $db->query($sql);
     
     while ($res=$db->next()){
-      $planet = new G_Planet();
+      $planet = new Planet();
       $planet->update($res);
 
       // Busco NPC en el planeta
       if ($planet->get('npc')){
-        $planet->setNpc(NPC::loadNPC($planet->get('id_owner')));
+        $planet->setNpc(stNPC::loadNPC($planet->get('id_owner')));
       }
 
       // Compruebo si el planeta ya ha sido explorado
-      $explored = new G_Explored();
+      $explored = new Explored();
       if ($explored->find(array(
         'id_explorer' => $explorer->get('id'),
         'id_planet'   => $planet->get('id')
@@ -158,23 +158,23 @@ class System{
   }
   
   public static function loadMoons($explorer,$planet){
-    $db = new G_DB();
+    $db = new ODB();
     $ret = array();
     
     $sql = "SELECT * FROM `moon` WHERE `id_planet` = ".$planet->get('id')." ORDER BY `distance` ASC";
     $db->query($sql);
     
     while ($res=$db->next()){
-      $moon = new G_Moon();
+      $moon = new Moon();
       $moon->update($res);
 
       // Busco NPC en la luna
       if ($moon->get('npc')){
-        $moon->setNpc(NPC::loadNPC($moon->get('id_owner')));
+        $moon->setNpc(stNPC::loadNPC($moon->get('id_owner')));
       }
 
       // Compruebo si el planeta ya ha sido explorado
-      $explored = new G_Explored();
+      $explored = new Explored();
       if ($explored->find(array(
         'id_explorer' => $explorer->get('id'),
         'id_moon'     => $moon->get('id')
@@ -192,14 +192,14 @@ class System{
   }
   
   public static function loadResources($where,$type){
-    $db = new G_DB();
+    $db = new ODB();
     $ret = array();
     
     $sql = "SELECT * FROM `resources` WHERE `id_".$type."` = ".$where->get('id');
     $db->query($sql);
     
     while ($res=$db->next()){
-      $resource = new G_Resources();
+      $resource = new Resources();
       $resource->update($res);
       
       array_push($ret, $resource);
@@ -228,7 +228,7 @@ class System{
         array_push($resource_ids,$resource['id']);
         $value = rand($resource['min'],$resource['max']);
 
-        $res = new G_Resources();
+        $res = new Resources();
         $res->set('id_planet',        $id_planet);
         $res->set('id_moon',          $id_moon);
         $res->set('id_resource_type', $resource['id']);
@@ -263,7 +263,7 @@ class System{
       }
       if ($new_known){
         //echo "-COMPRUEBO ESC\n";
-        $esc = new G_ExplorerSystemConnection();
+        $esc = new ExplorerSystemConnection();
         if (!$esc->find(array(
           'id_explorer' => $explorer->get('id'),
           'id_system_1' => $from->get('id'),
@@ -273,7 +273,7 @@ class System{
           //echo "-EXPLORER: " . $explorer->get('id') . "\n";
           //echo "-SYSTEM 1: " . $from->get('id') . "\n";
           //echo "-SYSTEM 2: " . $new_system_id . "\n";
-          $esc = new G_ExplorerSystemConnection();
+          $esc = new ExplorerSystemConnection();
           $esc->set('id_explorer', $explorer->get('id'));
           $esc->set('id_system_1', $from->get('id'));
           $esc->set('id_system_2', $new_system_id);
@@ -289,21 +289,21 @@ class System{
         'id_system_2' => $id_system
       ));
       $dist = $sd->get('distance');*/
-      $ret = new G_System();
+      $ret = new System();
       $ret->find(array('id'=>$id_system));
     }
     return $ret;
   }
 
   public static function getSystems(){
-    $db = new G_DB();
+    $db = new ODB();
     $sql = "SELECT * FROM `system`";
     $db->query($sql);
 
     $ret = array();
 
     while ($res=$db->next()) {
-      $s = new G_System();
+      $s = new System();
       $s->update($res);
 
       array_push($ret, $s);
@@ -324,21 +324,21 @@ class System{
   }
 
   public static function getSystemConnections($explorer,$from){
-    $db = new G_DB();
+    $db = new ODB();
     $sql = "SELECT * FROM `system_distance` WHERE (`id_system_1` = ".$from->get('id')." OR `id_system_2` = ".$from->get('id').") AND `distance` = 1";
     $db->query($sql);
 
     $ret = array();
 
     while ($res = $db->next()){
-      $sd = new G_SystemDistance();
+      $sd = new SystemDistance();
       $sd->update($res);
 
       array_push($ret,$sd);
     }
 
     foreach($ret as $conn){
-      $esc = new G_ExplorerSystemConnection();
+      $esc = new ExplorerSystemConnection();
       if ($esc->find(array(
         'id_explorer' => $explorer->get('id'),
         'id_system_1' => $conn->get('id_system_1'),
@@ -355,16 +355,16 @@ class System{
     global $c;
 
     // Primero creo el sistema
-    $s = new G_System();
-    $system_types  = Base::getCache('system');
-    $planet_types  = Base::getCache('planet');
-    $common        = Base::getCache('common');
-    $sun_type      = $system_types['mkk_types'][array_rand($system_types['mkk_types'])];
+    $s = new System();
+    $system_types      = Base::getCache('system');
+    $planet_types      = Base::getCache('planet');
+    $common            = Base::getCache('common');
+    $sun_type          = $system_types['mkk_types'][array_rand($system_types['mkk_types'])];
     $sun_spectral_type = $sun_type['spectral_types'][array_rand($sun_type['spectral_types'])];
-    $sun_type_code = $sun_type['type'].'-'.$system_types['spectral_types']['type_'.$sun_spectral_type]['type'];
-    $sun_name      = Base::getRandomCharacters(array('num'=>$c->getSystemNameChars(),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getSystemNameNums(),'numbers'=>true));
-    $num_planets   = rand($sun_type['min_planets'],$sun_type['max_planets']);
-    $sun_radius    = rand($sun_type['min_radius'],$sun_type['max_radius']);
+    $sun_type_code     = $sun_type['type'].'-'.$system_types['spectral_types']['type_'.$sun_spectral_type]['type'];
+    $sun_name          = Base::getRandomCharacters(array('num'=>$c->getSystemNameChars(),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getSystemNameNums(),'numbers'=>true));
+    $num_planets       = rand($sun_type['min_planets'],$sun_type['max_planets']);
+    $sun_radius        = rand($sun_type['min_radius'],$sun_type['max_radius']);
 
     $s->set('id_discoverer', $explorer->get('id'));
     $s->set('original_name', $sun_name);
@@ -392,7 +392,7 @@ class System{
 
     // Creo los planetas del sistema
     for ($i=1;$i<=$num_planets;$i++){
-      $p = new G_Planet();
+      $p = new Planet();
 
       $planet_name = $sun_name.'-'.$i;
 
@@ -405,15 +405,15 @@ class System{
       //echo "  -------------------------------------------------------------------------------------\n";
       //echo "  ORIGINAL NAME: ".$planet_name."\n";
 
-      $ind = array_rand($sun_type['planet_types']);
-      $planet_type_id  = $sun_type['planet_types'][$ind];
-      $planet_type     = $planet_types['planet_types']['type_'.$planet_type_id];
-      $planet_radius   = rand($planet_type['min_radius'],$planet_type['max_radius']);
-      $planet_rotation = rand(2,100);
-      $planet_survival = $planet_type['survival'];
-      $planet_has_life = $planet_type['has_life'];
+      $ind                 = array_rand($sun_type['planet_types']);
+      $planet_type_id      = $sun_type['planet_types'][$ind];
+      $planet_type         = $planet_types['planet_types']['type_'.$planet_type_id];
+      $planet_radius       = rand($planet_type['min_radius'],$planet_type['max_radius']);
+      $planet_rotation     = rand(2,100);
+      $planet_survival     = $planet_type['survival'];
+      $planet_has_life     = $planet_type['has_life'];
       $planet_explore_time = rand($common['min_time_explore'],$common['max_time_explore']);
-      $num_moons = rand($planet_type['min_moons'],$planet_type['max_moons']);
+      $num_moons           = rand($planet_type['min_moons'],$planet_type['max_moons']);
 
       //echo "  TYPE: ".$planet_type_id."\n";
       //echo "  RADIUS: ".$planet_radius."\n";
@@ -445,7 +445,7 @@ class System{
       if ($npcs<$c->getMaxNPC()){
         $npc_prob = rand(1,$c->getNPCProb());
         if ($npc_prob==1){
-          $npc = NPC::generateNPC();
+          $npc = stNPC::generateNPC();
           $p->set('id_owner', $npc->get('id'));
           $p->set('npc',      true);
           $npcs++;
@@ -472,7 +472,7 @@ class System{
 
       if (count($planet_resource_list)>0){
         foreach ($planet_resource_list as $resource_id=>$value){
-          $planet_resource = new G_Resources();
+          $planet_resource = new Resources();
           $planet_resource->set('id_planet',        $p->get('id'));
           $planet_resource->set('id_moon',          0);
           $planet_resource->set('id_resource_type', $resource_id);
@@ -486,7 +486,7 @@ class System{
 
       // Creo las lunas del planeta
       for ($j=1;$j<=$num_moons;$j++){
-        $m = new G_Moon();
+        $m = new Moon();
 
         $moon_name = $planet_name.'-L'.$j;
 
@@ -533,7 +533,7 @@ class System{
         if ($npcs<$c->getMaxNPC()){
           $npc_prob = rand(1,$c->getNPCProb());
           if ($npc_prob==1){
-            $npc = NPC::generateNPC();
+            $npc = stNPC::generateNPC();
             $m->set('id_owner', $npc->get('id'));
             $m->set('npc',      true);
             $npcs++;
@@ -562,7 +562,7 @@ class System{
 
         if (count($moon_resource_list)>0){
           foreach ($moon_resource_list as $resource_id=>$value){
-            $planet_resource = new G_Resources();
+            $planet_resource = new Resources();
             $planet_resource->set('id_planet',        0);
             $planet_resource->set('id_moon',          $m->get('id'));
             $planet_resource->set('id_resource_type', $resource_id);
@@ -596,7 +596,7 @@ class System{
         }
         if ($system->get('id') != $from->get('id')) {
           //echo "SYSTEM != FROM\n";
-          $sd_aux = new G_SystemDistance();
+          $sd_aux = new SystemDistance();
           $res = $sd_aux->find(array(
             'id_system_1' => $system->get('id'),
             'id_system_2' => $from->get('id')
@@ -619,14 +619,14 @@ class System{
         //echo "SYSTEM 1: ".$system->get('id')."\n";
         //echo "SYSTEM 2: ".$s->get('id')."\n";
         //echo "DISTANCE: ".($dist + 1)."\n";
-        $sd = new G_SystemDistance();
+        $sd = new SystemDistance();
         $sd->set('id_system_1', $system->get('id'));
         $sd->set('id_system_2', $s->get('id'));
         $sd->set('distance',    $dist + 1);
         $sd->save();
 
         //echo "COMPRUEBO ESC\n";
-        $esc = new G_ExplorerSystemConnection();
+        $esc = new ExplorerSystemConnection();
         if (!$esc->find(array(
           'id_explorer' => $explorer->get('id'),
           'id_system_1' => $system->get('id'),
@@ -636,7 +636,7 @@ class System{
           //echo "EXPLORER: " . $explorer->get('id') . "\n";
           //echo "SYSTEM 1: " . $system->get('id') . "\n";
           //echo "SYSTEM 2: " . $s->get('id') . "\n";
-          $esc = new G_ExplorerSystemConnection();
+          $esc = new ExplorerSystemConnection();
           $esc->set('id_explorer', $explorer->get('id'));
           $esc->set('id_system_1', $system->get('id'));
           $esc->set('id_system_2', $s->get('id'));
