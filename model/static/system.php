@@ -1,7 +1,7 @@
 <?php
 class System{
   public static function getSystemColor($type){
-    $type_data = split("-", $type);
+    $type_data = explode("-", $type);
     $system = Base::getCache('system');
     $ret = '#000';
     foreach ($system['spectral_types'] as $stype){
@@ -15,7 +15,7 @@ class System{
   }
   
   public static function getSystemTypeName($type){
-    $type_data = split("-", $type);
+    $type_data = explode("-", $type);
     $system = Base::getCache('system');
     
     foreach ($system['mkk_types'] as $stype){

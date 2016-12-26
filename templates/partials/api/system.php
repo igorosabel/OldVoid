@@ -75,8 +75,8 @@
           ],
           "npc": <?php if (!$moon->get('npc')): ?>false<?php else: ?>
             {
-              "id": <? echo $moon->getNPC()->get('id') ?>,
-              "id_race": <? echo $moon->getNPC()->get('id_race') ?>,
+              "id": <?php echo $moon->getNPC()->get('id') ?>,
+              "id_race": <?php echo $moon->getNPC()->get('id_race') ?>,
               "name": "<?php echo urlencode($moon->getNPC()->get('name')) ?>",
               "race": "",
               "hulls": <?php echo $moon->getNPC()->get('hulls_actual') ?>,

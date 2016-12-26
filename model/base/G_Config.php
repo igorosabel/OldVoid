@@ -1,6 +1,8 @@
 <?php
 class G_Config{
   private $debug_mode = false;
+  private $allow_cross_origin = false;
+  private $default_fw_modules = array();
 
   private $base_dir         = '';
   private $cache_dir        = '';
@@ -30,6 +32,9 @@ class G_Config{
   private $api_url    = '';
   
   private $closed = false;
+  
+  private $cookie_prefix = '';
+  private $cookie_url    = '';
   
   private $css_list              = array();
   private $ext_css_list          = array();
@@ -70,9 +75,42 @@ class G_Config{
   function setDebugMode($dm){
     $this->debug_mode = $dm;
   }
-  
   function getDebugMode(){
     return $this->debug_mode;
+  }
+  
+  // Allow Cross-Origin
+  public function setAllowCrossOrigin($aco){
+    $this->allow_cross_origin = $aco;
+  }
+  public function getAllowCrossOrigin(){
+    return $this->allow_cross_origin;
+  }
+  
+  // Default modules
+  public function setDefaultFwModules($dfm){
+    $this->default_fw_modules = $dfm;
+  }
+  public function getDefaultFwModules(){
+    return $this->default_fw_modules;
+  }
+
+  public function loadDefaultFwModules(){
+    $ruta_base_json = $this->getConfigDir().'base.json';
+    if (file_exists($ruta_base_json)){
+      $base_json = json_decode( file_get_contents($ruta_base_json), true );
+      $this->setDefaultFwModules($base_json);
+    }
+  }
+
+  public function getDefaultFwModule($m){
+    $base_modules = $this->getDefaultFwModules();
+    if (array_key_exists($m,$base_modules['base_modules']) && $base_modules['base_modules'][$m]===true){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
   
   // Dirs
@@ -272,6 +310,28 @@ class G_Config{
     return $this->closed;
   }
   
+  public function setImageTypes($it){
+    $this->image_types = $it;
+  }
+  public function getImageTypes(){
+    return $this->image_types;
+  }
+  
+  // Cookies
+  public function setCookiePrefix($cp){
+    $this->cookie_prefix = $cp;
+  }
+  public function getCookiePrefix(){
+    return $this->cookie_prefix;
+  }
+
+  public function setCookieUrl($cu){
+    $this->cookie_url = $cu;
+  }
+  public function getCookieUrl(){
+    return $this->cookie_url;
+  }
+  
   // Templates
   public function setCssList($cl){
     $this->css_list = $cl;
@@ -354,13 +414,6 @@ class G_Config{
   }
   function getLang(){
     return $this->lang;
-  }
-
-  function setImageTypes($it){
-    $this->image_types = $it;
-  }
-  function getImageTypes(){
-    return $this->image_types;
   }
 
   // Void
