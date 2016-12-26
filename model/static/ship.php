@@ -117,12 +117,12 @@ class stShip{
     $ship = new Ship();
     $ship->set('id_owner',$explorer->get('id'));
 
-    $ship_name = Base::getRandomCharacters(array('num'=>$c->getSystemNameChars(),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getSystemNameNums(),'numbers'=>true));
+    $ship_name = Base::getRandomCharacters(array('num'=>$c->getExtra('system_name_chars'),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getExtra('system_name_nums'),'numbers'=>true));
     $ship->set('original_name',$ship_name);
     $ship->set('name',$ship_name);
 
     $hull_types = Base::getCache('hull');
-    $hull_type  = $hull_types['hull_types']['hull_'.$c->getDefaultShipHull()];
+    $hull_type  = $hull_types['hull_types']['hull_'.$c->getExtra('default_ship_hull')];
     $ship->set('hull_id_type',          $hull_type['id']);
     $ship->set('hull_strength',         $hull_type['strength']);
     $ship->set('hull_current_strength', $hull_type['strength']);
@@ -132,14 +132,14 @@ class stShip{
     $ship->set('small_module_ports',    $hull_type['small_module_ports']);
 
     $shield_types = Base::getCache('shield');
-    $shield_type  = $shield_types['shield_types']['shield_'.$c->getDefaultShipShield()];
+    $shield_type  = $shield_types['shield_types']['shield_'.$c->getExtra('default_ship_shield')];
     $ship->set('shield_id_type',          $shield_type['id']);
     $ship->set('shield_strength',         $shield_type['strength']);
     $ship->set('shield_current_strength', $shield_type['strength']);
     $ship->set('shield_energy',           $shield_type['energy']);
 
     $engine_types = Base::getCache('engine');
-    $engine_type  = $engine_types['engine_types']['engine_'.$c->getDefaultShipEngine()];
+    $engine_type  = $engine_types['engine_types']['engine_'.$c->getExtra('default_ship_engine')];
     $ship->set('engine_id_type',     $engine_type['id']);
     $ship->set('engine_power',       $engine_type['power']);
     $ship->set('engine_energy',      $engine_type['energy']);
@@ -148,7 +148,7 @@ class stShip{
     $ship->set('engine_fuel_actual', 100);
 
     $generator_types = Base::getCache('generator');
-    $generator_type  = $generator_types['generator_types']['generator_'.$c->getDefaultShipGenerator()];
+    $generator_type  = $generator_types['generator_types']['generator_'.$c->getExtra('default_ship_generator')];
     $ship->set('generator_id_type', $generator_type['id']);
     $ship->set('generator_power',   $generator_type['power']);
 
@@ -158,7 +158,7 @@ class stShip{
     $gun = new Gun();
 
     $gun_types = Base::getCache('gun');
-    $gun_type  = $gun_types['gun_types']['gun_'.$c->getDefaultGun()];
+    $gun_type  = $gun_types['gun_types']['gun_'.$c->getExtra('default_gun')];
     $gun->set('id_type',         $gun_type['id']);
     $gun->set('id_owner',        $explorer->get('id'));
     $gun->set('id_ship',         $ship->get('id'));
@@ -173,7 +173,7 @@ class stShip{
     $ship->addGun($gun);
 
     // Creo un módulo
-    $default_modules = $c->getDefaultModules();
+    $default_modules = $c->getExtra('default_modules');
     foreach ($default_modules as $module_type){
       $module = new Module();
   

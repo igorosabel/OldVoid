@@ -45,7 +45,7 @@ class stNPC{
 
     // Hulls
     $hull_types = Base::getCache('hull');
-    $num_hulls  = rand(0,$c->getMaxSellHulls());
+    $num_hulls  = rand(0,$c->getExtra('max_sell_hulls'));
     $hull_list  = array();
     if ($num_hulls>0){
       while (count($hull_list)<$num_hulls){
@@ -60,7 +60,7 @@ class stNPC{
 
     // Shields
     $shield_types = Base::getCache('shield');
-    $num_shields  = rand(0,$c->getMaxSellShields());
+    $num_shields  = rand(0,$c->getExtra('max_sell_shields'));
     $shield_list  = array();
     if ($num_shields>0){
       while (count($shield_list)<$num_shields){
@@ -75,7 +75,7 @@ class stNPC{
 
     // Engines
     $engine_types = Base::getCache('engine');
-    $num_engines  = rand(0,$c->getMaxSellEngines());
+    $num_engines  = rand(0,$c->getExtra('max_sell_engines'));
     $engine_list  = array();
     if ($num_engines>0){
       while (count($engine_list)<$num_engines){
@@ -90,7 +90,7 @@ class stNPC{
 
     // Generators
     $generator_types = Base::getCache('generator');
-    $num_generators  = rand(0,$c->getMaxSellGenerators());
+    $num_generators  = rand(0,$c->getExtra('max_sell_generators'));
     $generator_list  = array();
     if ($num_generators>0){
       while (count($generator_list)<$num_generators){
@@ -105,7 +105,7 @@ class stNPC{
 
     // Guns
     $gun_types = Base::getCache('gun');
-    $num_guns  = rand(0,$c->getMaxSellGuns());
+    $num_guns  = rand(0,$c->getExtra('max_sell_guns'));
     $gun_list  = array();
     if ($num_guns>0){
       while (count($gun_list)<$num_guns){
@@ -120,7 +120,7 @@ class stNPC{
 
     // Modules
     $module_types = Base::getCache('module');
-    $num_modules  = rand(0,$c->getMaxSellModules());
+    $num_modules  = rand(0,$c->getExtra('max_sell_modules'));
     $module_list  = array();
     if ($num_modules>0){
       while (count($module_list)<$num_modules){
@@ -135,7 +135,7 @@ class stNPC{
 
     // Resources
     $resource_types = Base::getCache('resource');
-    $num_resources  = rand(0,$c->getMaxSellResources());
+    $num_resources  = rand(0,$c->getExtra('max_sell_resources'));
     $resource_list  = array();
     if ($num_resources>0){
       while (count($resource_list)<$num_resources){

@@ -248,7 +248,7 @@ class stSystem{
 
     if (is_null($id_system)){
       $system_connections = self::getSystemConnections($explorer,$from);
-      $ind                = rand(0,$c->getMaxConnections()-1);
+      $ind                = rand(0,$c->getExtra('max_connections')-1);
       $new_known          = false;
       if (array_key_exists($ind,$system_connections)){
         $new_system_id = $system_connections[$ind]->get('id');
@@ -362,7 +362,7 @@ class stSystem{
     $sun_type          = $system_types['mkk_types'][array_rand($system_types['mkk_types'])];
     $sun_spectral_type = $sun_type['spectral_types'][array_rand($sun_type['spectral_types'])];
     $sun_type_code     = $sun_type['type'].'-'.$system_types['spectral_types']['type_'.$sun_spectral_type]['type'];
-    $sun_name          = Base::getRandomCharacters(array('num'=>$c->getSystemNameChars(),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getSystemNameNums(),'numbers'=>true));
+    $sun_name          = Base::getRandomCharacters(array('num'=>$c->getExtra('system_name_chars'),'upper'=>true)).'-'.Base::getRandomCharacters(array('num'=>$c->getExtra('system_name_nums'),'numbers'=>true));
     $num_planets       = rand($sun_type['min_planets'],$sun_type['max_planets']);
     $sun_radius        = rand($sun_type['min_radius'],$sun_type['max_radius']);
 
@@ -442,8 +442,8 @@ class stSystem{
 
       // NPC
       $planet_has_npc = false;
-      if ($npcs<$c->getMaxNPC()){
-        $npc_prob = rand(1,$c->getNPCProb());
+      if ($npcs<$c->getExtra('max_npc')){
+        $npc_prob = rand(1,$c->getExtra('npc_prob'));
         if ($npc_prob==1){
           $npc = stNPC::generateNPC();
           $p->set('id_owner', $npc->get('id'));
@@ -457,7 +457,7 @@ class stSystem{
       if (!$planet_has_npc){
         // Resources
         $resource_types = Base::getCache('resource');
-        $num_resources  = rand(0,$c->getMaxSellResources());
+        $num_resources  = rand(0,$c->getExtra('max_sell_resources'));
         if ($num_resources>0) {
           while (count($planet_resource_list) < $num_resources) {
             $resource = $resource_types['resources'][array_rand($resource_types['resources'])];
@@ -507,7 +507,7 @@ class stSystem{
         //echo "    RADIUS: ".$moon_radius."\n";
 
         // Indice de supervivencia es aleatorio entre 1 y el del planeta (+2 si tiene vida)
-        $moon_survival = rand(1, $planet_survival + ($planet_has_life?$c->getLifeBonus():0));
+        $moon_survival = rand(1, $planet_survival + ($planet_has_life?$c->getExtra('life_bonus'):0));
         $m->set('survival',      $moon_survival);
         
         // 50% de posibilidad de que haya vida si el indice de survival es mayor que 5
@@ -530,8 +530,8 @@ class stSystem{
         $m->set('explore_time', $moon_explore_time);
 
         $moon_has_npc = false;
-        if ($npcs<$c->getMaxNPC()){
-          $npc_prob = rand(1,$c->getNPCProb());
+        if ($npcs<$c->getExtra('max_npc')){
+          $npc_prob = rand(1,$c->getExtra('npc_prob'));
           if ($npc_prob==1){
             $npc = stNPC::generateNPC();
             $m->set('id_owner', $npc->get('id'));
@@ -545,7 +545,7 @@ class stSystem{
         if (!$moon_has_npc){
           // Resources
           $resource_types = Base::getCache('resource');
-          $num_resources  = rand(0,$c->getMaxSellResources());
+          $num_resources  = rand(0,$c->getExtra('max_sell_resources'));
           if ($num_resources>0) {
             while (count($moon_resource_list) < $num_resources) {
               $resource = $resource_types['resources'][array_rand($resource_types['resources'])];
