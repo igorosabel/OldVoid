@@ -454,8 +454,45 @@ console.log(vm.selectedSystem);
       var item         = null;
       var i            = null;
       var css_vars     = {};
-      
+console.log(main);
+console.table(list);
       if (main.type=='sun'){
+        css_vars = getCssVars(list);
+        var max_px = 700;
+        var max_km = 0;
+        
+        // max_km: (sun.radius*2 * 1.10) + ( ( (cada planet.radius *2) * 2) * 1.10)
+        
+        max_km += ( (main.radius * 2) * 1.10);
+        for (var i in list){
+          max_km += ( ( (list[i].radius * 2) * 2) * list[i].distance * 1.10 );
+        }
+        var ratio = max_px / max_km;
+        
+        console.log(max_km, ratio);
+        
+        var sun_width = ( (main.radius*2) * ratio);
+        console.log(sun_width);
+        css = template('sun_style',{
+          width: sun_width,
+          width_half: ( sun_width / 2),
+          color: main.color
+        });
+        
+        for (i=0;i<list.length;i++){
+          item = list[i];
+          var item_width = ( (item.radius *2) * ratio );
+          css += template('planet_style',{
+            id: item.id,
+            distance: ( (item_width * item.distance ) * 2),
+            distance_half: ( item_width * item.distance ),
+            rotate_time: item.rotation,
+            width: item_width,
+            width_half: Math.floor( item_width / 2 )
+          });
+        }
+        
+        /*
         main_radius = (main.radius * (700 * 0.2)) / 150000;
         console.log('main.radius: '+main.radius+' - main_radius: '+main_radius);
 
@@ -481,6 +518,7 @@ console.log(vm.selectedSystem);
             width_half: Math.floor( css_radius / 2 )
           });
         }
+        */
       }
       if (main.type=='planet'){
         main_radius = (main.radius * (700 * 0.2)) / 100000;

@@ -1,0 +1,50 @@
+{
+  "base_modules": {
+    "browser": false,
+    "email": true,
+    "email_smtp": false,
+    "ftp": false,
+    "image": false,
+    "pdf": false,
+    "translate": false,
+    "crypt": false,
+    "file": false
+  },
+  "db": {
+  	"host": "localhost",
+  	"user": "void",
+  	"pass": "2Rojg$20",
+  	"name": "void"
+  },
+  "cookies": {
+  	"prefix": "void",
+  	"url": ".osumi.es"
+  },
+  "debug": false,
+  "base_url": "https://void.osumi.es/",
+  "admin_email": "inigo.gorosabel@osumi.es",
+  "default_title": "Void",
+  "css": ["angular-material.min", "void"],
+  "extra": {
+    "max_connections": 3,
+    "life_bonus": 2,
+    "max_npc": 2,
+    "npc_prob": 3,
+    "system_name_chars": 3,
+    "system_name_nums": 3,
+    "default_ship_hull": 1,
+    "default_ship_shield": 1,
+    "default_ship_engine": 1,
+    "default_ship_generator": 1,
+    "default_gun": 1,
+    "default_modules": [1,2],
+    "max_sell_hulls": 2,
+    "max_sell_shields": 2,
+    "max_sell_engines": 2,
+    "max_sell_generators": 2,
+    "max_sell_guns": 2,
+    "max_sell_modules": 2,
+    "max_sell_crew": 2,
+    "max_sell_resources": 4
+  }
+}

@@ -11,17 +11,17 @@ function range(min, max, step){
 }
 
 /*
- * Función para mostrar un objeto
+ * Funciones para generar uuids
  */
-function show(id){
-  document.getElementById(id).style.display = 'block';
+function guid() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
 }
 
-/*
- * Función para ocultar un objeto
- */
-function hide(id){
-  document.getElementById(id).style.display = 'none';
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
 }
 
 /*

@@ -1,0 +1,97 @@
+{
+  "urls": [
+    {
+      "id": "pages",
+      "module": "home",
+      "urls": [
+        {
+          "id": "cerrado",
+          "url": "/cerrado",
+          "action": "cerrado",
+          "comment": "Página temporal, sitio cerrado",
+          "layout": "blank"
+        },
+        {
+          "id": "home",
+          "url": "/",
+          "action": "index",
+          "comment": "Home pública"
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "module": "api",
+      "type": "json",
+      "prefix": "/api",
+      "urls": [
+        {
+          "id": "login",
+          "url": "/login",
+          "action": "login",
+          "comment": "Función para comprobar un login de un usuario"
+        },
+        {
+          "id": "register",
+          "url": "/register",
+          "action": "register",
+          "comment": "Función para registrar un nuevo usuario"
+        },
+        {
+          "id": "check_explorer",
+          "url": "/check_explorer",
+          "action": "checkExplorer",
+          "comment": "Función para validar un auth y obtener los datos de un explorador"
+        },
+        {
+          "id": "get_system",
+          "url": "/get_system",
+          "action": "getSystem",
+          "comment": "Función para obtener los datos de un sistema"
+        },
+        {
+          "id": "get_notifications",
+          "url": "/get_notifications",
+          "action": "getNotifications",
+          "comment": "Función para obtener las notificaciones de un usuario"
+        },
+        {
+          "id": "get_people_in_system",
+          "url": "/get_people_in_system",
+          "action": "getPeopleInSystem",
+          "comment": "Función para obtener los exploradores y NPCs de un sistema"
+        },
+        {
+          "id": "explore",
+          "url": "/explore",
+          "action": "explore",
+          "comment": "Función para explorar un planeta o una luna"
+        },
+        {
+          "id": "get_resources",
+          "url": "/get_resources",
+          "action": "getResources",
+          "comment": "Función para obtener recursos de un planeta o una luna"
+        },
+        {
+          "id": "go_to_system",
+          "url": "/go_to_system",
+          "action": "goToSystem",
+          "comment": "Función para viajar a otro sistema"
+        },
+        {
+          "id": "get_ship",
+          "url": "/get_ship",
+          "action": "getShip",
+          "comment": "Función para obtener los datos de la nave actual"
+        },
+        {
+          "id": "change_ship_name",
+          "url": "/change_ship_name",
+          "action": "changeShipName",
+          "comment": "Función para cambiar el nombre de la nave actual"
+        }
+      ]
+    }
+  ]
+}
