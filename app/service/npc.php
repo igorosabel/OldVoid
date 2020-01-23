@@ -4,7 +4,7 @@ class npcService extends OService{
     $this->setController($controller);
   }
 
-  public static function loadNPC($id){
+  public function loadNPC($id){
     $db = $this->getController()->getDb();
     $npc = false;
 

@@ -188,4 +188,14 @@ class Job extends OBase{
     $explorer->set('last_save_point', $data['id']);
     $explorer->save();
   }
+
+  private $job_name = null;
+
+  public function setJobName($job_name){
+    $this->job_name = $job_name;
+  }
+
+  public function getJobName(){
+    return $this->job_name;
+  }
 }

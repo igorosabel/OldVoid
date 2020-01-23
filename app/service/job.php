@@ -47,7 +47,7 @@ class jobService extends OService{
     return $ret;
   }
 
-  public static function getJobName($type){
+  public function getJobName($type){
     switch($type){
       case $this->EXPLORE:{
         return $this->EXPLORE_NAME;

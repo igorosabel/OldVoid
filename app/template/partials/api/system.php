@@ -38,8 +38,8 @@
       ],
       "npc": <?php if (!$planet->get('npc')): ?>false<?php else: ?>
         {
-          "id": <? echo $planet->getNPC()->get('id') ?>,
-          "id_race": <? echo $planet->getNPC()->get('id_race') ?>,
+          "id": <?php echo $planet->getNPC()->get('id') ?>,
+          "id_race": <?php echo $planet->getNPC()->get('id_race') ?>,
           "race": "",
           "hulls": <?php echo $planet->getNPC()->get('hulls_actual') ?>,
           "shields": <?php echo $planet->getNPC()->get('shields_actual') ?>,

@@ -4,12 +4,14 @@ class api extends OController{
   private $ship_service = null;
   private $system_service = null;
   private $job_service = null;
+  public $npc_service = null;
 
   function __construct(){
     $this->general_service = new generalService($this);
     $this->ship_service = new shipService($this);
     $this->system_service = new systemService($this);
     $this->job_service = new jobService($this);
+    $this->npc_service = new npcService($this);
   }
 
   /*
@@ -441,6 +443,7 @@ class api extends OController{
           $job = new Job();
           $job->set('id_explorer', $explorer->get('id'));
           $job->set('type',        jobService::JUMP);
+          $job->setJobName(        $this->job_service->getJobName(jobService::JUMP));
           $job->set('value',       json_encode(['id'=>$system->get('id'), 'name'=>($id ? $system->get('name') : 'Desconocido')]));
           $job->set('start',       time());
           $job->set('duration',    $time);
