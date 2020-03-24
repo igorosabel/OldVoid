@@ -8,7 +8,5 @@ class home extends OController{
   /*
    * Home pública
    */
-  function index($req){
-    $this->getTemplate()->add('api_url', $this->getConfig()->getUrl('api'));
-  }
+  function index($req){}
 }

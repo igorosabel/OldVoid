@@ -6,7 +6,7 @@ class systemService extends OService{
 
   public function getSystemColor($type){
     $type_data = explode('-', $type);
-    $system = Base::getCache('system');
+    $system = OTools::getCache('system');
     $ret = '#000';
     foreach ($system['spectral_types'] as $stype){
       if ($stype['type']==$type_data[1]){
@@ -20,7 +20,7 @@ class systemService extends OService{
 
   public function getSystemTypeName($type){
     $type_data = explode('-', $type);
-    $system = Base::getCache('system');
+    $system = OTools::getCache('system');
 
     foreach ($system['mkk_types'] as $stype){
       if ($stype['type']==$type_data[0]){
@@ -32,7 +32,7 @@ class systemService extends OService{
   }
 
   public function getSystemDiscoverer($id_explorer){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $sql = "SELECT * FROM `explorer` WHERE `id` = ?";
     $db->query($sql, [$id_explorer]);
 
@@ -48,12 +48,12 @@ class systemService extends OService{
   }
 
   public function getPlanetTypeName($type){
-    $planet_types = Base::getCache('planet');
+    $planet_types = OTools::getCache('planet');
     return $planet_types['planet_types']['type_'.$type]['type'];
   }
 
   public function getExplorersInSystem($explorer,$id_system){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $params = [$id_system];
     $sql = "SELECT COUNT(*) AS `num` FROM `explorer` WHERE `last_save_point` = ?";
     if (!is_null($explorer)) {
@@ -71,7 +71,7 @@ class systemService extends OService{
   }
 
   public function getPeopleInSystem($id){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
 
     $ret = array('npc'=>[],'explorer'=>[]);
 
@@ -127,7 +127,7 @@ class systemService extends OService{
   }
 
   public function loadPlanets($explorer,$system){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $ret = [];
 
     $sql = "SELECT * FROM `planet` WHERE `id_system` = ".$system->get('id')." ORDER BY `distance` ASC";
@@ -164,7 +164,7 @@ class systemService extends OService{
   }
 
   public function loadMoons($explorer, $planet){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $ret = [];
 
     $sql = "SELECT * FROM `moon` WHERE `id_planet` = ? ORDER BY `distance` ASC";
@@ -198,7 +198,7 @@ class systemService extends OService{
   }
 
   public function loadResources($where, $type){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $ret = [];
 
     $sql = "SELECT * FROM `resources` WHERE `id_".$type."` = ?";
@@ -215,7 +215,7 @@ class systemService extends OService{
   }
 
   public function generateResources($type, $obj){
-    $resources = Base::getCache('resource');
+    $resources = OTools::getCache('resource');
     $id_planet = 0;
     $id_moon   = 0;
     if ($type=='planet'){
@@ -249,12 +249,12 @@ class systemService extends OService{
   }
 
   public function goToSystem($explorer, $from, $id_system=null){
-    $c = $this->getController()->getConfig();
+    global $core;
     $ret = null;
 
     if (is_null($id_system)){
       $system_connections = $this->getSystemConnections($explorer, $from);
-      $ind                = rand(0, $c->getExtra('max_connections')-1);
+      $ind                = rand(0, $core->config->getExtra('max_connections')-1);
       $new_known          = false;
       if (array_key_exists($ind, $system_connections)){
         $new_system_id = $system_connections[$ind]->get('id');
@@ -302,7 +302,7 @@ class systemService extends OService{
   }
 
   public function getSystems(){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $sql = "SELECT * FROM `system`";
     $db->query($sql);
 
@@ -330,7 +330,7 @@ class systemService extends OService{
   }
 
   public function getSystemConnections($explorer, $from){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $sql = "SELECT * FROM `system_distance` WHERE (`id_system_1` = ? OR `id_system_2` = ?) AND `distance` = 1";
     $db->query($sql, [$from->get('id'), $from->get('id')]);
 
@@ -358,17 +358,17 @@ class systemService extends OService{
   }
 
   public function generateSystem($explorer, $from=null){
-    $c = $this->getController()->getConfig();
+    global $core;
 
     // Primero creo el sistema
     $s = new System();
-    $system_types      = Base::getCache('system');
-    $planet_types      = Base::getCache('planet');
-    $common            = Base::getCache('common');
+    $system_types      = OTools::getCache('system');
+    $planet_types      = OTools::getCache('planet');
+    $common            = OTools::getCache('common');
     $sun_type          = $system_types['mkk_types'][array_rand($system_types['mkk_types'])];
     $sun_spectral_type = $sun_type['spectral_types'][array_rand($sun_type['spectral_types'])];
     $sun_type_code     = $sun_type['type'].'-'.$system_types['spectral_types']['type_'.$sun_spectral_type]['type'];
-    $sun_name          = Base::getRandomCharacters(['num'=>$c->getExtra('system_name_chars'),'upper'=>true]).'-'.Base::getRandomCharacters(['num'=>$c->getExtra('system_name_nums'),'numbers'=>true]);
+    $sun_name          = OTools::getRandomCharacters(['num'=>$core->config->getExtra('system_name_chars'),'upper'=>true]).'-'.OTools::getRandomCharacters(['num'=>$core->config->getExtra('system_name_nums'),'numbers'=>true]);
     $num_planets       = rand($sun_type['min_planets'], $sun_type['max_planets']);
     $sun_radius        = rand($sun_type['min_radius'],  $sun_type['max_radius']);
 
@@ -448,8 +448,8 @@ class systemService extends OService{
 
       // NPC
       $planet_has_npc = false;
-      if ($npcs<$c->getExtra('max_npc')){
-        $npc_prob = rand(1, $c->getExtra('npc_prob'));
+      if ($npcs<$core->config->getExtra('max_npc')){
+        $npc_prob = rand(1, $core->config->getExtra('npc_prob'));
         if ($npc_prob==1){
           $npc = $this->getController()->npc_service->generateNPC();
           $p->set('id_owner', $npc->get('id'));
@@ -462,8 +462,8 @@ class systemService extends OService{
       $planet_resource_list  = [];
       if (!$planet_has_npc){
         // Resources
-        $resource_types = Base::getCache('resource');
-        $num_resources  = rand(0, $c->getExtra('max_sell_resources'));
+        $resource_types = OTools::getCache('resource');
+        $num_resources  = rand(0, $core->config->getExtra('max_sell_resources'));
         if ($num_resources>0) {
           while (count($planet_resource_list) < $num_resources) {
             $resource = $resource_types['resources'][array_rand($resource_types['resources'])];
@@ -513,7 +513,7 @@ class systemService extends OService{
         //echo "    RADIUS: ".$moon_radius."\n";
 
         // Indice de supervivencia es aleatorio entre 1 y el del planeta (+2 si tiene vida)
-        $moon_survival = rand(1, $planet_survival + ($planet_has_life ? $c->getExtra('life_bonus') : 0));
+        $moon_survival = rand(1, $planet_survival + ($planet_has_life ? $core->config->getExtra('life_bonus') : 0));
         $m->set('survival',      $moon_survival);
 
         // 50% de posibilidad de que haya vida si el indice de survival es mayor que 5
@@ -536,8 +536,8 @@ class systemService extends OService{
         $m->set('explore_time', $moon_explore_time);
 
         $moon_has_npc = false;
-        if ($npcs<$c->getExtra('max_npc')){
-          $npc_prob = rand(1,$c->getExtra('npc_prob'));
+        if ($npcs<$core->config->getExtra('max_npc')){
+          $npc_prob = rand(1,$core->config->getExtra('npc_prob'));
           if ($npc_prob==1){
             $npc = $this->getController()->npc_service->generateNPC();
             $m->set('id_owner', $npc->get('id'));
@@ -550,8 +550,8 @@ class systemService extends OService{
         $moon_resource_list  = [];
         if (!$moon_has_npc){
           // Resources
-          $resource_types = Base::getCache('resource');
-          $num_resources  = rand(0, $c->getExtra('max_sell_resources'));
+          $resource_types = OTools::getCache('resource');
+          $num_resources  = rand(0, $core->config->getExtra('max_sell_resources'));
           if ($num_resources>0) {
             while (count($moon_resource_list) < $num_resources) {
               $resource = $resource_types['resources'][array_rand($resource_types['resources'])];

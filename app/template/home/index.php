@@ -1,7 +1,7 @@
 <div ng-view></div>
 
 <script>
-  var api_url = '{{api_url}}';
+  var api_url = '/api/';
 </script>
 <script src="js/lib/common.js"></script>
 <script src="js/lib/angular.min.js"></script>

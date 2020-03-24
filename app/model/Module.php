@@ -1,64 +1,64 @@
 <?php
-class Module extends OBase{
+class Module extends OModel{
   function __construct(){
     $table_name = 'module';
     $model = [
         'id' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id único del módulo'
         ],
         'id_type' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del tipo de módulo'
         ],
         'id_owner' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del usuario dueño del módulo'
         ],
         'id_ship' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id de la nave en la que está equipada o NULL si no está equipada'
         ],
         'size' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Tamaño del módulo 0 small 1 big
           '],
         'enables' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 100,
           'comment' => 'Lista de habilidades que tener el módulo permite'
         ],
         'crew' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Número de tripulantes que puede alojar o pueden trabajar'
         ],
         'mass' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Peso del módulo, para el movimiento'
         ],
         'storage_capacity' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Capacidad de almacenamiento del módulo'
         ],
         'storage' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 200,
           'comment' => 'Recursos almacenados'
         ],
         'energy' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Energía necesaria para que el módulo funcione'
         ],
         'credits' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Precio del módulo'
         ],
         'created_at' => [
-          'type'    => Base::CREATED,
+          'type'    => OCore::CREATED,
           'comment' => 'Fecha de creación del registro'
         ],
         'updated_at' => [
-          'type'    => Base::UPDATED,
+          'type'    => OCore::UPDATED,
           'comment' => 'Fecha de última modificación del registro'
         ]
     ];

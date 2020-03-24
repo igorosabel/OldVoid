@@ -60,7 +60,7 @@ class shipService extends OService{
   }
 
   public function getHullTypeName($id){
-    $hulls = Base::getCache('hull');
+    $hulls = OTools::getCache('hull');
     if (array_key_exists('hull_'.$id,$hulls['hull_types'])){
       return $hulls['hull_types']['hull_'.$id]['name'];
     }
@@ -68,7 +68,7 @@ class shipService extends OService{
   }
 
   public function getShieldTypeName($id){
-    $shields = Base::getCache('shield');
+    $shields = OTools::getCache('shield');
     if (array_key_exists('shield_'.$id,$shields['shield_types'])){
       return $shields['shield_types']['shield_'.$id]['name'];
     }
@@ -76,7 +76,7 @@ class shipService extends OService{
   }
 
   public function getEngineTypeName($id){
-    $engines = Base::getCache('engine');
+    $engines = OTools::getCache('engine');
     if (array_key_exists('engine_'.$id,$engines['engine_types'])){
       return $engines['engine_types']['engine_'.$id]['name'];
     }
@@ -84,7 +84,7 @@ class shipService extends OService{
   }
 
   public function getGeneratorTypeName($id){
-    $generators = Base::getCache('generator');
+    $generators = OTools::getCache('generator');
     if (array_key_exists('generator_'.$id,$generators['generator_types'])){
       return $generators['generator_types']['generator_'.$id]['name'];
     }
@@ -92,7 +92,7 @@ class shipService extends OService{
   }
 
   public function getGunTypeName($id){
-    $guns = Base::getCache('gun');
+    $guns = OTools::getCache('gun');
     if (array_key_exists('gun_'.$id,$guns['gun_types'])){
       return $guns['gun_types']['gun_'.$id]['name'];
     }
@@ -100,7 +100,7 @@ class shipService extends OService{
   }
 
   public function getModuleTypeName($id){
-    $modules = Base::getCache('module');
+    $modules = OTools::getCache('module');
     if (array_key_exists('module_'.$id,$modules['module_types'])){
       return $modules['module_types']['module_'.$id]['name'];
     }
@@ -117,18 +117,18 @@ class shipService extends OService{
   }
 
   public function generateShip($explorer){
-    $c = $this->getController()->getConfig();
+    global $core;
 
     // Primero creo la nave, sin armas ni módulos
     $ship = new Ship();
     $ship->set('id_owner', $explorer->get('id'));
 
-    $ship_name = Base::getRandomCharacters(['num'=>$c->getExtra('system_name_chars'),'upper'=>true]).'-'.Base::getRandomCharacters(['num'=>$c->getExtra('system_name_nums'),'numbers'=>true]);
+    $ship_name = OTools::getRandomCharacters(['num'=>$core->config->getExtra('system_name_chars'),'upper'=>true]).'-'.OTools::getRandomCharacters(['num'=>$core->config->getExtra('system_name_nums'),'numbers'=>true]);
     $ship->set('original_name', $ship_name);
     $ship->set('name', $ship_name);
 
-    $hull_types = Base::getCache('hull');
-    $hull_type  = $hull_types['hull_types']['hull_'.$c->getExtra('default_ship_hull')];
+    $hull_types = OTools::getCache('hull');
+    $hull_type  = $hull_types['hull_types']['hull_'.$core->config->getExtra('default_ship_hull')];
     $ship->set('hull_id_type',          $hull_type['id']);
     $ship->set('hull_strength',         $hull_type['strength']);
     $ship->set('hull_current_strength', $hull_type['strength']);
@@ -137,15 +137,15 @@ class shipService extends OService{
     $ship->set('big_module_ports',      $hull_type['big_module_ports']);
     $ship->set('small_module_ports',    $hull_type['small_module_ports']);
 
-    $shield_types = Base::getCache('shield');
-    $shield_type  = $shield_types['shield_types']['shield_'.$c->getExtra('default_ship_shield')];
+    $shield_types = OTools::getCache('shield');
+    $shield_type  = $shield_types['shield_types']['shield_'.$core->config->getExtra('default_ship_shield')];
     $ship->set('shield_id_type',          $shield_type['id']);
     $ship->set('shield_strength',         $shield_type['strength']);
     $ship->set('shield_current_strength', $shield_type['strength']);
     $ship->set('shield_energy',           $shield_type['energy']);
 
-    $engine_types = Base::getCache('engine');
-    $engine_type  = $engine_types['engine_types']['engine_'.$c->getExtra('default_ship_engine')];
+    $engine_types = OTools::getCache('engine');
+    $engine_type  = $engine_types['engine_types']['engine_'.$core->config->getExtra('default_ship_engine')];
     $ship->set('engine_id_type',     $engine_type['id']);
     $ship->set('engine_power',       $engine_type['power']);
     $ship->set('engine_energy',      $engine_type['energy']);
@@ -153,8 +153,8 @@ class shipService extends OService{
     $ship->set('engine_fuel_cost',   $engine_type['consumption']);
     $ship->set('engine_fuel_actual', 100);
 
-    $generator_types = Base::getCache('generator');
-    $generator_type  = $generator_types['generator_types']['generator_'.$c->getExtra('default_ship_generator')];
+    $generator_types = OTools::getCache('generator');
+    $generator_type  = $generator_types['generator_types']['generator_'.$core->config->getExtra('default_ship_generator')];
     $ship->set('generator_id_type', $generator_type['id']);
     $ship->set('generator_power',   $generator_type['power']);
 
@@ -163,8 +163,8 @@ class shipService extends OService{
     // Creo un arma
     $gun = new Gun();
 
-    $gun_types = Base::getCache('gun');
-    $gun_type  = $gun_types['gun_types']['gun_'.$c->getExtra('default_gun')];
+    $gun_types = OTools::getCache('gun');
+    $gun_type  = $gun_types['gun_types']['gun_'.$core->config->getExtra('default_gun')];
     $gun->set('id_type',         $gun_type['id']);
     $gun->set('id_owner',        $explorer->get('id'));
     $gun->set('id_ship',         $ship->get('id'));
@@ -179,11 +179,11 @@ class shipService extends OService{
     $ship->addGun($gun);
 
     // Creo un módulo
-    $default_modules = $c->getExtra('default_modules');
+    $default_modules = $core->config->getExtra('default_modules');
     foreach ($default_modules as $module_type){
       $module = new Module();
 
-      $module_types = Base::getCache('module');
+      $module_types = OTools::getCache('module');
       $module_type  = $module_types['module_types']['module_'.$module_type];
       $module->set('id_type',          $gun_type['id']);
       $module->set('id_owner',         $explorer->get('id'));
@@ -221,16 +221,16 @@ class shipService extends OService{
     $ret = 0;
 
     // Calculo precio de la nave (base + mejoras)
-    $hull_types          = Base::getCache('hull');
+    $hull_types          = OTools::getCache('hull');
     $hull_type           = $hull_types['hull_types']['hull_'.$ship->get('hull_id_type')];
     $hull_type_diff      = floor( ( ($ship->get('hull_strength')*100) / $hull_type['strength'] ) / 100 );
-    $shield_types        = Base::getCache('shield');
+    $shield_types        = OTools::getCache('shield');
     $shield_type         = $shield_types['shield_types']['shield_'.$ship->get('shield_id_type')];
     $shield_type_diff    = floor( ( ($ship->get('shield_strength')*100) / $shield_type['strength'] ) / 100 );
-    $engine_types        = Base::getCache('engine');
+    $engine_types        = OTools::getCache('engine');
     $engine_type         = $engine_types['engine_types']['engine_'.$ship->get('engine_id_type')];
     $engine_type_diff    = floor( ( ($ship->get('engine_power')*100) / $engine_type['power'] ) / 100 );
-    $generator_types     = Base::getCache('generator');
+    $generator_types     = OTools::getCache('generator');
     $generator_type      = $generator_types['generator_types']['generator_'.$ship->get('generator_id_type')];
     $generator_type_diff = floor( ( ($ship->get('generator_power')*100) / $generator_type['power'] ) / 100 );
 
@@ -246,7 +246,7 @@ class shipService extends OService{
     $ret = ($hull_type['credits'] * $hull_type_diff) + ($shield_type['credits'] * $shield_type_diff) + ($engine_type['credits'] * $engine_type_diff) + ($generator_type['credits'] * $generator_type_diff);
 
     // Sumo precio de las armas que tiene equipadas
-    $gun_types = Base::getCache('gun');
+    $gun_types = OTools::getCache('gun');
     foreach ($guns as $g){
       $gun_type = $gun_types['gun_types']['gun_'.$g->get('id_type')];
       $ret += $gun_type['credits'];
@@ -254,7 +254,7 @@ class shipService extends OService{
     }
 
     // Sumo precio de los módulos que tiene equipados
-    $module_types = Base::getCache('module');
+    $module_types = OTools::getCache('module');
     foreach ($modules as $m){
       $module_type = $module_types['module_types']['module_'.$m->get('id_type')];
       $ret += $module_type['credits'];

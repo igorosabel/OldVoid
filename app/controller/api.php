@@ -19,8 +19,8 @@ class api extends OController{
    */
   function login($req){
     $status = 'ok';
-    $email  = Base::getParam('email', $req['url_params'], false);
-    $pass   = Base::getParam('pass',  $req['url_params'], false);
+    $email  = OTools::getParam('email', $req['params'], false);
+    $pass   = OTools::getParam('pass',  $req['params'], false);
 
     $auth   = '';
 
@@ -53,9 +53,9 @@ class api extends OController{
    */
   function register($req){
     $status = 'ok';
-    $name   = Base::getParam('name',  $req['url_params'], false);
-    $email  = Base::getParam('email', $req['url_params'], false);
-    $pass   = Base::getParam('pass',  $req['url_params'], false);
+    $name   = OTools::getParam('name',  $req['params'], false);
+    $email  = OTools::getParam('email', $req['params'], false);
+    $pass   = OTools::getParam('pass',  $req['params'], false);
 
     $auth             = '';
     $credits          = 0;
@@ -72,7 +72,7 @@ class api extends OController{
       $pass  = sha1('v_'.urldecode($pass).'_v');
 
       $auth    = $this->general_service->generateAuth();
-      $common  = Base::getCache('common');
+      $common  = OTools::getCache('common');
       $credits = $common['credits'];
 
       // Creo el usuario
@@ -108,7 +108,7 @@ class api extends OController{
    */
   function checkExplorer($req){
     $status          = 'ok';
-    $auth            = Base::getParam('auth', $req['url_params'], false);
+    $auth            = OTools::getParam('auth', $req['params'], false);
 
     $id              = 0;
     $name            = '';
@@ -147,8 +147,8 @@ class api extends OController{
    */
   function getSystem($req){
     $status = 'ok';
-    $id     = Base::getParam('id',   $req['url_params'], false);
-    $auth   = Base::getParam('auth', $req['url_params'], false);
+    $id     = OTools::getParam('id',   $req['params'], false);
+    $auth   = OTools::getParam('auth', $req['params'], false);
 
     $system = [
       'id'            => 0,
@@ -223,7 +223,7 @@ class api extends OController{
   */
   function getNotifications($req){
     $status = 'ok';
-    $auth   = Base::getParam('auth', $req['url_params'], false);
+    $auth   = OTools::getParam('auth', $req['params'], false);
     $notifications = [];
 
     if ($auth===false){
@@ -249,8 +249,8 @@ class api extends OController{
    */
   function getPeopleInSystem($req){
     $status = 'ok';
-    $id     = Base::getParam('id',   $req['url_params'], false);
-    $auth   = Base::getParam('auth', $req['url_params'], false);
+    $id     = OTools::getParam('id',   $req['params'], false);
+    $auth   = OTools::getParam('auth', $req['params'], false);
 
     $people_in_system = array('npc'=>[], 'explorer'=>[]);
 
@@ -277,9 +277,9 @@ class api extends OController{
    */
   function explore($req){
     $status = 'ok';
-    $id     = Base::getParam('id',   $req['url_params'], false);
-    $type   = Base::getParam('type', $req['url_params'], false);
-    $auth   = Base::getParam('auth', $req['url_params'], false);
+    $id     = OTools::getParam('id',   $req['params'], false);
+    $type   = OTools::getParam('type', $req['params'], false);
+    $auth   = OTools::getParam('auth', $req['params'], false);
     $job    = false;
 
     if ($id===false || $type===false || $auth===false){
@@ -343,9 +343,9 @@ class api extends OController{
    */
   function getResources($req){
     $status = 'ok';
-    $id     = Base::getParam('id',   $req['url_params'], false);
-    $type   = Base::getParam('type', $req['url_params'], false);
-    $auth   = Base::getParam('auth', $req['url_params'], false);
+    $id     = OTools::getParam('id',   $req['params'], false);
+    $type   = OTools::getParam('type', $req['params'], false);
+    $auth   = OTools::getParam('auth', $req['params'], false);
 
     $job    = false;
 
@@ -409,9 +409,9 @@ class api extends OController{
    */
   function goToSystem($req){
     $status = 'ok';
-    $id     = Base::getParam('id',   $req['url_params'], null);
-    $time   = Base::getParam('time', $req['url_params'], false);
-    $auth   = Base::getParam('auth', $req['url_params'], false);
+    $id     = OTools::getParam('id',   $req['params'], null);
+    $time   = OTools::getParam('time', $req['params'], false);
+    $auth   = OTools::getParam('auth', $req['params'], false);
     $job    = false;
 
     if ($time===false || $auth===false){
@@ -467,7 +467,7 @@ class api extends OController{
    */
   function getShip($req){
     $status = 'ok';
-    $auth   = Base::getParam('auth', $req['url_params'], false);
+    $auth   = OTools::getParam('auth', $req['params'], false);
     $ship   = false;
 
     if ($auth===false){
@@ -493,8 +493,8 @@ class api extends OController{
    */
   function changeShipName($req){
     $status = 'ok';
-    $name   = Base::getParam('name', $req['url_params'], false);
-    $auth   = Base::getParam('auth', $req['url_params'], false);
+    $name   = OTools::getParam('name', $req['params'], false);
+    $auth   = OTools::getParam('auth', $req['params'], false);
 
     if ($name===false || $auth===false){
       $status = 'error';

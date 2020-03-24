@@ -1,76 +1,76 @@
 <?php
-class Planet extends OBase{
+class Planet extends OModel{
   function __construct(){
     $table_name = 'planet';
     $model = [
         'id' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id único del sistema solar'
         ],
         'id_system' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del sistema al que pertenece el planeta'
         ],
         'id_owner' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del dueño del planeta'
         ],
         'npc' => [
-          'type'    => Base::BOOL,
+          'type'    => OCore::BOOL,
           'comment' => 'Indica si el dueño del planeta es un NPC 1 o no 0'
         ],
         'original_name' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'Nombre original del planeta'
         ],
         'name' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'Nombre dado por el descubridor'
         ],
         'id_type' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del tipo de planeta'
         ],
         'radius' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Radio del planeta en kilómetros'
         ],
         'rotation' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Velocidad de rotación del planeta alrededor de la estrella'
         ],
         'survival' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Indice de supervivencia'
         ],
         'has_life' => [
-          'type'    => Base::BOOL,
+          'type'    => OCore::BOOL,
           'comment' => 'Indica si tiene vida 1 o no 0'
         ],
         'distance' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Distancia del planeta a su sol'
         ],
         'num_moons' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Número de lunas en el planeta'
         ],
         'explored' => [
-          'type'    => Base::BOOL,
+          'type'    => OCore::BOOL,
           'comment' => 'Indica si el planeta ya ha sido explorado por alguien'
         ],
         'explore_time' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Tiempo, en segundos, necesarios para explorar el planeta'
         ],
         'created_at' => [
-          'type'    => Base::CREATED,
+          'type'    => OCore::CREATED,
           'comment' => 'Fecha de creación del registro'
         ],
         'updated_at' => [
-          'type'    => Base::UPDATED,
+          'type'    => OCore::UPDATED,
           'comment' => 'Fecha de última modificación del registro'
         ]
     ];

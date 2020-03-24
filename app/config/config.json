@@ -1,15 +1,4 @@
 {
-  "base_modules": {
-    "browser": false,
-    "email": true,
-    "email_smtp": false,
-    "ftp": false,
-    "image": false,
-    "pdf": false,
-    "translate": false,
-    "crypt": false,
-    "file": false
-  },
   "db": {
   	"host": "localhost",
   	"user": "void",
@@ -20,7 +9,7 @@
   	"prefix": "void",
   	"url": ".osumi.es"
   },
-  "debug": false,
+  "log_level": "ALL",
   "base_url": "https://void.osumi.es/",
   "admin_email": "inigo.gorosabel@osumi.es",
   "default_title": "Void",

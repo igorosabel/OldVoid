@@ -1,38 +1,38 @@
 <?php
-class Job extends OBase{
+class Job extends OModel{
   function __construct(){
     $table_name = 'job';
     $model = [
         'id' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id único del trabajo'
         ],
         'id_explorer' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del explorador que hace el trabajo'
         ],
         'type' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Tipo de trabajo'
         ],
         'value' => [
-          'type'    => Base::LONGTEXT,
+          'type'    => OCore::LONGTEXT,
           'comment' => 'Información extra del trabajo'
         ],
         'start' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Timestamp de la fecha de inicio'
         ],
         'duration' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Duración del trabajo'
         ],
         'created_at' => [
-          'type'    => Base::CREATED,
+          'type'    => OCore::CREATED,
           'comment' => 'Fecha de creación del registro'
         ],
         'updated_at' => [
-          'type'    => Base::UPDATED,
+          'type'    => OCore::UPDATED,
           'comment' => 'Fecha de última modificación del registro'
         ]
     ];

@@ -1,24 +1,24 @@
 <?php
-class ShipCrew extends OBase{
+class ShipCrew extends OModel{
   function __construct(){
     $table_name = 'ship_crew';
     $model = [
       'id_ship' => [
-        'type'    => Base::PK,
+        'type'    => OCore::PK,
         'comment' => 'Id de la nave donde va el tripulante',
         'incr'    => false
       ],
       'id_crew' => [
-        'type'    => Base::PK,
+        'type'    => OCore::PK,
         'comment' => 'Id del tripulante',
         'incr'    => false
       ],
       'created_at' => [
-        'type'    => Base::CREATED,
+        'type'    => OCore::CREATED,
         'comment' => 'Fecha de creación del registro'
       ],
       'updated_at' => [
-        'type'    => Base::UPDATED,
+        'type'    => OCore::UPDATED,
         'comment' => 'Fecha de última modificación del registro'
       ]
     ];

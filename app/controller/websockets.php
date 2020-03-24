@@ -1,6 +1,6 @@
 <?php
   include(dirname(__FILE__).'/../config/config.php');
-  include($c->getDir('config').'model.php');
+  include($core->config->getDir('config').'model.php');
   
   function executeVoidTest($data){
     $ret = array(

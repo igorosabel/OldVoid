@@ -5,9 +5,9 @@ class generateCharacterJSONTask{
   }
 
   public function run(){
-    global $c;
+    global $core;
 
-    $ruta_csv = $c->getDir('cache').'characters.csv';
+    $ruta_csv = $core->config->getDir('cache').'characters.csv';
     $list = file_get_contents($ruta_csv);
     $names = explode(',',$list);
 
@@ -24,7 +24,7 @@ class generateCharacterJSONTask{
     $json .= "  ]\n";
     $json .= "}";
 
-    $ruta_json = $c->getDir('cache')."npc.json";
+    $ruta_json = $core->config->getDir('cache')."npc.json";
     if (file_exists($ruta_json)){
       unlink($ruta_json);
     }

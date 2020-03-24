@@ -25,7 +25,7 @@ class generalService extends OService{
   }
 
   public function getResourceName($id){
-    $resources = Base::getCache('resource');
+    $resources = OTools::getCache('resource');
 
     foreach ($resources['resources'] as $res){
       if ($res['id']==$id){

@@ -1,112 +1,112 @@
 <?php
-class Ship extends OBase{
+class Ship extends OModel{
   function __construct(){
     $table_name = 'ship';
     $model = [
         'id' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id única de la nave'
         ],
         'id_owner' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del dueño de la nave'
         ],
         'original_name' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'Nombre original de la nave'
         ],
         'name' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'Nombre de la nave'
         ],
         'hull_id_type' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del tipo de hull'
         ],
         'hull_strength' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Integridad estructural del hull, aguante ante ataques'
         ],
         'hull_current_strength' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Integridad estructural del hull actual'
         ],
         'hull_mass' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Peso del hull, para el movimiento'
         ],
         'gun_ports' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Número de huecos para introducir armas'
         ],
         'big_module_ports' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Número de los posibles módulos grandes'
         ],
         'small_module_ports' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Número de los posibles módulos pequeños'
         ],
         'shield_id_type' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del tipo de shield, para información inicial, nombre...'
         ],
         'shield_strength' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Daño que aguanta el shield'
         ],
         'shield_current_strength' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Daño actual que puede aguantar el shield'
         ],
         'shield_energy' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Energía necesaria para que el shield funcione'
         ],
         'engine_id_type' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del tipo de engine, para información inicial, nombre...'
         ],
         'engine_power' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Potencia de empuje del engine'
         ],
         'engine_energy' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Energía necesaria para que el engine funcione'
         ],
         'engine_impulse' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Cantidad de UA por hora que se mueve'
         ],
         'engine_fuel_cost' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Cantidad de fuel que consume por movimiento'
         ],
         'engine_fuel_actual' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Cantidad de fuel que tiene en un momento dado'
         ],
         'generator_id_type' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del tipo de generator, para información inicial, nombre...'
         ],
         'generator_power' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Cantidad de energia que genera'
         ],
         'credits' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Precio de la nave'
         ],
         'created_at' => [
-          'type'    => Base::CREATED,
+          'type'    => OCore::CREATED,
           'comment' => 'Fecha de creación del registro'
         ],
         'updated_at' => [
-          'type'    => Base::UPDATED,
+          'type'    => OCore::UPDATED,
           'comment' => 'Fecha de última modificación del registro'
         ]
     ];

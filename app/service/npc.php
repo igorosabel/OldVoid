@@ -20,7 +20,7 @@ class npcService extends OService{
   }
 
   public function generateRace(){
-    $race_list = Base::getCache('race');
+    $race_list = OTools::getCache('race');
     $race_prob = [];
     foreach ($race_list['race_list'] as $race){
       for ($i=1;$i<=$race['proportion'];$i++){
@@ -34,11 +34,11 @@ class npcService extends OService{
   }
 
   public function generateNPC($save=true){
-    $c = $this->getController()->getConfig();
+    global $core;
 
     $npc = new NPC();
 
-    $npc_list = Base::getCache('npc');
+    $npc_list = OTools::getCache('npc');
     $npc_name = $npc_list['character_list'][array_rand($npc_list['character_list'])];
     $npc->set('name',$npc_name);
 
@@ -46,8 +46,8 @@ class npcService extends OService{
     $npc->set('id_race',$npc_race);
 
     // Hulls
-    $hull_types = Base::getCache('hull');
-    $num_hulls  = rand(0,$c->getExtra('max_sell_hulls'));
+    $hull_types = OTools::getCache('hull');
+    $num_hulls  = rand(0,$core->config->getExtra('max_sell_hulls'));
     $hull_list  = [];
     if ($num_hulls>0){
       while (count($hull_list)<$num_hulls){
@@ -61,8 +61,8 @@ class npcService extends OService{
     $npc->set('hulls_actual',json_encode($hull_list));
 
     // Shields
-    $shield_types = Base::getCache('shield');
-    $num_shields  = rand(0,$c->getExtra('max_sell_shields'));
+    $shield_types = OTools::getCache('shield');
+    $num_shields  = rand(0,$core->config->getExtra('max_sell_shields'));
     $shield_list  = [];
     if ($num_shields>0){
       while (count($shield_list)<$num_shields){
@@ -76,8 +76,8 @@ class npcService extends OService{
     $npc->set('shields_actual',json_encode($shield_list));
 
     // Engines
-    $engine_types = Base::getCache('engine');
-    $num_engines  = rand(0,$c->getExtra('max_sell_engines'));
+    $engine_types = OTools::getCache('engine');
+    $num_engines  = rand(0,$core->config->getExtra('max_sell_engines'));
     $engine_list  = [];
     if ($num_engines>0){
       while (count($engine_list)<$num_engines){
@@ -91,8 +91,8 @@ class npcService extends OService{
     $npc->set('engines_actual',json_encode($engine_list));
 
     // Generators
-    $generator_types = Base::getCache('generator');
-    $num_generators  = rand(0,$c->getExtra('max_sell_generators'));
+    $generator_types = OTools::getCache('generator');
+    $num_generators  = rand(0,$core->config->getExtra('max_sell_generators'));
     $generator_list  = [];
     if ($num_generators>0){
       while (count($generator_list)<$num_generators){
@@ -106,8 +106,8 @@ class npcService extends OService{
     $npc->set('generators_actual',json_encode($generator_list));
 
     // Guns
-    $gun_types = Base::getCache('gun');
-    $num_guns  = rand(0,$c->getExtra('max_sell_guns'));
+    $gun_types = OTools::getCache('gun');
+    $num_guns  = rand(0,$core->config->getExtra('max_sell_guns'));
     $gun_list  = [];
     if ($num_guns>0){
       while (count($gun_list)<$num_guns){
@@ -121,8 +121,8 @@ class npcService extends OService{
     $npc->set('guns_actual',json_encode($gun_list));
 
     // Modules
-    $module_types = Base::getCache('module');
-    $num_modules  = rand(0,$c->getExtra('max_sell_modules'));
+    $module_types = OTools::getCache('module');
+    $num_modules  = rand(0,$core->config->getExtra('max_sell_modules'));
     $module_list  = [];
     if ($num_modules>0){
       while (count($module_list)<$num_modules){
@@ -136,8 +136,8 @@ class npcService extends OService{
     $npc->set('modules_actual',json_encode($module_list));
 
     // Resources
-    $resource_types = Base::getCache('resource');
-    $num_resources  = rand(0,$c->getExtra('max_sell_resources'));
+    $resource_types = OTools::getCache('resource');
+    $num_resources  = rand(0,$core->config->getExtra('max_sell_resources'));
     $resource_list  = [];
     if ($num_resources>0){
       while (count($resource_list)<$num_resources){

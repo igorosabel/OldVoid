@@ -1,54 +1,54 @@
 <?php
-class Gun extends OBase{
+class Gun extends OModel{
   function __construct(){
     $table_name = 'gun';
     $model = [
         'id' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id única del gun'
         ],
         'id_type' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del tipo de gun'
         ],
         'id_owner' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del usuario dueño del gun'
         ],
         'id_ship' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id de la nave en la que está equipada o NULL si no está equipada'
         ],
         'strength' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Daño que hace'
         ],
         'accuracy' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Indice de acierto del gun'
         ],
         'recharge_time' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Tiempo que tarda en volver a disparar'
         ],
         'ignores_shields' => [
-          'type'    => Base::BOOL,
+          'type'    => OCore::BOOL,
           'comment' => 'Indica si el gun esquiva shields 1 o no 0'
         ],
         'energy' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Energía necesaria para que el gun funcione'
         ],
         'credits' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Precio de la gun'
         ],
         'created_at' => [
-          'type'    => Base::CREATED,
+          'type'    => OCore::CREATED,
           'comment' => 'Fecha de creación del registro'
         ],
         'updated_at' => [
-          'type'    => Base::UPDATED,
+          'type'    => OCore::UPDATED,
           'comment' => 'Fecha de última modificación del registro'
         ]
     ];

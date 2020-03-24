@@ -1,54 +1,54 @@
 <?php
-class Explorer extends OBase{
+class Explorer extends OModel{
   function __construct(){
     $table_name = 'explorer';
     $model = [
         'id' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id único del usuario'
         ],
         'name' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'Nombre o nick del usuario'
         ],
         'email' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'Direccion email del usuario'
         ],
         'pass' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'Contraseña cifrada del usuario'
         ],
         'credits' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Cantidad de créditos del usuario'
         ],
         'current_ship' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id de la nave que actualmente está usando el explorador'
         ],
         'last_save_point' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Último punto de salvado, Id del sistema'
         ],
         'id_job' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del trabajo en curso o NULL si no está haciendo ninguno'
         ],
         'auth' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'clave auth para la api'
         ],
         'created_at' => [
-          'type'    => Base::CREATED,
+          'type'    => OCore::CREATED,
           'comment' => 'Fecha de creación del registro'
         ],
         'updated_at' => [
-          'type'    => Base::UPDATED,
+          'type'    => OCore::UPDATED,
           'comment' => 'Fecha de última modificación del registro'
         ]
     ];

@@ -1,5 +1,5 @@
 <?php
-class System extends OBase{
+class System extends OModel{
   private $system_service = null;
 
   function __construct(){
@@ -8,46 +8,46 @@ class System extends OBase{
     $table_name = 'system';
     $model = [
         'id' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id único del sistema solar'
         ],
         'id_discoverer' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del usuario que ha descubierto el sistema'
         ],
         'original_name' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'Nombre original del sistema'
         ],
         'name' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 50,
           'comment' => 'Nombre del sistema dado por el usuario'
         ],
         'num_planets' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Número de planetas en el sistema'
         ],
         'num_npc' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Número de NPC en el sistema'
         ],
         'sun_type' => [
-          'type'    => Base::TEXT,
+          'type'    => OCore::TEXT,
           'size'    => 5,
           'comment' => 'Tipo de Sol'
         ],
         'sun_radius' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Radio del Sol'
         ],
         'created_at' => [
-          'type'    => Base::CREATED,
+          'type'    => OCore::CREATED,
           'comment' => 'Fecha de creación del registro'
         ],
         'updated_at' => [
-          'type'    => Base::UPDATED,
+          'type'    => OCore::UPDATED,
           'comment' => 'Fecha de última modificación del registro'
         ]
     ];

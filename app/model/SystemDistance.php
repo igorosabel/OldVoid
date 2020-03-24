@@ -1,28 +1,28 @@
 <?php
-class SystemDistance extends OBase{
+class SystemDistance extends OModel{
   function __construct(){
     $table_name = 'system_distance';
     $model = [
         'id_system_1' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id del primer sistema',
           'incr'    => false
         ],
         'id_system_2' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id del segundo sistema',
           'incr'    => false
         ],
         'distance' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Grados de separación entre los dos sistemas'
         ],
         'created_at' => [
-          'type'    => Base::CREATED,
+          'type'    => OCore::CREATED,
           'comment' => 'Fecha de creación del registro'
         ],
         'updated_at' => [
-          'type'    => Base::UPDATED,
+          'type'    => OCore::UPDATED,
           'comment' => 'Fecha de última modificación del registro'
         ]
     ];

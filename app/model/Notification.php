@@ -1,34 +1,34 @@
 <?php
-class Notification extends OBase{
+class Notification extends OModel{
   function __construct(){
     $table_name = 'notification';
     $model = [
         'id' => [
-          'type'    => Base::PK,
+          'type'    => OCore::PK,
           'comment' => 'Id única de la notificación'
         ],
         'id_explorer' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Id del explorador que recibe la notificación'
         ],
         'type' => [
-          'type'    => Base::NUM,
+          'type'    => OCore::NUM,
           'comment' => 'Tipo de notificación'
         ],
         'value' => [
-          'type'    => Base::LONGTEXT,
+          'type'    => OCore::LONGTEXT,
           'comment' => 'Contenido de la notificación'
         ],
         'discarded' => [
-          'type'    => Base::BOOL,
+          'type'    => OCore::BOOL,
           'comment' => 'Indica si la notificación ha sido descartada 1 o no 0'
         ],
         'created_at' => [
-          'type'    => Base::CREATED,
+          'type'    => OCore::CREATED,
           'comment' => 'Fecha de creación del registro'
         ],
         'updated_at' => [
-          'type'    => Base::UPDATED,
+          'type'    => OCore::UPDATED,
           'comment' => 'Fecha de última modificación del registro'
         ]
     ];
