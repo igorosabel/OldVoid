@@ -1,7 +1,7 @@
 <?php
 class generalService extends OService{
-  function __construct($controller=null){
-    $this->setController($controller);
+  function __construct(){
+    $this->loadService();
   }
 
   public function generateAuth(){
@@ -9,7 +9,7 @@ class generalService extends OService{
   }
 
   public function getNotifications($ex){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $sql = "SELECT * FROM `notification` WHERE `id_explorer` = ? AND `discarded` = 0";
 
     $ret = [];

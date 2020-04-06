@@ -1,12 +1,12 @@
 <?php
 class jobService extends OService{
-  function __construct($controller=null){
-    $this->setController($controller);
+  function __construct(){
+    $this->loadService();
   }
 
   /*
-    Tipos de trabajos
-  */
+   * Tipos de trabajos
+   */
   const EXPLORE         = 1;
   const EXPLORE_NAME    = 'Exploración';
   const JUMP            = 2;
@@ -31,7 +31,7 @@ class jobService extends OService{
   }
 
   public function getUnfinishedJobs(){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $sql = "SELECT * FROM `explorer` WHERE `id_job` IS NOT NULL";
 
     $db->query($sql);

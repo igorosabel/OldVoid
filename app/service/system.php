@@ -1,7 +1,10 @@
 <?php
 class systemService extends OService{
-  function __construct($controller=null){
-    $this->setController($controller);
+  private $npc_service = null;
+
+  function __construct(){
+    $this->loadService();
+    $this->npc_service = new npcService();
   }
 
   public function getSystemColor($type){
@@ -139,7 +142,7 @@ class systemService extends OService{
 
       // Busco NPC en el planeta
       if ($planet->get('npc')){
-        $planet->setNpc($this->getController()->npc_service->loadNPC($planet->get('id_owner')));
+        $planet->setNpc($this->npc_service->loadNPC($planet->get('id_owner')));
       }
 
       // Compruebo si el planeta ya ha sido explorado
@@ -176,7 +179,7 @@ class systemService extends OService{
 
       // Busco NPC en la luna
       if ($moon->get('npc')){
-        $moon->setNpc($this->getController()->npc_service->loadNPC($moon->get('id_owner')));
+        $moon->setNpc($this->npc_service->loadNPC($moon->get('id_owner')));
       }
 
       // Compruebo si el planeta ya ha sido explorado
@@ -249,12 +252,11 @@ class systemService extends OService{
   }
 
   public function goToSystem($explorer, $from, $id_system=null){
-    global $core;
     $ret = null;
 
     if (is_null($id_system)){
       $system_connections = $this->getSystemConnections($explorer, $from);
-      $ind                = rand(0, $core->config->getExtra('max_connections')-1);
+      $ind                = rand(0, $this->getConfig()->getExtra('max_connections')-1);
       $new_known          = false;
       if (array_key_exists($ind, $system_connections)){
         $new_system_id = $system_connections[$ind]->get('id');
@@ -358,8 +360,6 @@ class systemService extends OService{
   }
 
   public function generateSystem($explorer, $from=null){
-    global $core;
-
     // Primero creo el sistema
     $s = new System();
     $system_types      = OTools::getCache('system');
@@ -368,7 +368,7 @@ class systemService extends OService{
     $sun_type          = $system_types['mkk_types'][array_rand($system_types['mkk_types'])];
     $sun_spectral_type = $sun_type['spectral_types'][array_rand($sun_type['spectral_types'])];
     $sun_type_code     = $sun_type['type'].'-'.$system_types['spectral_types']['type_'.$sun_spectral_type]['type'];
-    $sun_name          = OTools::getRandomCharacters(['num'=>$core->config->getExtra('system_name_chars'),'upper'=>true]).'-'.OTools::getRandomCharacters(['num'=>$core->config->getExtra('system_name_nums'),'numbers'=>true]);
+    $sun_name          = OTools::getRandomCharacters(['num'=>$this->getConfig()->getExtra('system_name_chars'),'upper'=>true]).'-'.OTools::getRandomCharacters(['num'=>$this->getConfig()->getExtra('system_name_nums'),'numbers'=>true]);
     $num_planets       = rand($sun_type['min_planets'], $sun_type['max_planets']);
     $sun_radius        = rand($sun_type['min_radius'],  $sun_type['max_radius']);
 
@@ -448,10 +448,10 @@ class systemService extends OService{
 
       // NPC
       $planet_has_npc = false;
-      if ($npcs<$core->config->getExtra('max_npc')){
-        $npc_prob = rand(1, $core->config->getExtra('npc_prob'));
+      if ($npcs<$this->getConfig()->getExtra('max_npc')){
+        $npc_prob = rand(1, $this->getConfig()->getExtra('npc_prob'));
         if ($npc_prob==1){
-          $npc = $this->getController()->npc_service->generateNPC();
+          $npc = $this->npc_service->generateNPC();
           $p->set('id_owner', $npc->get('id'));
           $p->set('npc',      true);
           $npcs++;
@@ -463,7 +463,7 @@ class systemService extends OService{
       if (!$planet_has_npc){
         // Resources
         $resource_types = OTools::getCache('resource');
-        $num_resources  = rand(0, $core->config->getExtra('max_sell_resources'));
+        $num_resources  = rand(0, $this->getConfig()->getExtra('max_sell_resources'));
         if ($num_resources>0) {
           while (count($planet_resource_list) < $num_resources) {
             $resource = $resource_types['resources'][array_rand($resource_types['resources'])];
@@ -513,7 +513,7 @@ class systemService extends OService{
         //echo "    RADIUS: ".$moon_radius."\n";
 
         // Indice de supervivencia es aleatorio entre 1 y el del planeta (+2 si tiene vida)
-        $moon_survival = rand(1, $planet_survival + ($planet_has_life ? $core->config->getExtra('life_bonus') : 0));
+        $moon_survival = rand(1, $planet_survival + ($planet_has_life ? $this->getConfig()->getExtra('life_bonus') : 0));
         $m->set('survival',      $moon_survival);
 
         // 50% de posibilidad de que haya vida si el indice de survival es mayor que 5
@@ -536,10 +536,10 @@ class systemService extends OService{
         $m->set('explore_time', $moon_explore_time);
 
         $moon_has_npc = false;
-        if ($npcs<$core->config->getExtra('max_npc')){
-          $npc_prob = rand(1,$core->config->getExtra('npc_prob'));
+        if ($npcs<$this->getConfig()->getExtra('max_npc')){
+          $npc_prob = rand(1,$this->getConfig()->getExtra('npc_prob'));
           if ($npc_prob==1){
-            $npc = $this->getController()->npc_service->generateNPC();
+            $npc = $this->npc_service->generateNPC();
             $m->set('id_owner', $npc->get('id'));
             $m->set('npc',      true);
             $npcs++;
@@ -551,7 +551,7 @@ class systemService extends OService{
         if (!$moon_has_npc){
           // Resources
           $resource_types = OTools::getCache('resource');
-          $num_resources  = rand(0, $core->config->getExtra('max_sell_resources'));
+          $num_resources  = rand(0, $this->getConfig()->getExtra('max_sell_resources'));
           if ($num_resources>0) {
             while (count($moon_resource_list) < $num_resources) {
               $resource = $resource_types['resources'][array_rand($resource_types['resources'])];

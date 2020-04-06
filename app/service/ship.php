@@ -1,7 +1,7 @@
 <?php
 class shipService extends OService{
-  function __construct($controller=null){
-    $this->setController($controller);
+  function __construct(){
+    $this->loadService();
   }
 
   const MODULE_SMALL = 0;
@@ -21,7 +21,7 @@ class shipService extends OService{
   }
 
   public function loadGuns($ship){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $ret = [];
 
     $sql = "SELECT * FROM `gun` WHERE `id_ship` = ?";
@@ -38,7 +38,7 @@ class shipService extends OService{
   }
 
   public function loadModules($ship, $size=null){
-    $db = $this->getController()->getDb();
+    $db = new ODB();
     $ret = [];
 
     $params = [$ship->get('id')];
@@ -117,18 +117,16 @@ class shipService extends OService{
   }
 
   public function generateShip($explorer){
-    global $core;
-
     // Primero creo la nave, sin armas ni módulos
     $ship = new Ship();
     $ship->set('id_owner', $explorer->get('id'));
 
-    $ship_name = OTools::getRandomCharacters(['num'=>$core->config->getExtra('system_name_chars'),'upper'=>true]).'-'.OTools::getRandomCharacters(['num'=>$core->config->getExtra('system_name_nums'),'numbers'=>true]);
+    $ship_name = OTools::getRandomCharacters(['num'=>$this->getConfig()->getExtra('system_name_chars'),'upper'=>true]).'-'.OTools::getRandomCharacters(['num'=>$this->getConfig()->getExtra('system_name_nums'),'numbers'=>true]);
     $ship->set('original_name', $ship_name);
     $ship->set('name', $ship_name);
 
     $hull_types = OTools::getCache('hull');
-    $hull_type  = $hull_types['hull_types']['hull_'.$core->config->getExtra('default_ship_hull')];
+    $hull_type  = $hull_types['hull_types']['hull_'.$this->getConfig()->getExtra('default_ship_hull')];
     $ship->set('hull_id_type',          $hull_type['id']);
     $ship->set('hull_strength',         $hull_type['strength']);
     $ship->set('hull_current_strength', $hull_type['strength']);
@@ -138,14 +136,14 @@ class shipService extends OService{
     $ship->set('small_module_ports',    $hull_type['small_module_ports']);
 
     $shield_types = OTools::getCache('shield');
-    $shield_type  = $shield_types['shield_types']['shield_'.$core->config->getExtra('default_ship_shield')];
+    $shield_type  = $shield_types['shield_types']['shield_'.$this->getConfig()->getExtra('default_ship_shield')];
     $ship->set('shield_id_type',          $shield_type['id']);
     $ship->set('shield_strength',         $shield_type['strength']);
     $ship->set('shield_current_strength', $shield_type['strength']);
     $ship->set('shield_energy',           $shield_type['energy']);
 
     $engine_types = OTools::getCache('engine');
-    $engine_type  = $engine_types['engine_types']['engine_'.$core->config->getExtra('default_ship_engine')];
+    $engine_type  = $engine_types['engine_types']['engine_'.$this->getConfig()->getExtra('default_ship_engine')];
     $ship->set('engine_id_type',     $engine_type['id']);
     $ship->set('engine_power',       $engine_type['power']);
     $ship->set('engine_energy',      $engine_type['energy']);
@@ -154,7 +152,7 @@ class shipService extends OService{
     $ship->set('engine_fuel_actual', 100);
 
     $generator_types = OTools::getCache('generator');
-    $generator_type  = $generator_types['generator_types']['generator_'.$core->config->getExtra('default_ship_generator')];
+    $generator_type  = $generator_types['generator_types']['generator_'.$this->getConfig()->getExtra('default_ship_generator')];
     $ship->set('generator_id_type', $generator_type['id']);
     $ship->set('generator_power',   $generator_type['power']);
 
@@ -164,7 +162,7 @@ class shipService extends OService{
     $gun = new Gun();
 
     $gun_types = OTools::getCache('gun');
-    $gun_type  = $gun_types['gun_types']['gun_'.$core->config->getExtra('default_gun')];
+    $gun_type  = $gun_types['gun_types']['gun_'.$this->getConfig()->getExtra('default_gun')];
     $gun->set('id_type',         $gun_type['id']);
     $gun->set('id_owner',        $explorer->get('id'));
     $gun->set('id_ship',         $ship->get('id'));
@@ -179,7 +177,7 @@ class shipService extends OService{
     $ship->addGun($gun);
 
     // Creo un módulo
-    $default_modules = $core->config->getExtra('default_modules');
+    $default_modules = $this->getConfig()->getExtra('default_modules');
     foreach ($default_modules as $module_type){
       $module = new Module();
 
